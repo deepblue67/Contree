@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Belote Contrée</title>
+<style>
+  :root {
+    --green: #3d8b3d;
+    --green-dark: #1a4a1a;
+    --green-felt: #2e6b28;
+    --green-light: #c8e6c4;
+    --red: #cc1f1f;
+    --red-light: #fce8e8;
+    --gold: #c8960a;
+    --gold-light: #fdf3d0;
+    --blue: #1a5295;
+    --blue-light: #e8f0fb;
+    --bg: #2e6b28;
+    --panel: #1a3318;
+    --card: #f0ede6;
+    --card-dark: #1e2e1e;
+    --border: rgba(255,255,255,0.12);
+    --border-light: #ccc8be;
+    --text: #1a1a1a;
+    --text-light: #f0ede6;
+    --text2: #5a5650;
+    --text3: #8a8680;
+    --radius: 18px;
+    --radius-sm: 12px;
+    --radius-pill: 99px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.3);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; background: var(--bg); font-family: -apple-system, 'SF Pro Rounded', 'SF Pro Display', 'Helvetica Neue', sans-serif; color: var(--text); }
+  body { overflow-x: hidden;
+    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px),
+                      repeating-linear-gradient(-45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px);
+  }
+
+  /* ── LAYOUT ── */
+  #app { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
+
+  /* ── HEADER ── */
+  .header { background: var(--panel); color: var(--text-light); padding: 14px 16px 12px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; flex: 1; }
+  .header .sub { font-size: 12px; opacity: 0.65; margin-top: 1px; }
+
+  /* ── SCROLL BODY ── */
+  .body { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 32px; }
+
+  /* ── CARDS ── */
+  .card { background: var(--card); border-radius: var(--radius); border: none; padding: 16px; box-shadow: var(--shadow); color: var(--text); }
+  .card-dark { background: var(--panel); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); padding: 16px; box-shadow: var(--shadow); color: var(--text-light); }
+  .card-title { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .card-dark .card-title { color: rgba(255,255,255,0.5); }
+
+  /* Dans une card claire, forcer tout le texte en sombre */
+  .card label { color: var(--text2) !important; }
+  .card .field label { color: var(--text2) !important; }
+  .card span:not(.suit-name) { color: var(--text); }
+
+  /* Chips dans card claire */
+  .card .chip { background: #e8e4dc; border-color: #bbb8b0; color: var(--text); }
+  .card .chip.selected-green { background: var(--green); border-color: var(--green); color: #fff; }
+  .card .chip.selected-blue { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .card .chip.selected-gold { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+  /* Stepper dans card claire */
+  .card .stepper { background: #e8e4dc; border-color: #bbb8b0; }
+  .card .stepper button { background: #d8d4cc; color: var(--text); }
+  .card .stepper button:active { background: #c8c4bc; }
+  .card .stepper .sv { color: var(--text); }
+
+  /* Boutons outline dans card claire */
+  .card .btn-outline { background: #e8e4dc; border-color: #bbb8b0; color: var(--text); }
+  .card .btn-outline:active { background: #d8d4cc; }
+
+  /* Paliers rapides dans card */
+  .card #quick-btns span { background: #e8e4dc !important; border-color: #bbb8b0 !important; color: var(--text) !important; }
+
+  /* contract badge dans card claire (saisie) */
+  .card .contract-badge { background: #e0ddd6; border-color: #bbb8b0; }
+  .card .contract-badge .cb-val { color: var(--green-dark) !important; }
+  .card .contract-badge .cb-team { color: var(--text2) !important; }
+  .card .score-team { background: #e8e4dc; }
+  .card .score-team.leading { background: var(--green-light); border-color: var(--green); }
+  .card .score-team .t-name { color: var(--text2) !important; }
+  .card .score-team .t-score { color: var(--text) !important; font-size: 38px; }
+  .card .score-team.leading .t-score { color: var(--green-dark) !important; }
+  .card .score-team .t-need { color: var(--text3) !important; }
+
+  /* ── FORMS ── */
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 13px; font-weight: 500; color: var(--text2); }
+  input[type=text], input[type=number], select {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--border-light); border-radius: var(--radius-sm);
+    font-size: 16px; color: var(--text); background: #fff; font-family: inherit;
+    -webkit-appearance: none; appearance: none;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--green); background: #fff; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+  /* ── BUTTONS ── */
+  .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 20px; border-radius: var(--radius-pill); font-size: 15px; font-weight: 700; cursor: pointer; border: none; font-family: inherit; transition: opacity 0.15s, transform 0.1s; letter-spacing: -0.1px; }
+  .btn:active { transform: scale(0.96); opacity: 0.85; }
+  .btn-green { background: var(--green); color: #fff; box-shadow: 0 3px 12px rgba(58,140,63,0.4); }
+  .btn-outline { background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3); color: var(--text-light); }
+  .btn-outline:active { background: rgba(255,255,255,0.25); }
+  .btn-outline-dark { background: #fff; border: 1.5px solid var(--border-light); color: var(--text); }
+  .btn-outline-dark:active { background: #f0ede6; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-gold { background: var(--gold); color: #fff; box-shadow: 0 3px 12px rgba(200,150,10,0.4); }
+  .btn-full { width: 100%; }
+  .btn-row { display: flex; gap: 10px; }
+  .btn-row .btn { flex: 1; }
+
+  /* ── CHIPS / PILLS ── */
+  .chip-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { padding: 9px 16px; border-radius: var(--radius-pill); font-size: 14px; font-weight: 600; cursor: pointer; border: 1.5px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.12); color: var(--text-light); transition: all 0.15s; }
+  .chip.selected-green { background: var(--green); border-color: var(--green); color: #fff; box-shadow: 0 2px 8px rgba(58,140,63,0.4); }
+  .chip.selected-red { background: var(--red); border-color: var(--red); color: #fff; }
+  .chip.selected-blue { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .chip.selected-gold { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+  /* ── SUIT BUTTONS — style charte ── */
+  .suit-group { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .suit-btn { padding: 14px 4px; border-radius: var(--radius-pill); font-size: 42px; line-height: 1; cursor: pointer; border: 2px solid transparent; background: #fff; text-align: center; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+  .suit-btn:active { transform: scale(0.94); }
+  .suit-btn.sel-red { border-color: var(--red); background: var(--red-light); box-shadow: 0 3px 10px rgba(204,31,31,0.3); }
+  .suit-btn.sel-dark { border-color: #222; background: #e8e8e8; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
+  .suit-btn .suit-name { display: none; }
+
+  /* ── SCORE DISPLAY ── */
+  .score-board { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .score-team { background: rgba(255,255,255,0.12); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; border: 2px solid transparent; transition: all 0.3s; }
+  .score-team.leading { border-color: var(--green); background: rgba(58,140,63,0.25); }
+  .score-team .t-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .score-team .t-score { font-size: 44px; font-weight: 800; color: #fff; letter-spacing: -2px; line-height: 1; }
+  .score-team.leading .t-score { color: #7ddd82; }
+  .score-team .t-need { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 3px; }
+
+  /* ── CONTRACT DISPLAY ── */
+  .contract-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+  .contract-badge .cb-suit { font-size: 28px; line-height: 1; }
+  .contract-badge .cb-info { flex: 1; }
+  .contract-badge .cb-val { font-size: 20px; font-weight: 800; color: #fff; }
+  .contract-badge .cb-team { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+  /* ── DEALER INFO ── */
+  .dealer-info { background: rgba(200,150,10,0.2); border: 1px solid rgba(200,150,10,0.4); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; display: flex; align-items: center; gap: 8px; color: var(--text-light); }
+  .dealer-info .di-icon { font-size: 18px; }
+  .dealer-info .di-text { flex: 1; line-height: 1.4; }
+  .dealer-info strong { color: #f0c040; }
+
+  /* ── HISTORY ── */
+  .history-item { padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .history-item:last-child { border-bottom: none; }
+  .hi-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .hi-num { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35); width: 20px; }
+  .hi-contract { font-size: 14px; font-weight: 700; flex: 1; color: var(--text-light); }
+  .hi-result { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
+  .hi-result.fait { background: rgba(58,140,63,0.3); color: #7ddd82; }
+  .hi-result.chute { background: rgba(204,31,31,0.3); color: #ff8080; }
+  .hi-bottom { display: flex; gap: 8px; font-size: 11px; color: rgba(255,255,255,0.5); margin-left: 28px; }
+  .hi-pts { font-weight: 600; color: rgba(255,255,255,0.8); }
+
+  /* ── SCORE MARQUE TABLE ── */
+  .marque-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .marque-table th { font-size: 10px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 4px; border-bottom: 2px solid var(--border-light); text-align: center; }
+  .marque-table th:first-child { text-align: left; }
+  .marque-table td { padding: 7px 4px; border-bottom: 1px solid #e8e4dc; vertical-align: middle; }
+  .marque-table td:first-child { color: var(--text2); font-size: 10px; }
+  .marque-table .pts-good { color: #2a7d2e; font-weight: 700; text-align: center; }
+  .marque-table .pts-zero { color: var(--red); font-weight: 700; text-align: center; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav { background: var(--panel); border-top: 1px solid rgba(255,255,255,0.08); display: grid; padding-bottom: env(safe-area-inset-bottom, 0); position: sticky; bottom: 0; z-index: 100; }
+  .bottom-nav.nav4 { grid-template-columns: repeat(4, 1fr); }
+  .bottom-nav.nav3 { grid-template-columns: repeat(3, 1fr); }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.35); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-family: inherit; transition: color 0.15s; }
+  .nav-item .ni-icon { font-size: 20px; line-height: 1; }
+  .nav-item.active { color: #7ddd82; }
+
+  /* ── WINNER SCREEN ── */
+  .winner-screen { background: radial-gradient(ellipse at top, #1e6b22 0%, #0d3a10 100%); flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; color: #fff; gap: 16px; }
+  .winner-trophy { font-size: 80px; animation: bounce 1s ease infinite alternate; }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+  .winner-title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+  .winner-sub { font-size: 16px; opacity: 0.8; }
+  .winner-scores { display: flex; gap: 16px; margin: 8px 0; }
+  .winner-score-item { background: rgba(255,255,255,0.15); border-radius: var(--radius-sm); padding: 12px 20px; }
+  .winner-score-item .ws-name { font-size: 11px; opacity: 0.75; margin-bottom: 4px; }
+  .winner-score-item .ws-val { font-size: 28px; font-weight: 800; }
+
+  /* ── MISC ── */
+  .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 4px 0; }
+  .card .divider { background: #ccc8be; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 99px; }
+  .tag-green { background: rgba(58,140,63,0.25); color: #7ddd82; }
+  .tag-red { background: rgba(204,31,31,0.25); color: #ff8080; }
+  .tag-gold { background: rgba(200,150,10,0.25); color: #f0c040; }
+  .tag-blue { background: rgba(26,82,149,0.25); color: #80b0ff; }
+  .empty-state { text-align: center; padding: 32px 16px; color: rgba(255,255,255,0.4); font-size: 14px; }
+  .empty-state .es-icon { font-size: 40px; margin-bottom: 8px; }
+  .calc-result { background: rgba(58,140,63,0.2); border: 1px solid rgba(58,140,63,0.4); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .calc-result .cr-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; font-size: 14px; color: var(--text-light); }
+  .calc-result .cr-row .cr-pts { font-weight: 800; font-size: 18px; color: #7ddd82; }
+  .calc-result .cr-row.chute .cr-pts { color: #ff8080; }
+  .pos-indicator { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+  .pos-NS { background: #c8e6c9; color: #1a5c1e; }
+  .pos-EO { background: #bbdefb; color: #0d47a1; }
+
+  /* ── STEPPER ── */
+  .stepper { display: flex; align-items: center; border-radius: var(--radius-pill); overflow: hidden; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.2); }
+  .stepper button { background: rgba(255,255,255,0.1); border: none; width: 50px; height: 52px; font-size: 24px; cursor: pointer; color: #fff; flex-shrink: 0; font-family: inherit; font-weight: 300; }
+  .stepper button:active { background: rgba(255,255,255,0.25); }
+  .stepper .sv { flex: 1; text-align: center; font-size: 24px; font-weight: 800; color: #fff; border: none; outline: none; background: transparent; font-family: inherit; }
+
+  /* ── PLAYER CHIPS ── */
+  .player-chip-green { display:inline-flex;align-items:center;gap:5px;background:var(--green);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:600;color:#fff; }
+
+  /* ── SCORE ENTRY (saisie) ── */
+  .score-entry-field { text-align: center; font-size: 32px; font-weight: 800; padding: 14px; border: 2px solid var(--border-light); border-radius: var(--radius-sm); background: #fff; width: 100%; color: var(--text); font-family: inherit; -webkit-appearance: none; }
+  .score-entry-field:focus { border-color: var(--green); outline: none; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ════════════════════════════════ SCREEN: SETUP ════════════════════════════════ -->
+  <div id="screen-setup" class="screen active">
+    <div class="header" style="padding:12px 16px;justify-content:center;position:relative;">
+      <div style="position:absolute;left:16px;display:flex;gap:2px;align-items:center;">
+        <span style="font-size:26px;line-height:1;">♣</span>
+        <span style="font-size:26px;line-height:1;color:#ff9999;">♦</span>
+      </div>
+      <div style="text-align:center;">
+        <h1>Belote Contrée</h1>
+        <div class="sub">Configuration de la partie</div>
+      </div>
+      <div style="position:absolute;right:16px;display:flex;gap:2px;align-items:center;">
+        <span style="font-size:26px;line-height:1;color:#ff9999;">♥</span>
+        <span style="font-size:26px;line-height:1;">♠</span>
+      </div>
+    </div>
+    <div class="body">
+
+      <!-- Add players — repliable -->
+      <div class="card" style="padding:0;overflow:hidden;">
+        <!-- Header cliquable -->
+        <div onclick="togglePlayerList()" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;">Liste des joueurs</span>
+            <span id="player-count-badge" style="background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;"></span>
+          </div>
+          <span id="player-list-arrow" style="font-size:18px;color:var(--text2);transition:transform 0.25s;">▼</span>
+        </div>
+        <!-- Contenu repliable -->
+        <div id="player-list-body" style="padding:0 16px 14px;border-top:1px solid var(--border-light);">
+          <div style="display:flex;gap:8px;margin-bottom:12px;margin-top:12px;">
+            <input type="text" id="inp-new-player" placeholder="Prénom du joueur..." style="flex:1;" onkeydown="if(event.key==='Enter')addPlayer()">
+            <button class="btn btn-green" onclick="addPlayer()" style="padding:12px 16px;flex-shrink:0;">+</button>
+          </div>
+          <div id="player-chips" class="chip-group"></div>
+        </div>
+      </div>
+
+      <!-- Assign positions -->
+      <div class="card">
+        <div class="card-title">Placer les joueurs</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="field">
+            <label>♠ Nord</label>
+            <select id="sel-nord" onchange="refreshTeamPreview()"><option value="">Choisir…</option></select>
+          </div>
+          <div class="field">
+            <label>♣ Sud</label>
+            <select id="sel-sud" onchange="refreshTeamPreview()"><option value="">Choisir…</option></select>
+          </div>
+          <div class="field">
+            <label>♥ Est</label>
+            <select id="sel-est" onchange="refreshTeamPreview()"><option value="">Choisir…</option></select>
+          </div>
+          <div class="field">
+            <label>♦ Ouest</label>
+            <select id="sel-ouest" onchange="refreshTeamPreview()"><option value="">Choisir…</option></select>
+          </div>
+        </div>
+        <div id="team-preview" style="margin-top:12px;display:none;">
+          <div class="divider" style="margin-bottom:12px;"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="pos-indicator pos-NS">NS</div>
+              <div style="font-size:14px;font-weight:700;" id="prev-t1">—</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="pos-indicator pos-EO">EO</div>
+              <div style="font-size:14px;font-weight:700;" id="prev-t2">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Donneur du premier tour</div>
+        <select id="sel-first-dealer"><option value="random">🎲 Tirage aléatoire</option></select>
+      </div>
+
+      <button class="btn btn-green btn-full" onclick="startGame()" style="font-size:16px;padding:16px;">
+        Commencer la partie ▶
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ SCREEN: GAME ════════════════════════════════ -->
+  <div id="screen-game" class="screen">
+    <div class="header" id="game-header" style="padding:12px 16px;justify-content:center;position:relative;">
+      <div style="position:absolute;left:16px;display:flex;gap:2px;align-items:center;">
+        <span style="font-size:26px;line-height:1;">♣</span>
+        <span style="font-size:26px;line-height:1;color:#ff9999;">♦</span>
+      </div>
+      <div style="text-align:center;">
+        <h1 id="game-title">Belote Contrée</h1>
+        <div class="sub" id="game-sub"></div>
+      </div>
+      <div style="position:absolute;right:16px;display:flex;gap:2px;align-items:center;">
+        <span style="font-size:26px;line-height:1;color:#ff9999;">♥</span>
+        <span style="font-size:26px;line-height:1;">♠</span>
+      </div>
+    </div>
+
+    <!-- TAB: SCORE -->
+    <div id="tab-score" class="body" style="display:none;">
+      <div style="padding:14px 16px;border-radius:var(--radius);background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.12);">
+        <div class="score-board">
+          <div class="score-team" id="st-t1">
+            <div class="t-name" id="stn-t1">—</div>
+            <div class="t-score" id="sts-t1">0</div>
+            <div class="t-need" id="stk-t1"></div>
+          </div>
+          <div class="score-team" id="st-t2">
+            <div class="t-name" id="stn-t2">—</div>
+            <div class="t-score" id="sts-t2">0</div>
+            <div class="t-need" id="stk-t2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dealer-info">
+        <div class="di-icon">🃏</div>
+        <div class="di-text" id="dealer-text">—</div>
+      </div>
+
+      <div id="contract-display-area"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="showTab('contrat')" style="flex:1;">✏️ Contrat</button>
+        <button class="btn btn-green" onclick="showTab('saisie')" style="flex:1.5;">📊 Saisir score</button>
+      </div>
+      <button class="btn btn-outline btn-full" onclick="if(confirm('Nouvelle partie ? Les scores seront remis à 0.'))newGame();" style="font-size:13px;">Partie suivante (remise à 0)</button>
+      <button class="btn btn-outline btn-full" onclick="if(confirm('Changer les équipes ? La partie en cours sera perdue.'))changeTeams();" style="font-size:13px;opacity:0.7;">Changer les équipes</button>
+    </div>
+
+    <!-- TAB: EN JEU (after contract confirmed) -->
+    <div id="tab-enjeu" class="body" style="display:none;padding:8px 0 24px;">
+
+      <!-- Table de belote vue du dessus — sans encadrement blanc -->
+      <div style="width:100%;max-width:440px;margin:0 auto;padding:0 8px;">
+        <svg id="ej-table-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;border-radius:16px;"></svg>
+      </div>
+
+      <!-- Score intégré sur fond vert, sans card blanche -->
+      <div style="margin:0 8px;padding:14px 16px;border-radius:var(--radius);background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.12);">
+        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;text-align:center;">Score de la partie</div>
+        <div class="score-board">
+          <div class="score-team" id="ej-st1">
+            <div class="t-name" id="ej-stn1"></div>
+            <div class="t-score" id="ej-sts1">0</div>
+            <div class="t-need" id="ej-stk1"></div>
+          </div>
+          <div class="score-team" id="ej-st2">
+            <div class="t-name" id="ej-stn2"></div>
+            <div class="t-score" id="ej-sts2">0</div>
+            <div class="t-need" id="ej-stk2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:0 8px;display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+        <button class="btn btn-gold btn-full" onclick="showTab('saisie')" style="font-size:16px;padding:16px;">
+          📊 Saisir le score de la manche
+        </button>
+        <button class="btn btn-outline btn-full" onclick="showTab('score')" style="font-size:13px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">
+          Retour au tableau de bord
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB: CONTRACT INPUT -->
+    <div id="tab-contrat" class="body" style="display:none;">
+      <div class="card">
+        <div class="card-title">Contrat</div>
+        <div class="field" style="margin-bottom:14px;">
+          <label>Équipe preneuse</label>
+          <div class="btn-row">
+            <button class="btn btn-outline" id="btn-preneur-t1" onclick="selectPreneur('t1')" style="font-size:13px;flex:1;"></button>
+            <button class="btn btn-outline" id="btn-preneur-t2" onclick="selectPreneur('t2')" style="font-size:13px;flex:1;"></button>
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom:14px;">
+          <label>Hauteur du contrat</label>
+          <div class="chip-group" id="capot-row" style="margin-bottom:8px;">
+            <div class="chip" id="chip-capot" onclick="toggleCapot()">Capot (250)</div>
+          </div>
+          <div id="stepper-area">
+            <div class="stepper">
+              <button onclick="stepContract(-10)">−</button>
+              <input class="sv" id="contract-val" type="number" value="90" min="80" max="170" step="10" readonly>
+              <button onclick="stepContract(10)">+</button>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+              <span style="font-size:11px;color:var(--text3);">Paliers rapides :</span>
+              <span id="quick-btns"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom:14px;">
+          <label>Couleur atout</label>
+          <div class="suit-group">
+            <div class="suit-btn" id="suit-h" onclick="selectSuit('♥','h','red')">
+              <div style="color:#b83232;">♥</div><span class="suit-name">Cœur</span>
+            </div>
+            <div class="suit-btn" id="suit-d" onclick="selectSuit('♦','d','red')">
+              <div style="color:#b83232;">♦</div><span class="suit-name">Carreau</span>
+            </div>
+            <div class="suit-btn" id="suit-c" onclick="selectSuit('♣','c','dark')">
+              <div>♣</div><span class="suit-name">Trèfle</span>
+            </div>
+            <div class="suit-btn" id="suit-s" onclick="selectSuit('♠','s','dark')">
+              <div>♠</div><span class="suit-name">Pique</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Contre / Surcontre</label>
+          <div class="chip-group">
+            <div class="chip selected-green" id="chip-contre-none" onclick="selectContre('none')">Aucun</div>
+            <div class="chip" id="chip-contre-contre" onclick="selectContre('contre')">Contre ×2</div>
+            <div class="chip" id="chip-contre-surcontre" onclick="selectContre('surcontre')">Surcontre ×3</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="contract-preview-card" class="card" style="display:none;background:var(--green-light);border-color:var(--green);">
+        <div class="card-title" style="color:var(--green);">Aperçu du contrat</div>
+        <div id="contract-preview-content"></div>
+      </div>
+
+      <button class="btn btn-green btn-full" onclick="confirmContract()" style="font-size:16px;padding:16px;">
+        ✓ Confirmer le contrat
+      </button>
+      <button class="btn btn-outline btn-full" onclick="showTab('score')" style="font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Retour au score</button>
+    </div>
+
+    <!-- TAB: SCORE SAISIE -->
+    <div id="tab-saisie" class="body" style="display:none;">
+      <div class="card">
+        <div class="card-title">Résultat de la manche</div>
+        <div id="contract-reminder" style="margin-bottom:14px;"></div>
+
+        <div class="row2" style="gap:10px;">
+          <!-- Équipe 1 -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label id="lbl-pts-t1" style="text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.05em;">Équipe 1</label>
+            <div class="stepper" id="stp-t1">
+              <button onclick="stepScore('t1',-10)" type="button">−</button>
+              <input class="sv" type="number" id="inp-pts-t1" inputmode="numeric" min="0" max="500" step="10" placeholder="0" style="font-size:26px;">
+              <button onclick="stepScore('t1',10)" type="button">+</button>
+            </div>
+            <!-- Belote T1 -->
+            <label id="lbl-bel-t1-box" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:var(--radius-pill);padding:10px 8px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;transition:all 0.15s;">
+              <input type="checkbox" id="chk-bel-t1" onchange="onBeloteChange(1)" style="width:18px;height:18px;cursor:pointer;accent-color:var(--green);">
+              <span>Belote</span>
+            </label>
+            <!-- Capot T1 -->
+            <label id="lbl-cap-t1-box" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:var(--radius-pill);padding:10px 8px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;transition:all 0.15s;">
+              <input type="checkbox" id="chk-cap-t1" onchange="onCapotChange(1)" style="width:18px;height:18px;cursor:pointer;accent-color:#80b0ff;">
+              <span>Capot</span>
+            </label>
+          </div>
+          <!-- Équipe 2 -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label id="lbl-pts-t2" style="text-align:center;font-size:12px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.05em;">Équipe 2</label>
+            <div class="stepper" id="stp-t2">
+              <button onclick="stepScore('t2',-10)" type="button">−</button>
+              <input class="sv" type="number" id="inp-pts-t2" inputmode="numeric" min="0" max="500" step="10" placeholder="0" style="font-size:26px;">
+              <button onclick="stepScore('t2',10)" type="button">+</button>
+            </div>
+            <!-- Belote T2 -->
+            <label id="lbl-bel-t2-box" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:var(--radius-pill);padding:10px 8px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;transition:all 0.15s;">
+              <input type="checkbox" id="chk-bel-t2" onchange="onBeloteChange(2)" style="width:18px;height:18px;cursor:pointer;accent-color:var(--green);">
+              <span>Belote</span>
+            </label>
+            <!-- Capot T2 -->
+            <label id="lbl-cap-t2-box" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:var(--radius-pill);padding:10px 8px;cursor:pointer;font-size:13px;font-weight:600;color:#fff;transition:all 0.15s;">
+              <input type="checkbox" id="chk-cap-t2" onchange="onCapotChange(2)" style="width:18px;height:18px;cursor:pointer;accent-color:#80b0ff;">
+              <span>Capot</span>
+            </label>
+          </div>
+        </div>
+        <!-- hidden legacy fields kept for calcAndPreview compatibility -->
+        <input type="hidden" id="chk-bel-t1-hidden">
+        <input type="hidden" id="chk-bel-t2-hidden">
+        <input type="checkbox" id="chk-capot-fait" style="display:none;">
+      </div>
+
+      <div id="score-calc-result" style="display:none;"></div>
+
+      <button class="btn btn-green btn-full" onclick="calcAndPreview()" style="font-size:15px;padding:15px;">
+        Calculer & Prévisualiser
+      </button>
+      <div id="confirm-score-btn" style="display:none;">
+        <button class="btn btn-gold btn-full" onclick="validateScore()" style="font-size:16px;padding:16px;">
+          ✓ Valider la manche
+        </button>
+      </div>
+      <button class="btn btn-outline btn-full" onclick="showTab('score')" style="font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Annuler</button>
+    </div>
+
+    <!-- TAB: HISTORY -->
+    <div id="tab-history" class="body" style="display:none;">
+      <div class="card">
+        <div class="card-title">Historique des manches</div>
+        <div id="history-content"></div>
+      </div>
+      <!-- Modale d'édition inline -->
+      <div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:var(--card);border-radius:var(--radius);padding:20px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+          <div style="font-size:14px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Modifier la manche</div>
+          <div id="edit-modal-title" style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:16px;"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div>
+              <label id="edit-lbl-t1" style="display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Équipe 1</label>
+              <div class="stepper" style="background:#e8e4dc;border-color:#bbb8b0;">
+                <button onclick="stepEdit('t1',-10)" type="button" style="background:#d8d4cc;color:var(--text);">−</button>
+                <input class="sv" type="number" id="edit-pts-t1" min="0" max="500" step="10" style="color:var(--text);font-size:22px;">
+                <button onclick="stepEdit('t1',10)" type="button" style="background:#d8d4cc;color:var(--text);">+</button>
+              </div>
+            </div>
+            <div>
+              <label id="edit-lbl-t2" style="display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Équipe 2</label>
+              <div class="stepper" style="background:#e8e4dc;border-color:#bbb8b0;">
+                <button onclick="stepEdit('t2',-10)" type="button" style="background:#d8d4cc;color:var(--text);">−</button>
+                <input class="sv" type="number" id="edit-pts-t2" min="0" max="500" step="10" style="color:var(--text);font-size:22px;">
+                <button onclick="stepEdit('t2',10)" type="button" style="background:#d8d4cc;color:var(--text);">+</button>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn btn-green" onclick="saveEdit()" style="flex:1;font-size:14px;">✓ Valider</button>
+            <button class="btn btn-outline-dark" onclick="closeEdit()" style="flex:1;font-size:14px;">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: MARQUE -->
+    <div id="tab-marque" class="body" style="display:none;">
+      <div class="card">
+        <div class="card-title">Aide à la marque</div>
+        <div class="info-note" style="margin-bottom:12px;font-size:12px;">
+          Total cartes = 162 pts (arrondi à 6). Chute = annonce × mult + 160. Belote = +20 pts (non doublé/triplé). Partie = 2001 pts.
+        </div>
+        <table class="marque-table">
+          <thead><tr><th>Annonce</th><th>Preneurs</th><th>Adversaires</th></tr></thead>
+          <tbody id="marque-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav nav4" id="bottom-nav">
+      <button class="nav-item active" id="nav-score" onclick="showTab('score')">
+        <span class="ni-icon">🏆</span>Score
+      </button>
+      <button class="nav-item" id="nav-contrat" onclick="showTab('contrat')">
+        <span class="ni-icon">🃏</span>Contrat
+      </button>
+      <button class="nav-item" id="nav-history" onclick="showTab('history')">
+        <span class="ni-icon">📋</span>Historique
+      </button>
+      <button class="nav-item" id="nav-marque" onclick="showTab('marque')">
+        <span class="ni-icon">📊</span>Marque
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ SCREEN: WINNER ════════════════════════════════ -->
+  <div id="screen-winner" class="screen">
+    <div class="winner-screen">
+      <div class="winner-trophy">🏆</div>
+      <div class="winner-title" id="w-title">Victoire !</div>
+      <div class="winner-sub" id="w-sub"></div>
+      <div class="winner-scores">
+        <div class="winner-score-item">
+          <div class="ws-name" id="w-n1">—</div>
+          <div class="ws-val" id="w-s1">0</div>
+        </div>
+        <div class="winner-score-item">
+          <div class="ws-name" id="w-n2">—</div>
+          <div class="ws-val" id="w-s2">0</div>
+        </div>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="newGame()" style="font-size:16px;padding:16px;margin-top:8px;">
+        Nouvelle partie
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════
+let S = {
+  players: [],
+  pos: { nord:'', sud:'', est:'', ouest:'' },
+  t1: { name:'', players:[] },  // NS
+  t2: { name:'', players:[] },  // EO
+  score: { t1:0, t2:0 },
+  history: [],
+  manche: 1,
+  // rotation order: sens inverse des aiguilles d'une montre (N → O → S → E)
+  // Le prochain donneur est à la DROITE = suivant dans cet ordre
+  // Premier joueur = à droite du donneur = suivant dans cet ordre
+  dealerOrder: ['nord','ouest','sud','est'],
+  dealerIdx: 0,
+  contract: null,
+  // form state
+  form: { preneur:'', suit:'', suitKey:'', suitColor:'', value:90, isCapot:false, contre:'none' }
+};
+let pendingScore = null;
+
+// ═══════════════════════════════════════════════════════════
+//  SETUP
+// ═══════════════════════════════════════════════════════════
+function savePlayers() {
+  try { localStorage.setItem('belote_players', JSON.stringify(S.players)); } catch(e) {}
+}
+function loadPlayers() {
+  try { const s=localStorage.getItem('belote_players'); if(s) S.players=JSON.parse(s); } catch(e) {}
+}
+
+function addPlayer() {
+  const inp = document.getElementById('inp-new-player');
+  const name = inp.value.trim();
+  if(!name) return;
+  if(S.players.includes(name)) { inp.value=''; return; }
+  S.players.push(name);
+  inp.value = '';
+  savePlayers();
+  renderPlayerChips();
+  refreshSelects();
+}
+
+function removePlayer(name) {
+  S.players = S.players.filter(p=>p!==name);
+  savePlayers();
+  renderPlayerChips();
+  refreshSelects();
+}
+
+function renderPlayerChips() {
+  const el = document.getElementById('player-chips');
+  if(!S.players.length) { el.innerHTML='<span style="font-size:13px;color:var(--text3);">Aucun joueur ajouté</span>'; }
+  else { el.innerHTML = S.players.map(p=>`
+    <div class="player-chip-green">
+      ${p}
+      <span onclick="removePlayer('${p}')" style="opacity:0.7;font-size:12px;cursor:pointer;">✕</span>
+    </div>`).join(''); }
+  // Mise à jour du badge compteur
+  const badge = document.getElementById('player-count-badge');
+  if(badge) badge.textContent = S.players.length ? S.players.length+' joueur'+(S.players.length>1?'s':'') : '';
+}
+
+let playerListOpen = true;
+function togglePlayerList() {
+  playerListOpen = !playerListOpen;
+  const body = eid('player-list-body');
+  const arrow = eid('player-list-arrow');
+  if(playerListOpen) {
+    body.style.display = 'block';
+    arrow.style.transform = 'rotate(0deg)';
+  } else {
+    body.style.display = 'none';
+    arrow.style.transform = 'rotate(-90deg)';
+  }
+}
+
+function refreshSelects() {
+  ['nord','sud','est','ouest'].forEach(pos => {
+    const sel = document.getElementById('sel-'+pos);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">Choisir…</option>' + S.players.map(p=>`<option value="${p}" ${p===cur?'selected':''}>${p}</option>`).join('');
+  });
+  const fd = document.getElementById('sel-first-dealer');
+  const fdCur = fd.value;
+  fd.innerHTML = '<option value="random">🎲 Tirage aléatoire</option>' + S.players.map(p=>`<option value="${p}" ${p===fdCur?'selected':''}>${p}</option>`).join('');
+}
+
+function refreshTeamPreview() {
+  const n = v('sel-nord'), s=v('sel-sud'), e=v('sel-est'), o=v('sel-ouest');
+  const prev = document.getElementById('team-preview');
+  if(n&&s&&e&&o) {
+    prev.style.display='block';
+    document.getElementById('prev-t1').textContent = n+' & '+s;
+    document.getElementById('prev-t2').textContent = e+' & '+o;
+  } else { prev.style.display='none'; }
+}
+
+function startGame() {
+  const n=v('sel-nord'), s=v('sel-sud'), e=v('sel-est'), o=v('sel-ouest');
+  if(!n||!s||!e||!o) { alert('Veuillez assigner un joueur à chaque position.'); return; }
+  if(new Set([n,s,e,o]).size<4) { alert('Chaque position doit avoir un joueur différent.'); return; }
+  S.pos = {nord:n,sud:s,est:e,ouest:o};
+  S.t1 = {name:n+' & '+s, players:[n,s]};
+  S.t2 = {name:e+' & '+o, players:[e,o]};
+  S.score = {t1:0,t2:0};
+  S.history = [];
+  S.manche = 1;
+  S.contract = null;
+  // Set dealer
+  const fd = v('sel-first-dealer');
+  if(fd==='random') {
+    S.dealerIdx = Math.floor(Math.random()*4);
+  } else {
+    const pos = Object.keys(S.pos).find(p=>S.pos[p]===fd) || 'nord';
+    S.dealerIdx = S.dealerOrder.indexOf(pos);
+  }
+  showScreen('game');
+  initGameUI();
+  showTab('score');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GAME UI
+// ═══════════════════════════════════════════════════════════
+function initGameUI() {
+  document.getElementById('btn-preneur-t1').textContent = S.t1.name;
+  document.getElementById('btn-preneur-t2').textContent = S.t2.name;
+  // Quick contract value buttons
+  const qb = document.getElementById('quick-btns');
+  qb.innerHTML = [80,90,100,110,120,130,140,150,160,170].map(v=>`<span onclick="setContractVal(${v})" style="cursor:pointer;font-size:12px;padding:3px 8px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;margin:2px;display:inline-block;font-weight:600;">${v}</span>`).join('');
+  renderMarque();
+  updateScoreDisplay();
+  updateDealerInfo();
+  renderContractDisplay();
+}
+
+function showTab(tab) {
+  ['score','contrat','saisie','history','marque','enjeu'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display='none';
+  });
+  document.getElementById('tab-'+tab).style.display='flex';
+  ['score','contrat','history','marque'].forEach(t=>{
+    const nav = document.getElementById('nav-'+t);
+    if(nav) nav.classList.toggle('active', t===tab);
+  });
+  if(tab==='score') updateScoreDisplay();
+  if(tab==='contrat') updateContractForm();
+  if(tab==='saisie') updateSaisieForm();
+  if(tab==='history') renderHistory();
+  if(tab==='marque') renderMarque();
+  if(tab==='enjeu') renderEnjeu();
+}
+
+function updateScoreDisplay() {
+  const s1=S.score.t1, s2=S.score.t2;
+  eid('stn-t1').textContent = S.t1.name;
+  eid('stn-t2').textContent = S.t2.name;
+  eid('sts-t1').textContent = s1;
+  eid('sts-t2').textContent = s2;
+  eid('stk-t1').textContent = s1<2001 ? `manque ${2001-s1}` : '';
+  eid('stk-t2').textContent = s2<2001 ? `manque ${2001-s2}` : '';
+  eid('st-t1').className = 'score-team'+(s1>s2?' leading':'');
+  eid('st-t2').className = 'score-team'+(s2>s1?' leading':'');
+  updateDealerInfo();
+  renderContractDisplay();
+  eid('game-title').textContent = 'Manche '+S.manche;
+  eid('game-sub').textContent = S.t1.name+' vs '+S.t2.name;
+}
+
+function updateDealerInfo() {
+  const dPos = S.dealerOrder[S.dealerIdx];
+  const dName = S.pos[dPos];
+  const firstIdx = (S.dealerIdx+1)%4;
+  const firstPos = S.dealerOrder[firstIdx];
+  const firstName = S.pos[firstPos];
+  eid('dealer-text').innerHTML = `Donneur : <strong>${dName}</strong> (${cap(dPos)}) — Premier à jouer : <strong>${firstName}</strong> (${cap(firstPos)})`;
+}
+
+function renderContractDisplay() {
+  const area = eid('contract-display-area');
+  if(!S.contract) {
+    area.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:14px;padding:8px;">Aucun contrat en cours — appuyez sur ✏️ Contrat</div>';
+    return;
+  }
+  const c = S.contract;
+  const suitColor = (c.suit==='♥'||c.suit==='♦') ? 'var(--red)' : 'var(--text)';
+  const pTeamName = c.preneурTeam==='t1' ? S.t1.name : S.t2.name;
+  const contreTxt = c.contre==='contre'?' — <span class="tag tag-gold">Contre ×2</span>' : c.contre==='surcontre'?' — <span class="tag tag-gold">Surcontre ×3</span>' : '';
+  area.innerHTML = `
+    <div class="contract-badge">
+      <div class="cb-suit" style="color:${suitColor};">${c.suit}</div>
+      <div class="cb-info">
+        <div class="cb-val">${c.isCapot?'Capot':c.value} ${c.suit}${contreTxt}</div>
+        <div class="cb-team">Preneurs : ${pTeamName}</div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CONTRACT FORM
+// ═══════════════════════════════════════════════════════════
+function updateContractForm() {
+  // restore form state
+  const f = S.form;
+  selectPreneur(f.preneur||'', true);
+  if(f.suit) selectSuit(f.suit, f.suitKey, f.suitColor, true);
+  selectContre(f.contre||'none', true);
+  if(f.isCapot) { toggleCapot(true); } else { document.getElementById('contract-val').value=f.value||90; }
+  updateContractPreview();
+}
+
+function selectPreneur(t, silent) {
+  S.form.preneur = t;
+  eid('btn-preneur-t1').className = 'btn '+(t==='t1'?'btn-green':'btn-outline');
+  eid('btn-preneur-t2').className = 'btn '+(t==='t2'?'btn-green':'btn-outline');
+  if(!silent) updateContractPreview();
+}
+
+function selectSuit(suit, key, color, silent) {
+  S.form.suit=suit; S.form.suitKey=key; S.form.suitColor=color;
+  ['h','d','c','s'].forEach(k=>{
+    const el = eid('suit-'+k);
+    el.className='suit-btn';
+    if(k===key) el.classList.add('sel-'+color);
+  });
+  if(!silent) updateContractPreview();
+}
+
+function selectContre(v, silent) {
+  S.form.contre=v;
+  ['none','contre','surcontre'].forEach(k=>{
+    eid('chip-contre-'+k).className='chip'+(k===v?' selected-'+(v==='none'?'green':'gold'):'');
+  });
+  if(!silent) updateContractPreview();
+}
+
+function stepContract(delta) {
+  if(S.form.isCapot) return;
+  let val = parseInt(eid('contract-val').value)||90;
+  val = Math.min(170, Math.max(80, val+delta));
+  eid('contract-val').value = val;
+  S.form.value = val;
+  updateContractPreview();
+}
+
+function setContractVal(v) {
+  if(S.form.isCapot) toggleCapot(false);
+  eid('contract-val').value=v;
+  S.form.value=v;
+  updateContractPreview();
+}
+
+function toggleCapot(forceState) {
+  const newState = forceState !== undefined ? forceState : !S.form.isCapot;
+  S.form.isCapot = newState;
+  eid('chip-capot').className='chip'+(newState?' selected-blue':'');
+  eid('stepper-area').style.opacity = newState?'0.4':'1';
+  eid('contract-val').disabled = newState;
+  updateContractPreview();
+}
+
+function updateContractPreview() {
+  const f=S.form;
+  const prev = eid('contract-preview-card');
+  if(!f.preneur||!f.suit) { prev.style.display='none'; return; }
+  prev.style.display='block';
+  const pTeam = f.preneur==='t1'?S.t1.name:S.t2.name;
+  const aTeam = f.preneur==='t1'?S.t2.name:S.t1.name;
+  const mult = f.contre==='surcontre'?3:f.contre==='contre'?2:1;
+  const baseVal = f.isCapot?250:f.value;
+  const contractLabel = f.isCapot?'Capot':f.value;
+  eid('contract-preview-content').innerHTML=`
+    <div style="font-size:18px;font-weight:800;color:var(--green);margin-bottom:6px;">${contractLabel} ${f.suit}${mult>1?' (×'+mult+')':''}</div>
+    <div style="font-size:13px;color:var(--text2);">Preneurs : <strong>${pTeam}</strong></div>
+    <div style="font-size:13px;color:var(--text2);">Adversaires : <strong>${aTeam}</strong></div>
+    <div style="font-size:12px;color:var(--text3);margin-top:6px;">À faire : ${f.isCapot?'toutes les levées':baseVal*mult+' pts'}</div>`;
+}
+
+function confirmContract() {
+  const f=S.form;
+  if(!f.preneur) { alert('Choisissez l\'équipe preneuse.'); return; }
+  if(!f.suit) { alert('Choisissez la couleur atout.'); return; }
+  if(!f.isCapot && (!f.value||f.value<80||f.value>170)) { alert('Hauteur entre 80 et 170.'); return; }
+  S.contract = {
+    preneурTeam: f.preneur,
+    suit: f.suit,
+    suitKey: f.suitKey,
+    value: f.isCapot?250:f.value,
+    isCapot: f.isCapot,
+    contre: f.contre,
+    manche: S.manche,
+    dealer: S.pos[S.dealerOrder[S.dealerIdx]]
+  };
+  showTab('enjeu');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SCORE SAISIE
+// ═══════════════════════════════════════════════════════════
+function updateSaisieForm() {
+  pendingScore = null;
+  eid('confirm-score-btn').style.display='none';
+  eid('score-calc-result').style.display='none';
+  eid('inp-pts-t1').value='';
+  eid('inp-pts-t2').value='';
+  eid('chk-bel-t1').checked=false;
+  eid('chk-bel-t2').checked=false;
+  eid('chk-cap-t1').checked=false;
+  eid('chk-cap-t2').checked=false;
+  eid('chk-capot-fait').checked=false;
+  eid('lbl-pts-t1').textContent=S.t1.name;
+  eid('lbl-pts-t2').textContent=S.t2.name;
+  // Reset visual states
+  refreshBeloteBoxes();
+  refreshCapotBoxes();
+  if(S.contract) {
+    const c=S.contract;
+    const pTeam=c.preneурTeam==='t1'?S.t1.name:S.t2.name;
+    const contreTxt=c.contre!=='none'?' — '+c.contre:'';
+    eid('contract-reminder').innerHTML=`<div class="contract-badge" style="margin-bottom:0;">
+      <div style="font-size:22px;color:${(c.suit==='♥'||c.suit==='♦')?'var(--red)':'var(--text)'};">${c.suit}</div>
+      <div><div style="font-size:16px;font-weight:800;color:var(--green);">${c.isCapot?'Capot':c.value} ${c.suit}${contreTxt}</div>
+      <div style="font-size:12px;color:var(--text2);">Preneurs : ${pTeam}</div></div></div>`;
+  } else {
+    eid('contract-reminder').innerHTML='<div style="font-size:13px;color:var(--text3);">⚠️ Aucun contrat saisi</div>';
+  }
+}
+
+// Belote : une seule équipe peut l'avoir — exclusivité mutuelle
+function onBeloteChange(team) {
+  if(team===1 && eid('chk-bel-t1').checked) eid('chk-bel-t2').checked=false;
+  if(team===2 && eid('chk-bel-t2').checked) eid('chk-bel-t1').checked=false;
+  refreshBeloteBoxes();
+  // reset calcul si déjà affiché
+  eid('score-calc-result').style.display='none';
+  eid('confirm-score-btn').style.display='none';
+}
+
+function refreshBeloteBoxes() {
+  const b1=eid('chk-bel-t1').checked, b2=eid('chk-bel-t2').checked;
+  const cap1=eid('chk-cap-t1').checked, cap2=eid('chk-cap-t2').checked;
+  const capotAny = cap1||cap2;
+  const box1=eid('lbl-bel-t1-box');
+  const box2=eid('lbl-bel-t2-box');
+  box1.style.borderColor = b1?'var(--green)':'rgba(255,255,255,0.2)';
+  box1.style.background   = b1?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
+  box1.style.opacity      = capotAny?'0.35':'1';
+  box1.style.pointerEvents= capotAny?'none':'auto';
+  box2.style.borderColor  = b2?'var(--green)':'rgba(255,255,255,0.2)';
+  box2.style.background   = b2?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
+  box2.style.opacity      = capotAny?'0.35':'1';
+  box2.style.pointerEvents= capotAny?'none':'auto';
+}
+
+// Capot : une seule équipe à la fois — et désactive la saisie des scores
+function onCapotChange(team) {
+  if(team===1 && eid('chk-cap-t1').checked) eid('chk-cap-t2').checked=false;
+  if(team===2 && eid('chk-cap-t2').checked) eid('chk-cap-t1').checked=false;
+  // Sync hidden chk-capot-fait
+  const capotAny = eid('chk-cap-t1').checked || eid('chk-cap-t2').checked;
+  eid('chk-capot-fait').checked = capotAny;
+  refreshCapotBoxes();
+  refreshBeloteBoxes();
+  eid('score-calc-result').style.display='none';
+  eid('confirm-score-btn').style.display='none';
+}
+
+function stepScore(team, delta) {
+  const inp = eid('inp-pts-'+team);
+  let val = parseInt(inp.value) || 0;
+  val = Math.min(500, Math.max(0, val + delta));
+  inp.value = val;
+  eid('score-calc-result').style.display='none';
+  eid('confirm-score-btn').style.display='none';
+}
+
+function refreshCapotBoxes() {
+  const cap1=eid('chk-cap-t1').checked, cap2=eid('chk-cap-t2').checked;
+  const capotAny=cap1||cap2;
+  // Score steppers : disabled + grisé si capot
+  const inp1=eid('inp-pts-t1'), inp2=eid('inp-pts-t2');
+  const stp1=eid('stp-t1'), stp2=eid('stp-t2');
+  inp1.disabled=capotAny; inp2.disabled=capotAny;
+  [stp1,stp2].forEach(s=>{ if(s){ s.style.opacity=capotAny?'0.4':'1'; s.style.pointerEvents=capotAny?'none':'auto'; } });
+  if(capotAny){ inp1.value=''; inp2.value=''; }
+  // Style boîtes capot
+  const cbox1=eid('lbl-cap-t1-box'), cbox2=eid('lbl-cap-t2-box');
+  cbox1.style.borderColor=cap1?'#80b0ff':'rgba(255,255,255,0.2)';
+  cbox1.style.background =cap1?'rgba(26,82,149,0.4)':'rgba(255,255,255,0.1)';
+  cbox2.style.borderColor=cap2?'#80b0ff':'rgba(255,255,255,0.2)';
+  cbox2.style.background =cap2?'rgba(26,82,149,0.4)':'rgba(255,255,255,0.1)';
+}
+
+function calcAndPreview() {
+  const pts1Raw = parseInt(eid('inp-pts-t1').value)||0;
+  const pts2Raw = parseInt(eid('inp-pts-t2').value)||0;
+  const bel1 = eid('chk-bel-t1').checked;
+  const bel2 = eid('chk-bel-t2').checked;
+  // Capot : déterminé par quelle équipe a coché "capot"
+  const cap1 = eid('chk-cap-t1').checked;
+  const cap2 = eid('chk-cap-t2').checked;
+  const capotFait = cap1 || cap2;
+  // capotByPreneur = true si c'est l'équipe preneuse qui a fait capot
+  // (sera utilisé pour déterminer si le contrat capot est réussi ou si c'est un capot surprise)
+
+  if(!S.contract) {
+    pendingScore = {pts1:pts1Raw+(bel1?20:0), pts2:pts2Raw+(bel2?20:0), chute:null};
+    showScoreResult(pendingScore);
+    return;
+  }
+
+  const c = S.contract;
+  const mult = c.contre==='surcontre'?3:c.contre==='contre'?2:1;
+  const hasContre = c.contre !== 'none';
+  const preneурIsT1 = c.preneурTeam==='t1';
+
+  // Capot fait par le preneur ?
+  const capotByPreneur = preneурIsT1 ? cap1 : cap2;
+
+  // Belote côté preneur et côté adversaire
+  const hasBelPre = preneурIsT1 ? bel1 : bel2;
+  const hasBelAdv = preneурIsT1 ? bel2 : bel1;
+
+  // Points de plis bruts saisis — si capot coché, on met 162/0 automatiquement
+  const plisPre = capotFait ? (capotByPreneur ? 162 : 0) : (preneурIsT1 ? pts1Raw : pts2Raw);
+  // Les plis adversaires = 162 - plisPre (arrondi à 6 selon règlement : 156 vaut 160)
+  // On accepte aussi la saisie manuelle si l'utilisateur l'a renseignée
+  const plisAdvSaisi = capotFait ? (capotByPreneur ? 0 : 162) : (preneурIsT1 ? pts2Raw : pts1Raw);
+  // Si le champ adverse est vide (0), on calcule automatiquement
+  const plisAdv = (plisAdvSaisi > 0) ? plisAdvSaisi : Math.round((162 - plisPre) / 6) * 6;
+
+  // ── DÉTERMINATION CHUTE ──────────────────────────────────────
+  // Contrat Capot annoncé : réussi si le preneur a coché Capot
+  // Contrat normal : chute si plis preneurs + belote preneur < annonce
+  // Capot surprise (adversaires font capot sur contrat normal) : le preneur chute
+  let chute;
+  if (c.isCapot) {
+    // Contrat capot : réussi seulement si C'EST le preneur qui a fait capot
+    chute = !capotByPreneur;
+  } else if (capotFait && !capotByPreneur) {
+    // Les adversaires ont fait capot → le preneur chute automatiquement
+    chute = true;
+  } else {
+    // Contrat normal
+    chute = (plisPre + (hasBelPre ? 20 : 0)) < c.value;
+  }
+
+  // ── CALCUL DES POINTS ────────────────────────────────────────
+  // Règles issues du tableau "Aide à la Marque" :
+  //
+  // SANS CONTRE — FAIT :
+  //   Preneurs  = annonce + plis preneurs + belote preneur (+20)
+  //   Adversaires = plis adversaires + belote adverse (+20)
+  //   (total plis = 162, adversaires récupèrent le reste)
+  //
+  // SANS CONTRE — CHUTE :
+  //   Preneurs  = 0
+  //   Adversaires = annonce + 160 + belote prenable (+20 si belote preneur ou adverse)
+  //
+  // AVEC CONTRE/SURCONTRE — FAIT :
+  //   Preneurs  = (annonce × mult) + 160 + belote preneur (+20, non multipliée)
+  //   Adversaires = 0  (+ belote adverse si elle existe — rare mais possible)
+  //   NB: adversaires marquent 0 selon le tableau, la belote adverse reste aux adversaires
+  //
+  // AVEC CONTRE/SURCONTRE — CHUTE :
+  //   Preneurs  = 0
+  //   Adversaires = (annonce × mult) + 160 + belote prenable (+20 toutes belotes)
+  //
+  // CAPOT FAIT (sans contre) :
+  //   Preneurs  = annonce(250) + 250 plis + belote (+20)
+  //   Adversaires = 0
+  //
+  // CAPOT FAIT avec CONTRE :
+  //   Preneurs  = (250×mult) + 250 + belote (+20)
+  //   Adversaires = 0
+  //
+  // CAPOT CHUTE :
+  //   Preneurs  = 0
+  //   Adversaires = (250×mult) + 160 + belote prenable (+20)
+
+  let pPts, aPts;
+
+  if (!chute) {
+    // ── CONTRAT FAIT ──
+    if (c.isCapot) {
+      // Contrat Capot réussi : annonce(250) × mult + 250 plis + belote
+      pPts = c.value * mult + 250 + (hasBelPre ? 20 : 0);
+      aPts = (hasBelAdv ? 20 : 0);
+    } else if (capotFait && capotByPreneur) {
+      // Contrat NORMAL mais preneur fait capot : annonce + 250 plis + belote
+      // Sans contre : annonce + 250
+      // Avec contre : annonce×mult + 250
+      pPts = c.value * mult + 250 + (hasBelPre ? 20 : 0);
+      aPts = (hasBelAdv ? 20 : 0);
+    } else if (!hasContre) {
+      // Normal fait sans contre
+      pPts = c.value + plisPre + (hasBelPre ? 20 : 0);
+      aPts = plisAdv + (hasBelAdv ? 20 : 0);
+    } else {
+      // Contre ou surcontre fait : preneurs = annonce×mult + 160 + belote(+20 non mult)
+      pPts = c.value * mult + 160 + (hasBelPre ? 20 : 0);
+      aPts = (hasBelAdv ? 20 : 0);
+    }
+  } else {
+    // ── CONTRAT CHUTE ──
+    // Belote prenable dans tous les cas de chute (avec ou sans contre)
+    // → les 20 pts de la belote preneur ET adverse vont aux adversaires
+    pPts = 0;
+    aPts = c.value * mult + 160 + (hasBelPre ? 20 : 0) + (hasBelAdv ? 20 : 0);
+  }
+
+  const finalT1 = Math.round(preneурIsT1 ? pPts : aPts);
+  const finalT2 = Math.round(preneурIsT1 ? aPts : pPts);
+
+  pendingScore = {pts1:finalT1, pts2:finalT2, chute, bel1, bel2, capotFait,
+    detail: buildDetail(c, chute, plisPre, plisAdv, hasBelPre, hasBelAdv, mult, pPts, aPts)};
+  showScoreResult(pendingScore);
+}
+
+function buildDetail(c, chute, plisPre, plisAdv, hasBelPre, hasBelAdv, mult, pPts, aPts) {
+  const hasContre = c.contre !== 'none';
+  const ann = c.isCapot ? '250' : c.value;
+  let lines = [];
+  if (!chute) {
+    if (c.isCapot || plisPre === 162) {
+      // Capot (annoncé ou surprise)
+      lines.push(`Preneurs : ${ann}×${mult} + 250 plis${hasBelPre?' + 20 belote':''} = ${pPts}`);
+      if(hasBelAdv) lines.push(`Adversaires : 20 (belote)`);
+    } else if (!hasContre) {
+      lines.push(`Preneurs : ${ann} + ${plisPre} plis${hasBelPre?' + 20 belote':''} = ${pPts}`);
+      lines.push(`Adversaires : ${plisAdv} plis${hasBelAdv?' + 20 belote':''} = ${aPts}`);
+    } else {
+      lines.push(`Preneurs : ${ann}×${mult} + 160${hasBelPre?' + 20 belote':''} = ${pPts}`);
+      if(hasBelAdv) lines.push(`Adversaires : 20 (belote)`);
+    }
+  } else {
+    lines.push(`Adversaires : ${ann}×${mult} + 160${hasBelPre?' + 20 belote preneur':''}${hasBelAdv?' + 20 belote adverse':''} = ${aPts}`);
+  }
+  return lines.join(' | ');
+}
+
+function showScoreResult(ps) {
+  const area = eid('score-calc-result');
+  area.style.display='block';
+  const chuteLabel = ps.chute===true?'<span class="tag tag-red">CHUTE</span>':ps.chute===false?'<span class="tag tag-green">FAIT ✓</span>':'';
+  const detailHtml = ps.detail ? `<div style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.6;">${ps.detail.replace(' | ','<br>')}</div>` : '';
+  area.innerHTML=`<div class="calc-result ${ps.chute?'chute':''}">
+    <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:10px;">Score calculé ${chuteLabel}</div>
+    <div class="cr-row ${ps.chute?'chute':''}">
+      <span>${S.t1.name}</span>
+      <span class="cr-pts">${ps.pts1}</span>
+    </div>
+    <div class="cr-row ${ps.chute?'chute':''}">
+      <span>${S.t2.name}</span>
+      <span class="cr-pts">${ps.pts2}</span>
+    </div>
+    ${detailHtml}
+    <div class="divider" style="margin:8px 0;"></div>
+    <div style="font-size:12px;color:var(--text2);">
+      <div>Après cette manche :</div>
+      <div style="margin-top:3px;font-weight:600;">${S.t1.name} : ${S.score.t1+ps.pts1} &nbsp;|&nbsp; ${S.t2.name} : ${S.score.t2+ps.pts2}</div>
+    </div>
+  </div>`;
+  eid('confirm-score-btn').style.display='block';
+}
+
+function validateScore() {
+  if(!pendingScore) return;
+  S.score.t1 += pendingScore.pts1;
+  S.score.t2 += pendingScore.pts2;
+  const h = {
+    manche: S.manche,
+    contract: S.contract ? `${S.contract.isCapot?'Capot':S.contract.value} ${S.contract.suit}` : '—',
+    contre: S.contract?S.contract.contre:'none',
+    preneur: S.contract?(S.contract.preneурTeam==='t1'?S.t1.name:S.t2.name):'—',
+    chute: pendingScore.chute,
+    pts1: pendingScore.pts1,
+    pts2: pendingScore.pts2,
+    total1: S.score.t1,
+    total2: S.score.t2
+  };
+  S.history.push(h);
+  S.manche++;
+  // next dealer: right of current = next in order
+  S.dealerIdx = (S.dealerIdx+1)%4;
+  S.contract = null;
+  S.form = {preneur:'',suit:'',suitKey:'',suitColor:'',value:90,isCapot:false,contre:'none'};
+  pendingScore = null;
+
+  // Check winner
+  const w1 = S.score.t1>=2001, w2=S.score.t2>=2001;
+  if(w1||w2) {
+    // Special rule: if capot + belote tips past 2001, game not over
+    // (handled by user deciding — we show winner screen)
+    showWinner(w1&&w2?(S.score.t1>S.score.t2?'t1':'t2'):(w1?'t1':'t2'));
+    return;
+  }
+  showTab('score');
+}
+
+function showWinner(team) {
+  const wTeam = S[team];
+  const lTeam = team==='t1'?S.t2:S.t1;
+  eid('w-title').textContent = '🏆 '+wTeam.name;
+  eid('w-sub').textContent = 'Vainqueur avec '+S.score[team]+' points !';
+  eid('w-n1').textContent = wTeam.name;
+  eid('w-s1').textContent = S.score[team];
+  eid('w-n2').textContent = lTeam.name;
+  eid('w-s2').textContent = S.score[team==='t1'?'t2':'t1'];
+  showScreen('winner');
+}
+
+function newGame() {
+  S.score={t1:0,t2:0};
+  S.history=[];
+  S.manche=1;
+  S.contract=null;
+  S.form={preneur:'',suit:'',suitKey:'',suitColor:'',value:90,isCapot:false,contre:'none'};
+  pendingScore=null;
+  showScreen('game');
+  initGameUI();
+  showTab('score');
+}
+
+function changeTeams() {
+  S.score={t1:0,t2:0};
+  S.history=[];
+  S.manche=1;
+  S.contract=null;
+  S.form={preneur:'',suit:'',suitKey:'',suitColor:'',value:90,isCapot:false,contre:'none'};
+  pendingScore=null;
+  ['sel-nord','sel-sud','sel-est','sel-ouest'].forEach(id=>{ eid(id).value=''; });
+  eid('team-preview').style.display='none';
+  showScreen('setup');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  HISTORY
+// ═══════════════════════════════════════════════════════════
+function renderHistory() {
+  const el=eid('history-content');
+  if(!S.history.length) { el.innerHTML='<div class="empty-state"><div class="es-icon">📋</div>Aucune manche jouée</div>'; return; }
+  el.innerHTML=[...S.history].reverse().map(h=>{
+    const contreTxt=h.contre&&h.contre!=='none'?` <span class="tag tag-gold">${h.contre}</span>`:'';
+    const resultHtml=h.chute===true?'<span class="hi-result chute">Chute</span>':h.chute===false?'<span class="hi-result fait">Fait</span>':'<span style="font-size:12px;color:rgba(255,255,255,0.35);">—</span>';
+    return `<div class="history-item">
+      <div class="hi-top">
+        <span class="hi-num">${h.manche}</span>
+        <span class="hi-contract">${h.contract}${contreTxt}</span>
+        ${resultHtml}
+        <button onclick="openEdit(${h.manche})" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:99px;color:#fff;font-size:11px;padding:3px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;">✏️ Modifier</button>
+      </div>
+      <div class="hi-bottom">
+        <span>Preneurs: ${h.preneur}</span>
+        <span>•</span>
+        <span class="hi-pts">${h.pts1} / ${h.pts2}</span>
+        <span>•</span>
+        <span>Total: ${h.total1} / ${h.total2}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let editingManche = null;
+
+function openEdit(manche) {
+  const h = S.history.find(x => x.manche === manche);
+  if(!h) return;
+  editingManche = manche;
+  eid('edit-modal-title').textContent = `Manche ${manche} — ${h.contract}`;
+  eid('edit-lbl-t1').textContent = S.t1.name;
+  eid('edit-lbl-t2').textContent = S.t2.name;
+  eid('edit-pts-t1').value = h.pts1;
+  eid('edit-pts-t2').value = h.pts2;
+  eid('edit-modal').style.display = 'flex';
+}
+
+function closeEdit() {
+  eid('edit-modal').style.display = 'none';
+  editingManche = null;
+}
+
+function stepEdit(team, delta) {
+  const inp = eid('edit-pts-'+team);
+  let val = parseInt(inp.value) || 0;
+  val = Math.min(500, Math.max(0, val + delta));
+  inp.value = val;
+}
+
+function saveEdit() {
+  if(!editingManche) return;
+  const idx = S.history.findIndex(x => x.manche === editingManche);
+  if(idx < 0) return;
+  const newP1 = parseInt(eid('edit-pts-t1').value) || 0;
+  const newP2 = parseInt(eid('edit-pts-t2').value) || 0;
+
+  // Mettre à jour la manche modifiée
+  S.history[idx].pts1 = newP1;
+  S.history[idx].pts2 = newP2;
+
+  // Recalculer tous les totaux cumulés depuis le début
+  let cum1 = 0, cum2 = 0;
+  S.history.forEach(h => {
+    cum1 += h.pts1;
+    cum2 += h.pts2;
+    h.total1 = cum1;
+    h.total2 = cum2;
+  });
+
+  // Mettre à jour le score global
+  S.score.t1 = cum1;
+  S.score.t2 = cum2;
+
+  closeEdit();
+  renderHistory();
+  updateScoreDisplay();
+}
+
+// ═══════════════════════════════════════════════════════════
+//  AIDE A LA MARQUE TABLE
+// ═══════════════════════════════════════════════════════════
+function renderMarque() {
+  const rows=[
+    ['90 — Fait 120','210 (90+120)','40'],
+    ['90 — Chute','0','250 (90+160)'],
+    ['90 + Belote — Fait 70 min','180 (90+70+20)','90'],
+    ['90 + Belote — Chute','0','270 (90+160+20)'],
+    ['90 — Fait Capot','340 (90+250)','0'],
+    ['90 + Belote — Fait Capot','360 (90+250+20)','0'],
+    ['90, Contre — Fait','340 (90×2+160)','0'],
+    ['90, Contre — Chute','0','340 (90×2+160)'],
+    ['90, Contre + Belote — Fait','360 (90×2+160+20)','0'],
+    ['90, Contre + Belote — Chute','0','360 (90×2+160+20)'],
+    ['90, Surcontre — Fait','430 (90×3+160)','0'],
+    ['90, Surcontre — Chute','0','430 (90×3+160)'],
+    ['90, Surcontre + Belote — Fait','450 (90×3+160+20)','0'],
+    ['90, Surcontre + Belote — Chute','0','450 (90×3+160+20)'],
+    ['Capot — Fait','500 (250+250)','0'],
+    ['Capot — Chute','0','410 (250+160)'],
+    ['Capot, Contre — Fait','750 (250×2+250)','0'],
+    ['Capot, Contre — Chute','0','660 (250×2+160)'],
+    ['Capot, Surcontre — Fait','1000 (250×3+250)','0'],
+    ['Capot, Surcontre — Chute','0','910 (250×3+160)'],
+  ];
+  const tbody=eid('marque-tbody');
+  if(!tbody) return;
+  tbody.innerHTML=rows.map(([ann,pre,adv])=>`<tr>
+    <td>${ann}</td>
+    <td class="${pre==='0'?'pts-zero':'pts-good'}">${pre}</td>
+    <td class="${adv==='0'?'pts-zero':'pts-good'}">${adv}</td>
+  </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EN JEU PAGE — TABLE DE BELOTE SVG
+// ═══════════════════════════════════════════════════════════
+function renderEnjeu() {
+  const c = S.contract;
+  if(!c) { showTab('score'); return; }
+
+  // Scores
+  const s1=S.score.t1, s2=S.score.t2;
+  eid('ej-stn1').textContent = S.t1.name;
+  eid('ej-stn2').textContent = S.t2.name;
+  eid('ej-sts1').textContent = s1;
+  eid('ej-sts2').textContent = s2;
+  eid('ej-stk1').textContent = s1<2001?'manque '+(2001-s1):'';
+  eid('ej-stk2').textContent = s2<2001?'manque '+(2001-s2):'';
+  eid('ej-st1').className = 'score-team'+(s1>s2?' leading':'');
+  eid('ej-st2').className = 'score-team'+(s2>s1?' leading':'');
+
+  // Data
+  const dPos   = S.dealerOrder[S.dealerIdx];
+  const firstIdx = (S.dealerIdx+1)%4;
+  const firstPos = S.dealerOrder[firstIdx];
+
+  // Joueurs par position
+  const players = {
+    nord:  S.pos.nord  || '?',
+    est:   S.pos.est   || '?',
+    sud:   S.pos.sud   || '?',
+    ouest: S.pos.ouest || '?'
+  };
+
+  // Equipe preneuse
+  const preneурIsT1 = c.preneурTeam==='t1';
+  const pTeamName = preneурIsT1 ? S.t1.name : S.t2.name;
+  const aTeamName = preneурIsT1 ? S.t2.name : S.t1.name;
+
+  // Quelles positions sont dans l'équipe preneuse ?
+  // T1 = Nord+Sud, T2 = Est+Ouest
+  const preneurPositions = preneурIsT1 ? ['nord','sud'] : ['est','ouest'];
+
+  // Couleur atout
+  const isRed = c.suit==='♥'||c.suit==='♦';
+  const suitColor = isRed ? '#d63031' : '#2d3436';
+  const contratLabel = (c.isCapot ? 'Capot' : c.value) + ' ' + c.suit;
+  const contreLabel = c.contre==='surcontre' ? 'Surcontre ×3' : c.contre==='contre' ? 'Contre ×2' : '';
+
+  // ── DESSIN SVG ───────────────────────────────────────────
+  // Viewport 400×400. Centre = 200,200.
+  const W=400, H=400, cx=200, cy=200;
+
+  // Positions des joueurs (x,y, ancre texte, position du jeton)
+  const positions = {
+    nord:  { x:200, y:38,  anchor:'middle', jetonDx: 0,  jetonDy: 26  },
+    sud:   { x:200, y:365, anchor:'middle', jetonDx: 0,  jetonDy:-26  },
+    est:   { x:368, y:200, anchor:'end',    jetonDx:-28, jetonDy: 0   },
+    ouest: { x:32,  y:200, anchor:'start',  jetonDx: 28, jetonDy: 0   },
+  };
+
+  // Couleurs équipes
+  const colorPre  = '#1a6b3c'; // vert
+  const colorAdv  = '#1a5295'; // bleu
+
+  function playerColor(pos) {
+    return preneurPositions.includes(pos) ? colorPre : colorAdv;
+  }
+
+  // Génère le bloc joueur — badges plus grands et lisibles
+  function playerBlock(pos) {
+    const p = positions[pos];
+    const name = players[pos];
+    const isDealer = pos === dPos;
+    const color = playerColor(pos);
+    const posLabels = {nord:'NORD',est:'EST',sud:'SUD',ouest:'OUEST'};
+    const anchor = p.anchor;
+
+    let out = '';
+
+    const badgeW = Math.min(name.length * 11 + 28, 130);
+    const badgeH = 48;
+    let bx = p.x, by = p.y;
+    let bxOff = anchor==='middle' ? -badgeW/2 : anchor==='end' ? -badgeW : 0;
+    let byOff = pos==='nord' ? -10 : pos==='sud' ? -38 : -badgeH/2;
+
+    // Ombre
+    out += `<rect x="${bx+bxOff+2}" y="${by+byOff+3}" width="${badgeW}" height="${badgeH}" rx="10" fill="rgba(0,0,0,0.3)"/>`;
+    // Badge
+    out += `<rect x="${bx+bxOff}" y="${by+byOff}" width="${badgeW}" height="${badgeH}" rx="10" fill="${color}"/>`;
+
+    // Nom — police plus grande
+    const tx = anchor==='start' ? bx+bxOff+12 : anchor==='end' ? bx+bxOff+badgeW-12 : bx;
+    const ta = anchor==='start' ? 'start' : anchor==='end' ? 'end' : 'middle';
+    out += `<text x="${tx}" y="${by+byOff+19}" text-anchor="${ta}"
+      font-family="-apple-system,sans-serif" font-size="16" font-weight="800" fill="#fff">${name}</text>`;
+
+    // Label position
+    out += `<text x="${tx}" y="${by+byOff+35}" text-anchor="${ta}"
+      font-family="-apple-system,sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.65)" letter-spacing="1.5">${posLabels[pos]}</text>`;
+
+    // Jeton donneur — à la DROITE du joueur selon son orientation à table
+    // Nord regarde Sud → droite = Ouest → jeton à gauche du badge
+    // Sud regarde Nord → droite = Est → jeton à droite du badge
+    // Est regarde Ouest → droite = Nord → jeton en haut du badge
+    // Ouest regarde Est → droite = Sud → jeton en bas du badge
+    if(isDealer) {
+      let jx, jy;
+      if(pos==='nord')       { jx = bx+bxOff-16;        jy = by+byOff+badgeH/2; }
+      else if(pos==='sud')   { jx = bx+bxOff+badgeW+16; jy = by+byOff+badgeH/2; }
+      else if(pos==='est')   { jx = bx+bxOff+badgeW/2;  jy = by+byOff-16; }
+      else                   { jx = bx+bxOff+badgeW/2;  jy = by+byOff+badgeH+16; }
+      out += `<circle cx="${jx}" cy="${jy}" r="13" fill="#c8960a" stroke="#fff" stroke-width="2"/>`;
+      out += `<text x="${jx}" y="${jy+5}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" font-weight="800" fill="#fff">D</text>`;
+    }
+
+    return out;
+  }
+
+  // Zones équipes légère teinte
+  function teamZones() {
+    const nsColor = preneurPositions.includes('nord') ? colorPre : colorAdv;
+    const eoColor = preneurPositions.includes('est')  ? colorPre : colorAdv;
+    return `
+      <path d="M ${cx-60},${cy} L ${cx},${cy-60} L ${cx+60},${cy} L ${cx},${cy+60} Z" fill="${nsColor}" opacity="0.10"/>
+      <path d="M ${cx},${cy-60} L ${cx+60},${cy} L ${cx},${cy+60} L ${cx-60},${cy} Z" fill="${eoColor}" opacity="0.10"/>
+    `;
+  }
+
+  const svg = `
+    <!-- Tapis ovale avec ombres -->
+    <ellipse cx="${cx}" cy="${cy}" rx="172" ry="172" fill="rgba(0,0,0,0.35)"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="168" ry="168" fill="#1e5c1e"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="162" ry="162" fill="#236b23"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="168" ry="168" fill="none" stroke="#0f3a0f" stroke-width="4"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="156" ry="156" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+
+    <!-- Zones équipes -->
+    ${teamZones()}
+
+    <!-- Contrat au centre — directement sur le tapis -->
+    <text x="${cx}" y="${cy-14}" text-anchor="middle"
+      font-family="-apple-system,sans-serif" font-size="42" font-weight="900" letter-spacing="-1"
+      fill="${isRed ? '#ff5555' : '#ffffff'}">${contratLabel}</text>
+
+    <!-- Badge Contre/Surcontre -->
+    ${contreLabel ? `
+    <rect x="${cx-46}" y="${cy-4}" width="92" height="22" rx="11" fill="rgba(200,168,74,0.3)" stroke="rgba(200,168,74,0.6)" stroke-width="1.5"/>
+    <text x="${cx}" y="${cy+11}" text-anchor="middle"
+      font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#f0d080">${contreLabel}</text>
+    ` : ''}
+
+    <!-- Nom équipe preneuse -->
+    <text x="${cx}" y="${cy+(contreLabel?40:24)}" text-anchor="middle"
+      font-family="-apple-system,sans-serif" font-size="14" font-weight="700"
+      fill="rgba(255,255,255,0.75)">${pTeamName}</text>
+
+    <!-- Joueurs -->
+    ${playerBlock('nord')}
+    ${playerBlock('sud')}
+    ${playerBlock('est')}
+    ${playerBlock('ouest')}
+  `;
+
+  eid('ej-table-svg').innerHTML = svg;
+}
+
+// ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+function eid(id) { return document.getElementById(id); }
+function v(id) { return document.getElementById(id).value; }
+function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+
+// Init
+loadPlayers();
+renderPlayerChips();
+refreshSelects();
+// Si des joueurs existent déjà, replier la liste automatiquement
+if(S.players.length >= 4) {
+  playerListOpen = false;
+  const body = eid('player-list-body');
+  const arrow = eid('player-list-arrow');
+  if(body) body.style.display = 'none';
+  if(arrow) arrow.style.transform = 'rotate(-90deg)';
+}
+</script>
+</body>
+</html>
