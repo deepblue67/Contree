@@ -72,21 +72,21 @@
     #ej-table-wrap { max-width: 100% !important; }
     #tab-enjeu { padding: 16px 16px 24px !important; }
     .score-board { gap: 14px; }
+    #setup-table-wrap { max-width: 100% !important; }
   }
 
   /* ══ IPAD PAYSAGE (900px+) ══ */
   @media (min-width: 900px) and (orientation: landscape) {
     #app { max-width: 100%; width: 100%; }
-    html, body { height: 100%; }
 
     /* Page TABLE : table à gauche, scores + boutons à droite */
     #tab-enjeu {
       display: grid !important;
       grid-template-columns: 1fr 400px;
-      grid-template-rows: auto auto 1fr;
+      grid-template-rows: auto auto auto;
       column-gap: 24px;
       row-gap: 16px;
-      padding: 16px 24px 16px !important;
+      padding: 16px 24px !important;
       align-items: start;
     }
     #ej-table-wrap {
@@ -97,20 +97,32 @@
     }
     #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; }
     #tab-enjeu > div:nth-child(3) { grid-column: 2; grid-row: 2; }
-    #tab-enjeu > div:nth-child(4) { grid-column: 2; grid-row: 3; }
 
     /* Page SETUP : table à gauche, donneur + bouton à droite */
     #screen-setup .body {
       display: grid !important;
-      grid-template-columns: 1fr 360px;
-      column-gap: 24px;
+      grid-template-columns: 1fr 380px;
+      grid-template-rows: auto auto;
+      column-gap: 28px;
       row-gap: 16px;
       align-items: start;
       padding: 20px 32px !important;
     }
-    #screen-setup .body > div:first-child { grid-column: 1; grid-row: 1; }
-    #screen-setup .body > div:last-child { grid-column: 2; grid-row: 1; }
-    #screen-setup .body > button { grid-column: 1 / 3; grid-row: 2; }
+    #setup-table-wrap {
+      grid-column: 1 !important;
+      grid-row: 1 / 3 !important;
+      max-width: 100% !important;
+    }
+    #setup-donneur-wrap {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      justify-content: flex-start !important;
+    }
+    #setup-donneur-wrap > div { width: 100%; }
+    #setup-start-btn {
+      grid-column: 2 !important;
+      grid-row: 2 !important;
+    }
 
     .body { padding: 20px 32px; gap: 20px; }
     .card { padding: 24px 32px; border-radius: 24px; }
@@ -352,7 +364,7 @@
     <div class="body">
 
       <!-- Table interactive pour placer les joueurs -->
-      <div style="position:relative;width:100%;max-width:440px;margin:0 auto;">
+      <div id="setup-table-wrap" style="position:relative;width:100%;max-width:440px;margin:0 auto;">
 
         <!-- SVG table -->
         <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;border-radius:16px;">
@@ -421,7 +433,7 @@
         </div>
       </div>
 
-      <div style="display:flex;justify-content:center;">
+      <div id="setup-donneur-wrap" style="display:flex;justify-content:center;">
         <div style="display:inline-block;min-width:0;background:#1a4a1a;border:2px solid #c8a84a;border-radius:var(--radius);padding:14px 24px;">
           <div style="font-size:11px;font-weight:700;color:#c8a84a;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;text-align:center;">🃏 Donneur du premier tour</div>
           <select id="sel-first-dealer" style="background:#2d6b26;color:#fff;border:1px solid #c8a84a;border-radius:10px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer;width:100%;text-align:center;-webkit-appearance:none;appearance:none;"><option value="random">🎲 Tirage aléatoire</option></select>
@@ -444,7 +456,7 @@
         </div>
       </div>
 
-      <button class="btn btn-green btn-full" onclick="startGame()" style="font-size:16px;padding:16px;">
+      <button id="setup-start-btn" class="btn btn-green btn-full" onclick="startGame()" style="font-size:16px;padding:16px;">
         Commencer la partie ▶
       </button>
     </div>
