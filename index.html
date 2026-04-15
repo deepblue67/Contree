@@ -500,7 +500,7 @@
 
       <div id="score-calc-result" style="display:none;"></div>
 
-      <button class="btn btn-green btn-full" onclick="calcAndPreview()" style="font-size:15px;padding:15px;">
+      <button id="calc-preview-btn" class="btn btn-green btn-full" onclick="calcAndPreview()" style="font-size:15px;padding:15px;">
         Calculer & Prévisualiser
       </button>
       <div id="confirm-score-btn" style="display:none;">
@@ -794,9 +794,18 @@ function updateDealerInfo() {
 //  CONTRACT FORM
 // ═══════════════════════════════════════════════════════════
 function updateContractForm() {
+  // Si un contrat existe, on recharge S.form depuis S.contract
+  if(S.contract) {
+    S.form.preneur   = S.contract.preneурTeam;
+    S.form.suit      = S.contract.suit;
+    S.form.suitKey   = S.contract.suitKey;
+    S.form.suitColor = (S.contract.suit==='♥'||S.contract.suit==='♦') ? 'red' : 'dark';
+    S.form.value     = S.contract.value;
+    S.form.isCapot   = S.contract.isCapot;
+    S.form.contre    = S.contract.contre;
+  }
   const f = S.form;
   selectPreneur(f.preneur||'', true);
-  // Toujours repartir d'un état propre pour les couleurs
   clearSuitSelection();
   if(f.suit && f.suitKey && f.suitColor) selectSuit(f.suit, f.suitKey, f.suitColor, true);
   selectContre(f.contre||'none', true);
@@ -922,6 +931,7 @@ function onBeloteChange(team) {
   // reset calcul si déjà affiché
   eid('score-calc-result').style.display='none';
   eid('confirm-score-btn').style.display='none';
+  const _cb=eid('calc-preview-btn');if(_cb)_cb.style.display='flex';
 }
 
 function refreshBeloteBoxes() {
@@ -951,6 +961,7 @@ function onCapotChange(team) {
   refreshBeloteBoxes();
   eid('score-calc-result').style.display='none';
   eid('confirm-score-btn').style.display='none';
+  const _cb=eid('calc-preview-btn');if(_cb)_cb.style.display='flex';
 }
 
 function stepScore(team, delta) {
@@ -960,6 +971,9 @@ function stepScore(team, delta) {
   inp.value = val;
   eid('score-calc-result').style.display='none';
   eid('confirm-score-btn').style.display='none';
+  const _cb=eid('calc-preview-btn');if(_cb)_cb.style.display='flex';
+  const btn = eid('calc-preview-btn');
+  if(btn) btn.style.display='flex';
 }
 
 function refreshCapotBoxes() {
@@ -1164,6 +1178,8 @@ function showScoreResult(ps) {
     </div>
   </div>`;
   eid('confirm-score-btn').style.display='block';
+  const btn = eid('calc-preview-btn');
+  if(btn) btn.style.display='none';
 }
 
 function toggleScoreDetail() {
