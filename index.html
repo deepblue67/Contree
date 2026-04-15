@@ -357,21 +357,22 @@
 
       <!-- Score sous la table -->
       <div style="margin:8px 8px 0;padding:12px 16px;border-radius:var(--radius);background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.12);">
-        <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;text-align:center;">Score de la partie</div>
         <div class="score-board">
           <div class="score-team" id="ej-st1"><div class="t-name" id="ej-stn1"></div><div class="t-score" id="ej-sts1">0</div><div class="t-need" id="ej-stk1"></div></div>
           <div class="score-team" id="ej-st2"><div class="t-name" id="ej-stn2"></div><div class="t-score" id="ej-sts2">0</div><div class="t-need" id="ej-stk2"></div></div>
         </div>
       </div>
 
-      <!-- 4 boutons action comme sur la photo -->
+      <!-- Boutons action -->
       <div style="padding:8px 8px 0;display:flex;flex-direction:column;gap:10px;">
         <div class="btn-row">
           <button class="btn btn-outline" onclick="showTab('contrat')" style="flex:1;">✏️ Contrat</button>
           <button class="btn btn-green" onclick="showTab('saisie')" style="flex:1.5;">📊 Saisir score</button>
         </div>
-        <button class="btn btn-outline btn-full" onclick="askNewGame()" style="font-size:14px;">Partie suivante (remise à 0)</button>
-        <button class="btn btn-outline btn-full" onclick="askChangeTeams()" style="font-size:13px;opacity:0.7;">Changer les équipes</button>
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="askNewGame()" style="flex:1;font-size:12px;">Nouvelle partie</button>
+          <button class="btn btn-outline" onclick="askChangeTeams()" style="flex:1;font-size:12px;opacity:0.7;">Nouvelles équipes</button>
+        </div>
       </div>
 
       <!-- Modale confirmation -->
@@ -524,7 +525,7 @@
               <label id="edit-lbl-t1" style="display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Équipe 1</label>
               <div class="stepper" style="background:#e8e4dc;border-color:#bbb8b0;">
                 <button onclick="stepEdit('t1',-10)" type="button" style="background:#d8d4cc;color:var(--text);">−</button>
-                <input class="sv" type="number" id="edit-pts-t1" min="0" max="500" step="10" style="color:var(--text);font-size:22px;">
+                <input class="sv" type="number" id="edit-pts-t1" min="0" max="500" step="10" style="color:var(--text);font-size:16px;">
                 <button onclick="stepEdit('t1',10)" type="button" style="background:#d8d4cc;color:var(--text);">+</button>
               </div>
             </div>
@@ -532,7 +533,7 @@
               <label id="edit-lbl-t2" style="display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Équipe 2</label>
               <div class="stepper" style="background:#e8e4dc;border-color:#bbb8b0;">
                 <button onclick="stepEdit('t2',-10)" type="button" style="background:#d8d4cc;color:var(--text);">−</button>
-                <input class="sv" type="number" id="edit-pts-t2" min="0" max="500" step="10" style="color:var(--text);font-size:22px;">
+                <input class="sv" type="number" id="edit-pts-t2" min="0" max="500" step="10" style="color:var(--text);font-size:16px;">
                 <button onclick="stepEdit('t2',10)" type="button" style="background:#d8d4cc;color:var(--text);">+</button>
               </div>
             </div>
@@ -793,7 +794,9 @@ function updateDealerInfo() {
 function updateContractForm() {
   const f = S.form;
   selectPreneur(f.preneur||'', true);
-  if(f.suit) selectSuit(f.suit, f.suitKey, f.suitColor, true);
+  // Toujours repartir d'un état propre pour les couleurs
+  clearSuitSelection();
+  if(f.suit && f.suitKey && f.suitColor) selectSuit(f.suit, f.suitKey, f.suitColor, true);
   selectContre(f.contre||'none', true);
   const val = f.isCapot ? 250 : (f.value||90);
   eid('contract-val').value = val;
@@ -811,9 +814,18 @@ function selectSuit(suit, key, color, silent) {
   S.form.suit=suit; S.form.suitKey=key; S.form.suitColor=color;
   ['h','d','c','s'].forEach(k=>{
     const el = eid('suit-'+k);
+    if(!el) return;
     el.className='suit-btn';
     if(k===key) el.classList.add('sel-'+color);
   });
+}
+
+function clearSuitSelection() {
+  ['h','d','c','s'].forEach(k=>{
+    const el = eid('suit-'+k);
+    if(el) el.className='suit-btn';
+  });
+  S.form.suit=''; S.form.suitKey=''; S.form.suitColor='';
 }
 
 function selectContre(v, silent) {
@@ -1261,10 +1273,10 @@ function renderHistory() {
         <span class="hi-num">${h.manche}</span>
         <span class="hi-contract">${h.contract}${contreTxt}</span>
         ${resultHtml}
-        <button onclick="openEdit(${h.manche})" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:99px;color:#fff;font-size:11px;padding:3px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;">✏️ Modifier</button>
+        <button onclick="openEdit(${h.manche})" style="background:#d8d4c8;border:1px solid #aaa;border-radius:99px;color:#111;font-size:11px;padding:3px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:600;">✏️ Modifier</button>
       </div>
       <div class="hi-bottom">
-        <span>Preneurs: ${h.preneur}</span>
+        <span>${h.preneur}</span>
         <span>•</span>
         <span class="hi-pts">${h.pts1} / ${h.pts2}</span>
         <span>•</span>
@@ -1370,8 +1382,9 @@ function renderMarque() {
 function renderEnjeu() {
   const c = S.contract;
 
-  // Mettre à jour le titre avec le numéro de manche courant
-  eid('game-title').textContent = 'Manche ' + S.manche;
+  // Mettre à jour le titre avec le numéro de manche et le statut
+  const status = c ? ' en cours' : ' à venir';
+  eid('game-title').textContent = 'Manche ' + S.manche + status;
   eid('game-sub').textContent = S.t1.name + ' vs ' + S.t2.name;
 
   // Toujours mettre à jour les scores
@@ -1595,16 +1608,33 @@ function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
 
 // Init
 loadPlayers();
+
+// Si aucun joueur, on charge la liste par défaut
+if(S.players.length === 0) {
+  S.players = ['Christophe','Mika','Rakhel','Daniel','Florent','Isa','Seb','Julian','Matth','Estelle','Eric','Olive','Pepsy','Wiskas','Laurent','Gael','Loic','Eugénie','Valérie','MikaPSG','Claire','Cynthia','Balou','Olivia','Elodie','Nico','Mimi','Marc','Le Corse'];
+  savePlayers();
+}
+
 renderPlayerChips();
 refreshSelects();
-// Si des joueurs existent déjà, replier la liste automatiquement
-if(S.players.length >= 4) {
-  playerListOpen = false;
-  const body = eid('player-list-body');
-  const arrow = eid('player-list-arrow');
-  if(body) body.style.display = 'none';
-  if(arrow) arrow.style.transform = 'rotate(-90deg)';
-}
+
+// Positions par défaut
+const selNord = eid('sel-nord');
+const selSud  = eid('sel-sud');
+const selEst  = eid('sel-est');
+const selOuest= eid('sel-ouest');
+if(selNord && !selNord.value)  selNord.value  = 'Mika';
+if(selSud  && !selSud.value)   selSud.value   = 'Christophe';
+if(selEst  && !selEst.value)   selEst.value   = 'Daniel';
+if(selOuest && !selOuest.value) selOuest.value = 'Rakhel';
+refreshTeamPreview();
+
+// Replier la liste automatiquement si des joueurs existent
+playerListOpen = false;
+const _plBody  = eid('player-list-body');
+const _plArrow = eid('player-list-arrow');
+if(_plBody)  _plBody.style.display = 'none';
+if(_plArrow) _plArrow.style.transform = 'rotate(-90deg)';
 </script>
 </body>
 </html>
