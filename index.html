@@ -1878,7 +1878,7 @@ function renderEnjeu() {
   // Positions des joueurs — décalés du bord pour laisser voir la bordure dorée
   const positions = {
     nord:  { x:200, y:30,  anchor:'middle' },
-    sud:   { x:200, y:378, anchor:'middle' },
+    sud:   { x:200, y:370, anchor:'middle' },
     est:   { x:372, y:200, anchor:'end'    },
     ouest: { x:28,  y:200, anchor:'start'  },
   };
@@ -1902,8 +1902,8 @@ function renderEnjeu() {
 
     let out = '';
 
-    const badgeW = Math.min(name.length * 11 + 28, 130);
-    const badgeH = 48;
+    const badgeW = Math.min(name.length * 10 + 20, 110);
+    const badgeH = 42;
     let bx = p.x, by = p.y;
     let bxOff = anchor==='middle' ? -badgeW/2 : anchor==='end' ? -badgeW : 0;
     let byOff = pos==='nord' ? 0 : pos==='sud' ? -badgeH : -badgeH/2;
@@ -2012,28 +2012,37 @@ function renderEnjeu() {
     <rect x="${W-M-52}" y="${H-M-52}" width="42" height="42" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
     <text x="${W-M-31}" y="${H-M-18}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="30" fill="#111">♣</text>
 
-    <!-- Contrat en HAUT : valeur blanc + symbole coloré, côte à côte sans superposition -->
+    <!-- ── CARTE AU CENTRE si contrat ── -->
     ${contratValue ? `
-    <text x="${cx}" y="${cy-38}" text-anchor="middle"
-      font-family="-apple-system,sans-serif" font-size="52" font-weight="900" letter-spacing="-1"
-      style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))">
-      <tspan fill="#ffffff">${contratValue} </tspan><tspan fill="${suitColor}">${contratSuit}</tspan>
-    </text>
-    ` : ''}
+    <!-- Ombre de la carte -->
+    <rect x="${cx-58}" y="${cy-80}" width="116" height="162" rx="12" fill="rgba(0,0,0,0.35)"/>
+    <!-- Corps de la carte -->
+    <rect x="${cx-60}" y="${cy-82}" width="116" height="162" rx="12" fill="#faf6ee" stroke="#c8a84a" stroke-width="2"/>
+    <!-- Bordure intérieure dorée -->
+    <rect x="${cx-54}" y="${cy-76}" width="104" height="150" rx="9" fill="none" stroke="rgba(200,168,74,0.5)" stroke-width="1"/>
 
-    <!-- Badge Contre/Surcontre -->
+    <!-- Coin haut-gauche : valeur + suit -->
+    <text x="${cx-48}" y="${cy-60}" font-family="-apple-system,sans-serif" font-size="16" font-weight="900" fill="${suitColor}">${contratValue}</text>
+    <text x="${cx-48}" y="${cy-44}" font-family="-apple-system,sans-serif" font-size="16" fill="${suitColor}">${contratSuit}</text>
+
+    <!-- Coin bas-droit : valeur + suit (retourné) -->
+    <text x="${cx+48}" y="${cy+72}" font-family="-apple-system,sans-serif" font-size="16" font-weight="900" fill="${suitColor}" text-anchor="middle" transform="rotate(180,${cx+48},${cy+65})">${contratValue}</text>
+    <text x="${cx+48}" y="${cy+88}" font-family="-apple-system,sans-serif" font-size="16" fill="${suitColor}" text-anchor="middle" transform="rotate(180,${cx+48},${cy+81})">${contratSuit}</text>
+
+    <!-- Grand symbole centre-haut -->
+    <text x="${cx}" y="${cy-20}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="42" fill="${suitColor}">${contratSuit}</text>
+
+    <!-- Valeur du contrat en grand -->
+    <text x="${cx}" y="${cy+28}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="34" font-weight="900" fill="${suitColor}">${contratValue}</text>
+
+    <!-- Nom équipe preneuse -->
+    <text x="${cx}" y="${cy+55}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#5a3a0a">${pTeamName.replace('&','&amp;')}</text>
+
+    <!-- Badge contre/surcontre sur la carte -->
     ${contreLabel ? `
-    <rect x="${cx-52}" y="${cy-28}" width="104" height="24" rx="12" fill="rgba(200,168,74,0.3)" stroke="rgba(200,168,74,0.6)" stroke-width="1.5"/>
-    <text x="${cx}" y="${cy-11}" text-anchor="middle"
-      font-family="-apple-system,sans-serif" font-size="12" font-weight="700" fill="#f0d080">${contreLabel}</text>
+    <rect x="${cx-36}" y="${cy+62}" width="72" height="16" rx="8" fill="#c8960a"/>
+    <text x="${cx}" y="${cy+74}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" font-weight="800" fill="#fff">${contreLabel}</text>
     ` : ''}
-
-    <!-- Équipe preneuse en BAS -->
-    ${pTeamName ? `
-    <text x="${cx}" y="${cy+72}" text-anchor="middle"
-      font-family="-apple-system,sans-serif" font-size="18" font-weight="800"
-      fill="rgba(255,255,255,0.92)"
-      style="filter:drop-shadow(0 1px 3px rgba(0,0,0,0.5))">${pTeamName}</text>
     ` : ''}
 
     <!-- Joueurs aux 4 côtés -->
