@@ -1152,7 +1152,7 @@ function renderContractReminder() {
       <div style="font-size:52px;color:${suitColor};line-height:1;flex-shrink:0;">${c.suit}</div>
       <div style="min-width:0;">
         <div style="font-size:26px;font-weight:900;color:#fff;line-height:1.1;">${c.isCapot?'Capot':c.value}${contreTxt}</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.75);margin-top:5px;">🏆 Preneurs : <strong style="color:#7ddd82;">${pTeam}</strong></div>
+        <div style="font-size:16px;font-weight:700;color:#7ddd82;margin-top:6px;">🏆 ${pTeam}</div>
       </div>
     </div>`;
   } else {
@@ -1173,21 +1173,19 @@ function onBeloteChange(team) {
 
 function refreshBeloteBoxes() {
   const b1=eid('chk-bel-t1').checked, b2=eid('chk-bel-t2').checked;
-  const cap1=eid('chk-cap-t1').checked, cap2=eid('chk-cap-t2').checked;
-  const capotAny = cap1||cap2;
   const box1=eid('lbl-bel-t1-box');
   const box2=eid('lbl-bel-t2-box');
   if(box1){
     box1.style.borderColor = b1?'var(--green)':'rgba(255,255,255,0.2)';
-    box1.style.background  = b1?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
-    box1.style.opacity     = capotAny?'0.35':'1';
-    box1.style.pointerEvents = capotAny?'none':'auto';
+    box1.style.background  = b1?'rgba(58,140,63,0.4)':'rgba(255,255,255,0.1)';
+    box1.style.opacity     = '1';
+    box1.style.pointerEvents = 'auto';
   }
   if(box2){
     box2.style.borderColor = b2?'var(--green)':'rgba(255,255,255,0.2)';
-    box2.style.background  = b2?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
-    box2.style.opacity     = capotAny?'0.35':'1';
-    box2.style.pointerEvents = capotAny?'none':'auto';
+    box2.style.background  = b2?'rgba(58,140,63,0.4)':'rgba(255,255,255,0.1)';
+    box2.style.opacity     = '1';
+    box2.style.pointerEvents = 'auto';
   }
 }
 
@@ -1206,21 +1204,36 @@ function onCapotChange(team) {
 }
 
 function setCapot(team) {
-  // Toggle capot pour l'équipe choisie
   const c1 = eid('chk-cap-t1'), c2 = eid('chk-cap-t2');
   const b1 = eid('btn-capot-t1'), b2 = eid('btn-capot-t2');
   const isActive = (team==='t1') ? c1.checked : c2.checked;
-  // Reset both
+  // Reset both K buttons
   c1.checked = false; c2.checked = false;
   if(b1) { b1.style.background='#e8f0fb'; b1.style.color='#1a5295'; b1.style.borderColor='#1a5295'; }
   if(b2) { b2.style.background='#e8f0fb'; b2.style.color='#1a5295'; b2.style.borderColor='#1a5295'; }
   if(!isActive) {
-    // Activer le capot pour cette équipe
-    if(team==='t1') { c1.checked=true; if(b1){b1.style.background='#1a5295';b1.style.color='#fff';b1.style.borderColor='#1a5295';} }
-    else            { c2.checked=true; if(b2){b2.style.background='#1a5295';b2.style.color='#fff';b2.style.borderColor='#1a5295';} }
+    if(team==='t1') { c1.checked=true; if(b1){b1.style.background='#1a5295';b1.style.color='#fff';} }
+    else            { c2.checked=true; if(b2){b2.style.background='#1a5295';b2.style.color='#fff';} }
   }
   eid('chk-capot-fait').checked = c1.checked || c2.checked;
-  refreshCapotBoxes();
+  // Afficher 250 dans la box de l'équipe qui a fait capot, vider l'autre
+  const capotTeam = c1.checked ? 't1' : c2.checked ? 't2' : null;
+  const inp1 = eid('inp-pts-t1'), inp2 = eid('inp-pts-t2');
+  if(capotTeam) {
+    inp1.value = capotTeam==='t1' ? '250' : '';
+    inp2.value = capotTeam==='t2' ? '250' : '';
+    inp1.disabled = true; inp2.disabled = true;
+    const stp1=eid('stp-t1'), stp2=eid('stp-t2');
+    if(stp1){stp1.style.opacity='0.4';stp1.style.pointerEvents='none';}
+    if(stp2){stp2.style.opacity='0.4';stp2.style.pointerEvents='none';}
+  } else {
+    inp1.value=''; inp2.value='';
+    inp1.disabled=false; inp2.disabled=false;
+    const stp1=eid('stp-t1'), stp2=eid('stp-t2');
+    if(stp1){stp1.style.opacity='1';stp1.style.pointerEvents='auto';}
+    if(stp2){stp2.style.opacity='1';stp2.style.pointerEvents='auto';}
+  }
+  // NE PAS désactiver la belote — capot + belote est possible (+20)
   refreshBeloteBoxes();
   eid('score-calc-result').style.display='none';
   eid('confirm-score-btn').style.display='none';
