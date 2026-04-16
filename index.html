@@ -87,7 +87,7 @@
       z-index: 200 !important;
       overflow-y: auto !important;
       padding-top: 16px !important;
-      padding-bottom: 80px !important;
+      padding-bottom: 90px !important;
       background: var(--bg) !important;
     }
 
@@ -301,7 +301,7 @@
   .marque-table .pts-zero { color: var(--red); font-weight: 700; text-align: center; }
 
   /* ── BOTTOM NAV ── */
-  .bottom-nav { background: var(--panel); border-top: 1px solid rgba(255,255,255,0.08); display: grid; padding-bottom: env(safe-area-inset-bottom, 0); position: sticky; bottom: 0; z-index: 100; }
+  .bottom-nav { background: var(--panel); border-top: 1px solid rgba(255,255,255,0.08); display: grid; padding-bottom: env(safe-area-inset-bottom, 0); position: fixed; bottom: 0; left: 0; right: 0; z-index: 300; }
   .bottom-nav.nav4 { grid-template-columns: repeat(4, 1fr); }
   .bottom-nav.nav5 { grid-template-columns: repeat(5, 1fr); }
   .bottom-nav.nav3 { grid-template-columns: repeat(3, 1fr); }
@@ -405,35 +405,35 @@
           <text x="31" y="379" text-anchor="middle" font-family="serif" font-size="28" fill="#c8000a">♥</text>
           <rect x="348" y="348" width="42" height="42" rx="7" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
           <text x="369" y="379" text-anchor="middle" font-family="serif" font-size="28" fill="#111">♣</text>
-          <!-- Labels positions : uniquement NORD et SUD dans la SVG -->
-          <text x="200" y="40" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">NORD</text>
-          <text x="200" y="375" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">SUD</text>
+          <!-- Pas de labels dans la SVG : ils sont en HTML absolu -->
         </svg>
 
-        <!-- Select NORD — remonté sous le label NORD -->
-        <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);width:140px;">
+        <!-- NORD label + select -->
+        <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+          <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2px;">NORD</span>
           <select id="sel-nord" onchange="refreshTeamPreview()" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♠ Nord…</option>
           </select>
         </div>
 
-        <!-- Select SUD — descendu au-dessus du label SUD -->
-        <div style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);width:140px;">
+        <!-- SUD label + select -->
+        <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;">
           <select id="sel-sud" onchange="refreshTeamPreview()" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♣ Sud…</option>
           </select>
+          <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2px;">SUD</span>
         </div>
 
-        <!-- Select OUEST — label EN DESSOUS du select -->
-        <div style="position:absolute;top:50%;left:4px;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <!-- Select OUEST -->
+        <div style="position:absolute;top:50%;left:6%;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;">
           <select id="sel-ouest" onchange="refreshTeamPreview()" style="width:100%;padding:6px 6px;font-size:12px;font-weight:700;border-radius:10px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♦ Joueur…</option>
           </select>
           <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:1.5px;">OUEST</span>
         </div>
 
-        <!-- Select EST — label EN DESSOUS du select -->
-        <div style="position:absolute;top:50%;right:4px;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <!-- Select EST -->
+        <div style="position:absolute;top:50%;right:6%;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;">
           <select id="sel-est" onchange="refreshTeamPreview()" style="width:100%;padding:6px 6px;font-size:12px;font-weight:700;border-radius:10px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♥ Joueur…</option>
           </select>
@@ -1449,7 +1449,7 @@ function changeTeams() {
 function renderHistory() {
   const el=eid('history-content');
   if(!S.history.length) { el.innerHTML='<div class="empty-state"><div class="es-icon">📋</div>Aucune manche jouée</div>'; return; }
-  el.innerHTML=[...S.history].reverse().map(h=>{
+  el.innerHTML=[...S.history].map(h=>{
     const hasContract = h.contract && h.contract !== '—';
     const contreTxt = hasContract && h.contre && h.contre!=='none'
       ? ` <span class="tag tag-gold">${h.contre}</span>` : '';
