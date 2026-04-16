@@ -397,15 +397,15 @@
           <rect width="400" height="400" rx="18" fill="url(#sp-quilted)"/>
           <rect x="8" y="8" width="384" height="384" rx="14" fill="none" stroke="#c8a84a" stroke-width="3"/>
           <rect x="14" y="14" width="372" height="372" rx="11" fill="none" stroke="rgba(200,168,74,0.35)" stroke-width="1"/>
-          <!-- Coins symboles -->
-          <rect x="10" y="10" width="42" height="42" rx="7" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
-          <text x="31" y="42" text-anchor="middle" font-family="serif" font-size="28" fill="#111">♠</text>
-          <rect x="348" y="10" width="42" height="42" rx="7" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
-          <text x="369" y="42" text-anchor="middle" font-family="serif" font-size="28" fill="#c8000a">♦</text>
-          <rect x="10" y="348" width="42" height="42" rx="7" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
-          <text x="31" y="379" text-anchor="middle" font-family="serif" font-size="28" fill="#c8000a">♥</text>
-          <rect x="348" y="348" width="42" height="42" rx="7" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
-          <text x="369" y="379" text-anchor="middle" font-family="serif" font-size="28" fill="#111">♣</text>
+          <!-- Coins symboles — décalés à l'intérieur des bordures dorées -->
+          <rect x="22" y="22" width="48" height="48" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
+          <text x="46" y="56" text-anchor="middle" font-family="serif" font-size="30" fill="#111">♠</text>
+          <rect x="330" y="22" width="48" height="48" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
+          <text x="354" y="56" text-anchor="middle" font-family="serif" font-size="30" fill="#c8000a">♦</text>
+          <rect x="22" y="330" width="48" height="48" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
+          <text x="46" y="364" text-anchor="middle" font-family="serif" font-size="30" fill="#c8000a">♥</text>
+          <rect x="330" y="330" width="48" height="48" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
+          <text x="354" y="364" text-anchor="middle" font-family="serif" font-size="30" fill="#111">♣</text>
           <!-- Pas de labels dans la SVG : ils sont en HTML absolu -->
         </svg>
 
@@ -1626,12 +1626,12 @@ function renderEnjeu() {
   // Viewport 400×400. Centre = 200,200.
   const W=400, H=400, cx=200, cy=200;
 
-  // Positions des joueurs — collés aux bords de la table carrée
+  // Positions des joueurs — décalés du bord pour laisser voir la bordure dorée
   const positions = {
     nord:  { x:200, y:30,  anchor:'middle' },
     sud:   { x:200, y:378, anchor:'middle' },
-    est:   { x:386, y:200, anchor:'end'    },
-    ouest: { x:14,  y:200, anchor:'start'  },
+    est:   { x:372, y:200, anchor:'end'    },
+    ouest: { x:28,  y:200, anchor:'start'  },
   };
 
   // Couleurs équipes
