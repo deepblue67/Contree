@@ -353,10 +353,11 @@
 
   /* ── PULSE ANIMATION ── */
   @keyframes pulse-select {
-    0%,100% { box-shadow: 0 0 0 0 rgba(58,140,63,0.9); opacity:1; border-color:#3a8c3f; }
-    40% { box-shadow: 0 0 0 7px rgba(58,140,63,0); opacity:0.6; border-color:#7ddd82; }
+    0%   { box-shadow: 0 0 0 0 rgba(125,221,130,0.9); opacity:1;   border-color:#7ddd82; }
+    50%  { box-shadow: 0 0 0 10px rgba(125,221,130,0); opacity:0.45; border-color:#3a8c3f; }
+    100% { box-shadow: 0 0 0 0 rgba(125,221,130,0.9); opacity:1;   border-color:#7ddd82; }
   }
-  .select-pulse { animation: pulse-select 2.5s ease infinite !important; border: 2px solid #3a8c3f !important; }
+  .select-pulse { animation: pulse-select 1.2s ease infinite !important; border: 2px solid #7ddd82 !important; }
 
   @keyframes pulse-btn {
     0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.8), 0 0 0 0 rgba(255,220,0,0.6); opacity:1; }
@@ -408,16 +409,16 @@
           <!-- Pas de labels dans la SVG : ils sont en HTML absolu -->
         </svg>
 
-        <!-- NORD label + select -->
-        <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <!-- NORD label + select : à l'intérieur de la table -->
+        <div style="position:absolute;top:5%;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;">
           <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2px;">NORD</span>
           <select id="sel-nord" onchange="refreshTeamPreview()" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♠ Nord…</option>
           </select>
         </div>
 
-        <!-- SUD label + select -->
-        <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <!-- SUD label + select : à l'intérieur de la table -->
+        <div style="position:absolute;bottom:5%;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;">
           <select id="sel-sud" onchange="refreshTeamPreview()" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♣ Sud…</option>
           </select>
@@ -1412,9 +1413,9 @@ function newGame() {
   S.contract=null;
   S.form={preneur:'',suit:'',suitKey:'',suitColor:'',value:80,isCapot:false,contre:'none'};
   pendingScore=null;
-  // On garde les équipes — on revient sur la page TABLE pour choisir le donneur
-  initGameUI();
-  showTab('enjeu');
+  // Retour page config, équipes conservées (selects non vidés)
+  refreshTeamPreview();
+  showScreen('setup');
 }
 
 function askNewGame() {
