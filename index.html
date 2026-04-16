@@ -83,11 +83,14 @@
     /* En paysage, les tabs non-enjeu s'affichent en overlay plein écran */
     #tab-contrat, #tab-saisie, #tab-history, #tab-marque {
       position: fixed !important;
-      inset: 0 !important;
+      top: 60px !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 70px !important;
       z-index: 200 !important;
       overflow-y: auto !important;
       padding-top: 16px !important;
-      padding-bottom: 90px !important;
+      padding-bottom: 16px !important;
       background: var(--bg) !important;
     }
 
@@ -1005,7 +1008,7 @@ function updateDealerInfo() {
 function updateContractForm() {
   // Si un contrat existe, on recharge S.form depuis S.contract
   if(S.contract) {
-    S.form.preneur   = S.contract.preneурTeam;
+    S.form.preneur   = S.contract.preneurTeam;
     S.form.suit      = S.contract.suit;
     const suitMap = {'♥':['h','red'],'♦':['d','red'],'♣':['c','dark'],'♠':['s','dark']};
     const mapped = suitMap[S.contract.suit] || ['',''];
@@ -1092,7 +1095,7 @@ function confirmContract() {
   S.form.isCapot = (val === 250);
   S.form.value = val;
   S.contract = {
-    preneурTeam: f.preneur,
+    preneurTeam: f.preneur,
     suit: f.suit,
     suitKey: f.suitKey,
     value: val,
@@ -1130,7 +1133,7 @@ function updateSaisieForm() {
   refreshCapotBoxes();
   if(S.contract) {
     const c=S.contract;
-    const pTeam=c.preneурTeam==='t1'?S.t1.name:S.t2.name;
+    const pTeam=c.preneurTeam==='t1'?S.t1.name:S.t2.name;
     const contreTxt=c.contre!=='none'?` <span style="background:#c8960a;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-left:4px;">${c.contre}</span>`:'';
     const isRed = c.suit==='♥'||c.suit==='♦';
     const suitColor = isRed ? '#cc1f1f' : '#111';
@@ -1143,7 +1146,7 @@ function updateSaisieForm() {
         </div>
       </div>`;
   } else {
-    eid('contract-reminder').innerHTML='<div style="background:rgba(255,68,68,0.15);border:1px solid rgba(255,68,68,0.4);border-radius:var(--radius);padding:12px 16px;font-size:14px;font-weight:700;color:#ff6666;">⚠️ Attention, aucun contrat n\'est en cours pour cette manche</div>';
+    eid('contract-reminder').innerHTML='<div style="background:rgba(255,68,68,0.2);border:2px solid rgba(255,68,68,0.6);border-radius:var(--radius);padding:14px 18px;font-size:15px;font-weight:700;color:#ff6666;display:flex;align-items:center;gap:10px;">⚠️ Aucun contrat saisi pour cette manche</div>';
   }
 }
 
@@ -1301,7 +1304,7 @@ function calcAndPreview() {
   const c = S.contract;
   const mult = c.contre==='surcontre'?3:c.contre==='contre'?2:1;
   const hasContre = c.contre !== 'none';
-  const preneурIsT1 = c.preneурTeam==='t1';
+  const preneурIsT1 = c.preneurTeam==='t1';
 
   // Capot fait par le preneur ?
   const capotByPreneur = preneурIsT1 ? cap1 : cap2;
@@ -1504,7 +1507,7 @@ function validateScore() {
     manche: S.manche,
     contract: S.contract ? `${S.contract.isCapot?'Capot':S.contract.value} ${S.contract.suit}` : '—',
     contre: S.contract?S.contract.contre:'none',
-    preneur: S.contract?(S.contract.preneурTeam==='t1'?S.t1.name:S.t2.name):'—',
+    preneur: S.contract?(S.contract.preneurTeam==='t1'?S.t1.name:S.t2.name):'—',
     chute: pendingScore.chute,
     pts1: pendingScore.pts1,
     pts2: pendingScore.pts2,
@@ -1838,7 +1841,7 @@ function renderEnjeu() {
   };
 
   // Infos contrat (ou vide si pas de contrat)
-  const preneурIsT1 = c ? c.preneурTeam==='t1' : true;
+  const preneурIsT1 = c ? c.preneurTeam==='t1' : true;
   const pTeamName   = c ? (preneурIsT1 ? S.t1.name : S.t2.name) : '';
   const preneurPositions = preneурIsT1 ? ['nord','sud'] : ['est','ouest'];
   const isRed       = c ? (c.suit==='♥'||c.suit==='♦') : false;
