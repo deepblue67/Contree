@@ -1167,14 +1167,18 @@ function refreshBeloteBoxes() {
   const capotAny = cap1||cap2;
   const box1=eid('lbl-bel-t1-box');
   const box2=eid('lbl-bel-t2-box');
-  box1.style.borderColor = b1?'var(--green)':'rgba(255,255,255,0.2)';
-  box1.style.background   = b1?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
-  box1.style.opacity      = capotAny?'0.35':'1';
-  box1.style.pointerEvents= capotAny?'none':'auto';
-  box2.style.borderColor  = b2?'var(--green)':'rgba(255,255,255,0.2)';
-  box2.style.background   = b2?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
-  box2.style.opacity      = capotAny?'0.35':'1';
-  box2.style.pointerEvents= capotAny?'none':'auto';
+  if(box1){
+    box1.style.borderColor = b1?'var(--green)':'rgba(255,255,255,0.2)';
+    box1.style.background  = b1?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
+    box1.style.opacity     = capotAny?'0.35':'1';
+    box1.style.pointerEvents = capotAny?'none':'auto';
+  }
+  if(box2){
+    box2.style.borderColor = b2?'var(--green)':'rgba(255,255,255,0.2)';
+    box2.style.background  = b2?'rgba(58,140,63,0.4)':(capotAny?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.1)');
+    box2.style.opacity     = capotAny?'0.35':'1';
+    box2.style.pointerEvents = capotAny?'none':'auto';
+  }
 }
 
 // Capot : une seule équipe à la fois — et désactive la saisie des scores
@@ -1269,18 +1273,12 @@ function stepScore(team, delta) {
 function refreshCapotBoxes() {
   const cap1=eid('chk-cap-t1').checked, cap2=eid('chk-cap-t2').checked;
   const capotAny=cap1||cap2;
-  // Score steppers : disabled + grisé si capot
   const inp1=eid('inp-pts-t1'), inp2=eid('inp-pts-t2');
   const stp1=eid('stp-t1'), stp2=eid('stp-t2');
-  inp1.disabled=capotAny; inp2.disabled=capotAny;
+  if(inp1) inp1.disabled=capotAny;
+  if(inp2) inp2.disabled=capotAny;
   [stp1,stp2].forEach(s=>{ if(s){ s.style.opacity=capotAny?'0.4':'1'; s.style.pointerEvents=capotAny?'none':'auto'; } });
-  if(capotAny){ inp1.value=''; inp2.value=''; }
-  // Style boîtes capot
-  const cbox1=eid('lbl-cap-t1-box'), cbox2=eid('lbl-cap-t2-box');
-  cbox1.style.borderColor=cap1?'#80b0ff':'rgba(255,255,255,0.2)';
-  cbox1.style.background =cap1?'rgba(26,82,149,0.4)':'rgba(255,255,255,0.1)';
-  cbox2.style.borderColor=cap2?'#80b0ff':'rgba(255,255,255,0.2)';
-  cbox2.style.background =cap2?'rgba(26,82,149,0.4)':'rgba(255,255,255,0.1)';
+  if(capotAny){ if(inp1)inp1.value=''; if(inp2)inp2.value=''; }
 }
 
 function calcAndPreview() {
