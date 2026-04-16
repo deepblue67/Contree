@@ -597,20 +597,20 @@
 
     <!-- TAB: SCORE SAISIE -->
     <div id="tab-saisie" class="body" style="display:none;">
-      <div class="card">
+
+      <!-- Box contrat en cours — AU DESSUS, hors de la card résultat -->
+      <div id="contract-reminder"></div>
+
+      <div class="card" style="overflow:hidden;">
         <div class="card-title">Résultat de la manche</div>
 
-        <!-- Contract reminder — plus grand et lisible -->
-        <div id="contract-reminder" style="margin-bottom:16px;"></div>
-
-        <!-- Colonnes équipes — alignées strictement -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
+        <!-- Colonnes équipes — alignées strictement, overflow contrôlé -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;">
 
           <!-- ── Équipe 1 ── -->
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <label id="lbl-pts-t1" style="text-align:center;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;">Équipe 1</label>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;">
+            <label id="lbl-pts-t1" style="text-align:center;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Équipe 1</label>
 
-            <!-- Stepper -->
             <div class="stepper" id="stp-t1">
               <button onclick="stepScore('t1',-10)" type="button">−</button>
               <input class="sv" type="number" id="inp-pts-t1" inputmode="numeric" min="0" max="500" step="10" placeholder="0">
@@ -618,27 +618,25 @@
             </div>
 
             <!-- Boutons rapides style contrat -->
-            <div style="display:flex;gap:4px;justify-content:center;">
-              <span onclick="setQuickScore('t1',80)"  style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">80</span>
-              <span onclick="setQuickScore('t1',100)" style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">100</span>
-              <span onclick="setQuickScore('t1',120)" style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">120</span>
-              <span onclick="setQuickScore('t1',140)" style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">140</span>
-              <span id="btn-capot-t1" onclick="setCapot('t1')" style="cursor:pointer;font-size:12px;padding:3px 8px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;">K</span>
+            <div style="display:flex;gap:3px;justify-content:center;flex-wrap:nowrap;">
+              <span onclick="setQuickScore('t1',80)"  style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
+              <span onclick="setQuickScore('t1',100)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
+              <span onclick="setQuickScore('t1',120)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
+              <span onclick="setQuickScore('t1',140)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">140</span>
+              <span id="btn-capot-t1" onclick="setCapot('t1')" style="cursor:pointer;font-size:11px;padding:3px 6px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;white-space:nowrap;">K</span>
             </div>
 
-            <!-- Belote T1 — compact avec visuels cartes -->
+            <!-- Belote T1 — sans icônes cartes -->
             <label id="lbl-bel-t1-box" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:99px;padding:7px 8px;cursor:pointer;font-size:12px;font-weight:600;color:#fff;transition:all 0.15s;">
-              <span style="font-size:15px;line-height:1;">🂻🂺</span>
               <input type="checkbox" id="chk-bel-t1" onchange="onBeloteChange(1)" style="width:16px;height:16px;cursor:pointer;accent-color:var(--green);flex-shrink:0;">
               <span>Belote</span>
             </label>
           </div>
 
           <!-- ── Équipe 2 ── -->
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <label id="lbl-pts-t2" style="text-align:center;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;">Équipe 2</label>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;">
+            <label id="lbl-pts-t2" style="text-align:center;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.07em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Équipe 2</label>
 
-            <!-- Stepper -->
             <div class="stepper" id="stp-t2">
               <button onclick="stepScore('t2',-10)" type="button">−</button>
               <input class="sv" type="number" id="inp-pts-t2" inputmode="numeric" min="0" max="500" step="10" placeholder="0">
@@ -646,17 +644,16 @@
             </div>
 
             <!-- Boutons rapides style contrat -->
-            <div style="display:flex;gap:4px;justify-content:center;">
-              <span onclick="setQuickScore('t2',80)"  style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">80</span>
-              <span onclick="setQuickScore('t2',100)" style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">100</span>
-              <span onclick="setQuickScore('t2',120)" style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">120</span>
-              <span onclick="setQuickScore('t2',140)" style="cursor:pointer;font-size:12px;padding:3px 7px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;">140</span>
-              <span id="btn-capot-t2" onclick="setCapot('t2')" style="cursor:pointer;font-size:12px;padding:3px 8px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;">K</span>
+            <div style="display:flex;gap:3px;justify-content:center;flex-wrap:nowrap;">
+              <span onclick="setQuickScore('t2',80)"  style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
+              <span onclick="setQuickScore('t2',100)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
+              <span onclick="setQuickScore('t2',120)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
+              <span onclick="setQuickScore('t2',140)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">140</span>
+              <span id="btn-capot-t2" onclick="setCapot('t2')" style="cursor:pointer;font-size:11px;padding:3px 6px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;white-space:nowrap;">K</span>
             </div>
 
-            <!-- Belote T2 — compact avec visuels cartes -->
+            <!-- Belote T2 — sans icônes cartes -->
             <label id="lbl-bel-t2-box" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:99px;padding:7px 8px;cursor:pointer;font-size:12px;font-weight:600;color:#fff;transition:all 0.15s;">
-              <span style="font-size:15px;line-height:1;">🂻🂺</span>
               <input type="checkbox" id="chk-bel-t2" onchange="onBeloteChange(2)" style="width:16px;height:16px;cursor:pointer;accent-color:var(--green);flex-shrink:0;">
               <span>Belote</span>
             </label>
@@ -1138,15 +1135,15 @@ function updateSaisieForm() {
     const isRed = c.suit==='♥'||c.suit==='♦';
     const suitColor = isRed ? '#cc1f1f' : '#111';
     eid('contract-reminder').innerHTML=`
-      <div style="background:#f8f4ec;border:2px solid #e0ddd6;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
-        <div style="font-size:44px;color:${suitColor};line-height:1;flex-shrink:0;">${c.suit}</div>
+      <div style="background:#f8f4ec;border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;gap:14px;border:2px solid #e0ddd6;">
+        <div style="font-size:48px;color:${suitColor};line-height:1;flex-shrink:0;">${c.suit}</div>
         <div>
-          <div style="font-size:22px;font-weight:900;color:var(--text);line-height:1.1;">${c.isCapot?'Capot':c.value}${contreTxt}</div>
-          <div style="font-size:13px;color:var(--text2);margin-top:3px;">Preneurs : <strong>${pTeam}</strong></div>
+          <div style="font-size:24px;font-weight:900;color:var(--text);line-height:1.1;">${c.isCapot?'Capot':c.value}${contreTxt}</div>
+          <div style="font-size:13px;color:var(--text2);margin-top:4px;">🏆 Preneurs : <strong style="color:var(--text);">${pTeam}</strong></div>
         </div>
       </div>`;
   } else {
-    eid('contract-reminder').innerHTML='<div style="font-size:15px;font-weight:700;color:#ff4444;padding:4px 0;">⚠️ Attention, aucun contrat n\'est en cours pour cette manche</div>';
+    eid('contract-reminder').innerHTML='<div style="background:rgba(255,68,68,0.15);border:1px solid rgba(255,68,68,0.4);border-radius:var(--radius);padding:12px 16px;font-size:14px;font-weight:700;color:#ff6666;">⚠️ Attention, aucun contrat n\'est en cours pour cette manche</div>';
   }
 }
 
