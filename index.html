@@ -2014,42 +2014,37 @@ function renderEnjeu() {
 
     <!-- ── CARTE AU CENTRE si contrat ── -->
     ${contratValue ? `
-    <!-- Ombre de la carte -->
-    <rect x="${cx-58}" y="${cy-82}" width="116" height="164" rx="12" fill="rgba(0,0,0,0.35)"/>
-    <!-- Corps de la carte -->
-    <rect x="${cx-60}" y="${cy-84}" width="116" height="164" rx="12" fill="#faf6ee" stroke="#c8a84a" stroke-width="2"/>
-    <!-- Bordure intérieure dorée -->
-    <rect x="${cx-54}" y="${cy-78}" width="104" height="152" rx="9" fill="none" stroke="rgba(200,168,74,0.5)" stroke-width="1"/>
+    <!-- Ombre -->
+    <rect x="${cx-58}" y="${cy-84}" width="116" height="168" rx="12" fill="rgba(0,0,0,0.35)"/>
+    <!-- Corps carte -->
+    <rect x="${cx-60}" y="${cy-86}" width="116" height="168" rx="12" fill="#faf6ee" stroke="#c8a84a" stroke-width="2"/>
+    <!-- Bordure intérieure -->
+    <rect x="${cx-54}" y="${cy-80}" width="104" height="156" rx="9" fill="none" stroke="rgba(200,168,74,0.45)" stroke-width="1"/>
 
-    <!-- Coin haut-gauche : valeur + suit -->
-    <text x="${cx-48}" y="${cy-63}" font-family="-apple-system,sans-serif" font-size="15" font-weight="900" fill="${suitColor}">${contratValue}</text>
-    <text x="${cx-48}" y="${cy-48}" font-family="-apple-system,sans-serif" font-size="15" fill="${suitColor}">${contratSuit}</text>
+    <!-- Couleur aux 4 coins -->
+    <text x="${cx-46}" y="${cy-62}" font-family="-apple-system,sans-serif" font-size="18" fill="${suitColor}">${contratSuit}</text>
+    <text x="${cx+46}" y="${cy-62}" text-anchor="end" font-family="-apple-system,sans-serif" font-size="18" fill="${suitColor}">${contratSuit}</text>
+    <text x="${cx-46}" y="${cy+72}" font-family="-apple-system,sans-serif" font-size="18" fill="${suitColor}">${contratSuit}</text>
+    <text x="${cx+46}" y="${cy+72}" text-anchor="end" font-family="-apple-system,sans-serif" font-size="18" fill="${suitColor}">${contratSuit}</text>
 
-    <!-- Coin bas-droit : valeur + suit — DANS la carte -->
-    <text x="${cx+46}" y="${cy+68}" text-anchor="end" font-family="-apple-system,sans-serif" font-size="15" font-weight="900" fill="${suitColor}" transform="rotate(180,${cx+38},${cy+61})">${contratValue}</text>
-    <text x="${cx+46}" y="${cy+68}" text-anchor="end" font-family="-apple-system,sans-serif" font-size="15" fill="${suitColor}" transform="rotate(180,${cx+38},${cy+46})">${contratSuit}</text>
+    <!-- Hauteur du contrat — un peu au-dessus du centre -->
+    <text x="${cx}" y="${cy-10}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="44" font-weight="900" fill="${suitColor}">${contratValue}</text>
 
-    <!-- Grand symbole couleur — centré en haut de carte -->
-    <text x="${cx}" y="${cy-22}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="38" fill="${suitColor}">${contratSuit}</text>
-
-    <!-- Valeur du contrat en grand — remonté -->
-    <text x="${cx}" y="${cy+18}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="32" font-weight="900" fill="${suitColor}">${contratValue}</text>
-
-    <!-- Nom équipe preneuse sur 3 lignes : nom1 / & / nom2 -->
+    <!-- Nom équipe preneuse : 3 lignes centrées -->
     ${(()=>{
       const parts = pTeamName.split(' & ');
       if(parts.length===2) {
-        return `<text x="${cx}" y="${cy+36}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="#5a3a0a">${parts[0].replace('&','&amp;')}</text>
-                <text x="${cx}" y="${cy+48}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="#5a3a0a">&amp;</text>
-                <text x="${cx}" y="${cy+60}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="#5a3a0a">${parts[1].replace('&','&amp;')}</text>`;
+        return `<text x="${cx}" y="${cy+32}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#5a3a0a">${parts[0].replace('&','&amp;')}</text>
+                <text x="${cx}" y="${cy+46}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#5a3a0a">&amp;</text>
+                <text x="${cx}" y="${cy+60}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#5a3a0a">${parts[1].replace('&','&amp;')}</text>`;
       }
-      return `<text x="${cx}" y="${cy+48}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="#5a3a0a">${pTeamName.replace('&','&amp;')}</text>`;
+      return `<text x="${cx}" y="${cy+48}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#5a3a0a">${pTeamName.replace('&','&amp;')}</text>`;
     })()}
 
-    <!-- Badge contre/surcontre sur la carte -->
+    <!-- Badge contre/surcontre -->
     ${contreLabel ? `
-    <rect x="${cx-36}" y="${cy+58}" width="72" height="16" rx="8" fill="#c8960a"/>
-    <text x="${cx}" y="${cy+70}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" font-weight="800" fill="#fff">${contreLabel}</text>
+    <rect x="${cx-38}" y="${cy+66}" width="76" height="16" rx="8" fill="#c8960a"/>
+    <text x="${cx}" y="${cy+78}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" font-weight="800" fill="#fff">${contreLabel}</text>
     ` : ''}
     ` : ''}
 
