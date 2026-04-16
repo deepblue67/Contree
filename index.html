@@ -80,14 +80,23 @@
   @media (min-width: 900px) and (orientation: landscape) {
     #app { max-width: 100%; width: 100%; }
 
+    /* En paysage, les tabs non-enjeu s'affichent en overlay plein écran */
+    #tab-contrat, #tab-saisie, #tab-history, #tab-marque {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 200 !important;
+      overflow-y: auto !important;
+      padding-bottom: 80px !important;
+    }
+
     /* Page TABLE : table à gauche, scores + boutons à droite */
     #tab-enjeu {
       display: grid !important;
-      grid-template-columns: 1fr 400px;
+      grid-template-columns: 1fr 360px;
       grid-template-rows: auto auto auto;
-      column-gap: 24px;
-      row-gap: 16px;
-      padding: 16px 24px !important;
+      column-gap: 20px;
+      row-gap: 14px;
+      padding: 12px 20px !important;
       align-items: start;
     }
     #ej-table-wrap {
@@ -96,6 +105,7 @@
       max-width: 100% !important;
       padding: 0 !important;
     }
+    #ej-table-wrap svg { max-height: calc(100vh - 120px) !important; }
     #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; }
     #tab-enjeu > div:nth-child(3) { grid-column: 2; grid-row: 2; }
 
@@ -388,36 +398,31 @@
           <rect x="348" y="348" width="42" height="42" rx="7" fill="rgba(0,0,0,0.25)" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
           <text x="369" y="379" text-anchor="middle" font-family="serif" font-size="28" fill="#111">♣</text>
           <!-- Labels positions -->
-          <text x="200" y="58" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">NORD</text>
-          <text x="200" y="358" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">SUD</text>
-          <text x="42" y="206" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">OUEST</text>
-          <text x="358" y="206" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">EST</text>
-          <!-- Flèches indicatives -->
-          <line x1="200" y1="68" x2="200" y2="92" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" marker-end="url(#arr-down)"/>
-          <line x1="200" y1="332" x2="200" y2="308" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-          <line x1="68" y1="200" x2="92" y2="200" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-          <line x1="332" y1="200" x2="308" y2="200" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+          <text x="200" y="40" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">NORD</text>
+          <text x="200" y="375" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">SUD</text>
+          <text x="200" y="195" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">OUEST</text>
+          <text x="200" y="215" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.5)" letter-spacing="2">EST</text>
           <!-- Centre : équipes -->
           <text id="sp-vs" x="200" y="188" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" fill="rgba(255,255,255,0.4)">vs</text>
           <text id="sp-t1" x="200" y="175" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" fill="#7ddd82"></text>
           <text id="sp-t2" x="200" y="205" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" font-weight="700" fill="#80b0ff"></text>
         </svg>
 
-        <!-- Select NORD — centré en haut -->
-        <div style="position:absolute;top:66px;left:50%;transform:translateX(-50%);width:140px;">
+        <!-- Select NORD — remonté sous le label NORD -->
+        <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);width:140px;">
           <select id="sel-nord" onchange="refreshTeamPreview()" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♠ Nord…</option>
           </select>
         </div>
 
-        <!-- Select SUD — centré en bas -->
-        <div style="position:absolute;bottom:66px;left:50%;transform:translateX(-50%);width:140px;">
+        <!-- Select SUD — descendu au-dessus du label SUD -->
+        <div style="position:absolute;bottom:44px;left:50%;transform:translateX(-50%);width:140px;">
           <select id="sel-sud" onchange="refreshTeamPreview()" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♣ Sud…</option>
           </select>
         </div>
 
-        <!-- Select OUEST — centré à gauche avec label -->
+        <!-- Select OUEST — label EN DESSOUS du select -->
         <div style="position:absolute;top:50%;left:4px;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;">
           <select id="sel-ouest" onchange="refreshTeamPreview()" style="width:100%;padding:6px 6px;font-size:12px;font-weight:700;border-radius:10px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♦ Joueur…</option>
@@ -425,7 +430,7 @@
           <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:1.5px;">OUEST</span>
         </div>
 
-        <!-- Select EST — centré à droite avec label -->
+        <!-- Select EST — label EN DESSOUS du select -->
         <div style="position:absolute;top:50%;right:4px;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;">
           <select id="sel-est" onchange="refreshTeamPreview()" style="width:100%;padding:6px 6px;font-size:12px;font-weight:700;border-radius:10px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♥ Joueur…</option>
@@ -1414,13 +1419,13 @@ function newGame() {
   S.contract=null;
   S.form={preneur:'',suit:'',suitKey:'',suitColor:'',value:80,isCapot:false,contre:'none'};
   pendingScore=null;
-  showScreen('game');
+  // On garde les équipes — on revient sur la page TABLE pour choisir le donneur
   initGameUI();
   showTab('enjeu');
 }
 
 function askNewGame() {
-  eid('confirm-msg').textContent = 'Nouvelle partie ? Les scores seront remis à 0.';
+  eid('confirm-msg').textContent = 'Nouvelle partie ? Les scores seront remis à 0, les équipes restent.';
   eid('confirm-ok').onclick = () => { closeConfirm(); newGame(); };
   eid('confirm-modal').style.display = 'flex';
 }
