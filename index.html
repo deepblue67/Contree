@@ -301,23 +301,17 @@
   .hi-pts { font-weight: 700; color: var(--text); }
 
   /* ── SETUP TABLE SELECTS ── */
-  .setup-dir-label { font-size:9px; font-weight:700; color:rgba(255,255,255,0.55); letter-spacing:2px; }
-  .setup-sel-ns { width:140px; }
-  .setup-sel-eo { width:110px; }
-
+  .setup-dir-label { font-size:11px; font-weight:700; color:rgba(255,255,255,0.7); letter-spacing:2px; text-shadow:0 1px 2px rgba(0,0,0,0.5); }
+  .setup-sel { font-size:14px !important; padding:8px 10px !important; border-radius:12px !important; }
   /* iPad portrait */
   @media (min-width:700px) and (orientation:portrait) {
-    .setup-dir-label { font-size:13px; letter-spacing:3px; }
-    .setup-sel { font-size:16px !important; padding:10px 12px !important; border-radius:12px !important; }
-    .setup-sel-ns { width:180px !important; }
-    .setup-sel-eo { width:150px !important; }
+    .setup-dir-label { font-size:14px; letter-spacing:3px; }
+    .setup-sel { font-size:17px !important; padding:11px 12px !important; }
   }
   /* iPad paysage */
   @media (min-width:900px) and (orientation:landscape) {
-    .setup-dir-label { font-size:13px; letter-spacing:3px; }
-    .setup-sel { font-size:16px !important; padding:10px 12px !important; border-radius:12px !important; }
-    .setup-sel-ns { width:180px !important; }
-    .setup-sel-eo { width:150px !important; }
+    .setup-dir-label { font-size:14px; letter-spacing:3px; }
+    .setup-sel { font-size:17px !important; padding:11px 12px !important; }
   }
   .marque-table { width: 100%; border-collapse: collapse; font-size: 12px; }
   .marque-table th { font-size: 10px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; padding: 6px 4px; border-bottom: 2px solid var(--border-light); text-align: center; }
@@ -436,33 +430,33 @@
           <!-- Pas de labels dans la SVG : ils sont en HTML absolu -->
         </svg>
 
-        <!-- NORD label + select : à l'intérieur de la table -->
-        <div style="position:absolute;top:5%;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;" class="setup-sel-wrap setup-sel-ns">
+        <!-- NORD label + select -->
+        <div style="position:absolute;top:8%;left:50%;transform:translateX(-50%);width:50%;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:4px;" class="setup-sel-wrap setup-sel-ns">
           <span class="setup-dir-label">NORD</span>
-          <select id="sel-nord" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
+          <select id="sel-nord" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:8px 10px;font-size:14px;font-weight:700;border-radius:12px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♠ Nord…</option>
           </select>
         </div>
 
-        <!-- SUD label + select : à l'intérieur de la table -->
-        <div style="position:absolute;bottom:5%;left:50%;transform:translateX(-50%);width:140px;display:flex;flex-direction:column;align-items:center;gap:3px;" class="setup-sel-wrap setup-sel-ns">
-          <select id="sel-sud" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:6px 8px;font-size:13px;font-weight:700;border-radius:10px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
+        <!-- SUD label + select -->
+        <div style="position:absolute;bottom:8%;left:50%;transform:translateX(-50%);width:50%;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:4px;" class="setup-sel-wrap setup-sel-ns">
+          <select id="sel-sud" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:8px 10px;font-size:14px;font-weight:700;border-radius:12px;border:2px solid #3a8c3f;background:#1e3e1e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♣ Sud…</option>
           </select>
           <span class="setup-dir-label">SUD</span>
         </div>
 
         <!-- Select OUEST -->
-        <div style="position:absolute;top:50%;left:6%;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;" class="setup-sel-wrap setup-sel-eo">
-          <select id="sel-ouest" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:6px 6px;font-size:12px;font-weight:700;border-radius:10px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
+        <div style="position:absolute;top:50%;left:8%;transform:translateY(-50%);width:22%;max-width:130px;display:flex;flex-direction:column;align-items:center;gap:4px;" class="setup-sel-wrap setup-sel-eo">
+          <select id="sel-ouest" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:8px 4px;font-size:13px;font-weight:700;border-radius:12px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♦ Joueur…</option>
           </select>
           <span class="setup-dir-label">OUEST</span>
         </div>
 
         <!-- Select EST -->
-        <div style="position:absolute;top:50%;right:6%;transform:translateY(-50%);width:110px;display:flex;flex-direction:column;align-items:center;gap:3px;" class="setup-sel-wrap setup-sel-eo">
-          <select id="sel-est" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:6px 6px;font-size:12px;font-weight:700;border-radius:10px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
+        <div style="position:absolute;top:50%;right:8%;transform:translateY(-50%);width:22%;max-width:130px;display:flex;flex-direction:column;align-items:center;gap:4px;" class="setup-sel-wrap setup-sel-eo">
+          <select id="sel-est" onchange="refreshTeamPreview()" class="setup-sel" style="width:100%;padding:8px 4px;font-size:13px;font-weight:700;border-radius:12px;border:2px solid #1a5295;background:#0e1e3e;color:#fff;text-align:center;-webkit-appearance:none;appearance:none;cursor:pointer;text-align-last:center;">
             <option value="">♥ Joueur…</option>
           </select>
           <span class="setup-dir-label">EST</span>
