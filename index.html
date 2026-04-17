@@ -98,8 +98,10 @@
       bottom: 52px !important;
       z-index: 200 !important;
       overflow-y: auto !important;
+      overflow-x: hidden !important;
       padding: 8px 12px 8px !important;
-      background: var(--bg) !important;
+      background: #2e6b28 !important;
+      isolation: isolate !important;
     }
 
     /* ── CARDS compactes ── */
@@ -107,71 +109,68 @@
     .card-title { font-size: 10px; margin-bottom: 8px; }
 
     /* ── PAGE CONTRAT compact iPhone paysage ── */
-    /* Cacher le titre "Contrat" */
     #tab-contrat .card-title { display: none !important; }
+    #tab-contrat .card { padding: 8px 12px !important; gap: 6px !important; display: flex !important; flex-direction: column !important; }
 
-    /* Équipe preneuse : label + 2 boutons sur une ligne */
-    #tab-contrat .field:nth-child(2) { margin-bottom: 8px !important; }
-    #tab-contrat .field:nth-child(2) .btn-row { 
-      display: flex !important; 
-      align-items: center !important; 
-      gap: 8px !important;
+    /* LIGNE 1 : "Équipe preneuse" + 2 boutons */
+    #tab-contrat .field:first-of-type { 
+      display: flex !important; align-items: center !important; 
+      gap: 8px !important; margin-bottom: 0 !important;
     }
-    #tab-contrat .field:nth-child(2) label { 
-      white-space: nowrap; 
-      font-size: 11px !important; 
-      margin-bottom: 0 !important; 
-      margin-right: 4px;
-      flex-shrink: 0;
+    #tab-contrat .field:first-of-type > label { 
+      white-space: nowrap; font-size: 11px !important; 
+      margin-bottom: 0 !important; flex-shrink: 0; min-width: 0;
     }
-    #tab-contrat .field:nth-child(2) .btn-row { flex-wrap: nowrap !important; }
+    #tab-contrat .field:first-of-type .btn-row { 
+      flex: 1 !important; margin: 0 !important; gap: 6px !important; flex-wrap: nowrap !important;
+    }
     #tab-contrat #btn-preneur-t1, #tab-contrat #btn-preneur-t2 { 
-      font-size: 11px !important; 
-      padding: 7px 6px !important; 
+      font-size: 11px !important; padding: 7px 4px !important; 
     }
 
-    /* Hauteur + boutons rapides sur une ligne */
-    #tab-contrat .field:nth-child(3) { margin-bottom: 8px !important; }
+    /* LIGNE 2 : stepper compact + boutons rapides à droite */
     #stepper-area { 
-      display: flex !important; 
-      align-items: center !important; 
-      gap: 8px !important; 
+      display: flex !important; align-items: center !important; gap: 6px !important;
     }
-    #stepper-area .stepper { flex-shrink: 0; width: 160px !important; }
-    #stepper-area .stepper .sv { font-size: 18px !important; }
-    #stepper-area .stepper button { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+    #stepper-area .stepper { 
+      flex-shrink: 0 !important; width: 140px !important;
+    }
+    #stepper-area .stepper button { width: 34px !important; height: 34px !important; font-size: 16px !important; }
+    #stepper-area .stepper .sv { font-size: 16px !important; }
     #quick-btns { 
-      margin-top: 0 !important; 
-      flex-wrap: wrap !important; 
-      gap: 4px !important; 
-      flex: 1;
+      margin-top: 0 !important; flex-wrap: wrap !important; 
+      gap: 3px !important; flex: 1 !important; align-content: center;
     }
-    #quick-btns span { font-size: 11px !important; padding: 4px 6px !important; }
+    #quick-btns span { font-size: 10px !important; padding: 3px 5px !important; }
 
-    /* Couleur atout : label + 4 boutons sur une ligne */
-    #tab-contrat .field:nth-child(4) { margin-bottom: 8px !important; }
-    #tab-contrat .field:nth-child(4) { 
-      display: flex !important; 
-      align-items: center !important; 
-      gap: 8px !important; 
+    /* LIGNE 3 : "Couleur atout" + 4 symboles */
+    #tab-contrat .field:nth-of-type(3) {
+      display: flex !important; align-items: center !important;
+      gap: 8px !important; margin-bottom: 0 !important;
     }
-    #tab-contrat .field:nth-child(4) label { 
-      white-space: nowrap; 
-      font-size: 11px !important; 
-      margin-bottom: 0 !important; 
-      flex-shrink: 0;
+    #tab-contrat .field:nth-of-type(3) > label {
+      white-space: nowrap; font-size: 11px !important;
+      margin-bottom: 0 !important; flex-shrink: 0;
     }
     #tab-contrat .suit-group { 
-      display: flex !important; 
-      gap: 6px !important; 
-      flex: 1 !important;
+      display: flex !important; gap: 5px !important; flex: 1 !important;
     }
     #tab-contrat .suit-btn { 
-      font-size: 24px !important; 
-      padding: 6px 4px !important; 
-      flex: 1 !important;
+      font-size: 22px !important; padding: 5px 2px !important; 
+      flex: 1 !important; min-width: 0 !important;
     }
     #tab-contrat .suit-name { display: none !important; }
+
+    /* LIGNE 4 : Contre/Surcontre compact */
+    #tab-contrat .field:nth-of-type(4) { margin-bottom: 0 !important; }
+    #tab-contrat .field:nth-of-type(4) > label { font-size: 11px !important; margin-bottom: 4px !important; }
+    #tab-contrat .chip { font-size: 10px !important; padding: 5px 8px !important; }
+
+    /* LIGNE 5 : Confirmer + Retour sur la même ligne */
+    #contrat-btn-row { display: flex !important; gap: 8px !important; }
+    #contrat-confirmer-btn, #contrat-retour-btn { 
+      flex: 1 !important; font-size: 12px !important; padding: 10px 6px !important; 
+    }
 
     /* ── PAGE SCORE compact iPhone paysage ── */
     /* Box contrat : tout sur une ligne compacte */
@@ -799,10 +798,12 @@
         </div>
       </div>
 
-      <button class="btn btn-green btn-full" onclick="confirmContract()" style="font-size:16px;padding:16px;">
-        ✓ Confirmer le contrat
-      </button>
-      <button class="btn btn-outline btn-full" onclick="showTab('enjeu')" style="font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Retour à la table</button>
+      <div id="contrat-btn-row" style="display:contents;">
+        <button id="contrat-confirmer-btn" class="btn btn-green btn-full" onclick="confirmContract()" style="font-size:16px;padding:16px;">
+          ✓ Confirmer le contrat
+        </button>
+        <button id="contrat-retour-btn" class="btn btn-outline btn-full" onclick="showTab('enjeu')" style="font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Retour à la table</button>
+      </div>
     </div>
 
     <!-- TAB: SCORE SAISIE -->
