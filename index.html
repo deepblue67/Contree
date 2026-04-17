@@ -117,15 +117,14 @@
       height: auto !important;
       max-height: calc(100vh - 130px) !important;
     }
-    #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; align-self: start; padding-top: 0 !important; margin-top: 0 !important; }
-    #ej-score-wrap { margin: 0 !important; }
+    #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; align-self: start; }
     #tab-enjeu > div:nth-child(3) { grid-column: 2; grid-row: 2; }
-    /* Scores en colonne en paysage */
-    #tab-enjeu > div:nth-child(2) .score-board { grid-template-columns: 1fr; gap: 8px; }
-    #tab-enjeu > div:nth-child(2) .score-team { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; text-align: left; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-name { margin-bottom: 0; font-size: 13px; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 48px; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-need { display: none; }
+    /* Score-teams en colonne, style natif conservé */
+    #tab-enjeu > div:nth-child(2) .score-board { grid-template-columns: 1fr !important; gap: 8px; }
+    #tab-enjeu > div:nth-child(2) .score-team { display: flex !important; align-items: center !important; justify-content: space-between !important; text-align: left !important; padding: 14px 16px !important; }
+    #tab-enjeu > div:nth-child(2) .score-team .t-name { margin-bottom: 0 !important; font-size: 12px !important; }
+    #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 52px !important; line-height: 1 !important; }
+    #tab-enjeu > div:nth-child(2) .score-team .t-need { display: none !important; }
     /* 4 boutons même taille en 2x2 */
     #tab-enjeu > div:nth-child(3) { display: flex !important; flex-direction: column !important; gap: 8px !important; padding: 0 !important; }
     #tab-enjeu > div:nth-child(3) .btn-row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
@@ -515,7 +514,7 @@
       </div>
 
       <!-- Score sous la table -->
-      <div id="ej-score-wrap" style="margin:8px 8px 0;padding:12px 16px;border-radius:var(--radius);background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.12);">
+      <div id="ej-score-wrap" style="padding:12px 16px;border-radius:var(--radius);background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.12);">
         <div class="score-board">
           <div class="score-team" id="ej-st1"><div class="t-name" id="ej-stn1"></div><div class="t-score" id="ej-sts1">0</div><div class="t-need" id="ej-stk1"></div></div>
           <div class="score-team" id="ej-st2"><div class="t-name" id="ej-stn2"></div><div class="t-score" id="ej-sts2">0</div><div class="t-need" id="ej-stk2"></div></div>
@@ -627,11 +626,11 @@
 
             <!-- Boutons rapides style contrat -->
             <div style="display:flex;gap:3px;justify-content:center;flex-wrap:nowrap;">
-              <span onclick="setQuickScore('t1',80)"  style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
-              <span onclick="setQuickScore('t1',100)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
-              <span onclick="setQuickScore('t1',120)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
-              <span onclick="setQuickScore('t1',140)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">140</span>
-              <span id="btn-capot-t1" onclick="setCapot('t1')" style="cursor:pointer;font-size:11px;padding:3px 6px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;white-space:nowrap;">K</span>
+              <span onclick="setQuickScore('t1',80)"  style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
+              <span onclick="setQuickScore('t1',100)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
+              <span onclick="setQuickScore('t1',120)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
+              <span onclick="setQuickScore('t1',140)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">140</span>
+              <span id="btn-capot-t1" onclick="setCapot('t1')" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;white-space:nowrap;">Capot</span>
             </div>
 
             <!-- Belote T1 — sans icônes cartes -->
@@ -653,11 +652,11 @@
 
             <!-- Boutons rapides style contrat -->
             <div style="display:flex;gap:3px;justify-content:center;flex-wrap:nowrap;">
-              <span onclick="setQuickScore('t2',80)"  style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
-              <span onclick="setQuickScore('t2',100)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
-              <span onclick="setQuickScore('t2',120)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
-              <span onclick="setQuickScore('t2',140)" style="cursor:pointer;font-size:11px;padding:3px 5px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">140</span>
-              <span id="btn-capot-t2" onclick="setCapot('t2')" style="cursor:pointer;font-size:11px;padding:3px 6px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;white-space:nowrap;">K</span>
+              <span onclick="setQuickScore('t2',80)"  style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
+              <span onclick="setQuickScore('t2',100)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
+              <span onclick="setQuickScore('t2',120)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
+              <span onclick="setQuickScore('t2',140)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">140</span>
+              <span id="btn-capot-t2" onclick="setCapot('t2')" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;font-weight:800;touch-action:manipulation;white-space:nowrap;">Capot</span>
             </div>
 
             <!-- Belote T2 — sans icônes cartes -->
@@ -700,11 +699,16 @@
       </div>
       <!-- Historique des parties précédentes (localStorage) -->
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div onclick="togglePastHistory()" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0;cursor:pointer;user-select:none;">
           <div class="card-title" style="margin-bottom:0;">Parties précédentes</div>
-          <button onclick="clearAllHistory()" style="background:rgba(204,31,31,0.15);border:1px solid rgba(204,31,31,0.4);border-radius:99px;color:#cc1f1f;font-size:11px;font-weight:700;padding:4px 12px;cursor:pointer;font-family:inherit;">🗑 Tout effacer</button>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button onclick="event.stopPropagation();clearAllHistory()" style="background:rgba(204,31,31,0.15);border:1px solid rgba(204,31,31,0.4);border-radius:99px;color:#cc1f1f;font-size:11px;font-weight:700;padding:4px 12px;cursor:pointer;font-family:inherit;">🗑 Tout effacer</button>
+            <span id="past-history-arrow" style="font-size:18px;color:var(--text2);transition:transform 0.25s;">▼</span>
+          </div>
         </div>
-        <div id="past-history-content"></div>
+        <div id="past-history-wrap" style="margin-top:12px;">
+          <div id="past-history-content"></div>
+        </div>
       </div>
       <!-- Modale d'édition inline -->
       <div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center;padding:20px;">
@@ -1157,7 +1161,7 @@ function renderContractReminder() {
       <div style="font-size:52px;color:${suitColor};line-height:1;flex-shrink:0;">${c.suit}</div>
       <div style="min-width:0;">
         <div style="font-size:26px;font-weight:900;color:#fff;line-height:1.1;">${c.isCapot?'Capot':c.value}${contreTxt}</div>
-        <div style="font-size:16px;font-weight:700;color:#7ddd82;margin-top:6px;">🏆 ${pTeam}</div>
+        <div style="font-size:20px;font-weight:700;color:#7ddd82;margin-top:6px;">🏆 ${pTeam}</div>
       </div>
     </div>`;
   } else {
@@ -1676,6 +1680,26 @@ function savePastGame() {
   } catch(e) {}
 }
 
+let pastHistoryOpen = true;
+
+function togglePastHistory() {
+  pastHistoryOpen = !pastHistoryOpen;
+  const wrap = eid('past-history-wrap');
+  const arrow = eid('past-history-arrow');
+  if(wrap) wrap.style.display = pastHistoryOpen ? 'block' : 'none';
+  if(arrow) arrow.style.transform = pastHistoryOpen ? 'rotate(0deg)' : 'rotate(-90deg)';
+}
+
+function toggleDay(date) {
+  const sanitized = date.replace(/[^a-zA-Z0-9]/g, '_');
+  const wrap = eid('day-wrap-' + sanitized);
+  const arrow = eid('day-arrow-' + sanitized);
+  if(!wrap) return;
+  const isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  if(arrow) arrow.style.transform = isOpen ? 'rotate(-90deg)' : 'rotate(0deg)';
+}
+
 function renderPastHistory() {
   const el = eid('past-history-content');
   if(!el) return;
@@ -1685,32 +1709,40 @@ function renderPastHistory() {
     el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text3);font-size:13px;">📭 Aucune partie enregistrée</div>';
     return;
   }
-  // Grouper par date
   const byDate = {};
   past.forEach(p => {
     if(!byDate[p.date]) byDate[p.date] = [];
     byDate[p.date].push(p);
   });
-  el.innerHTML = Object.entries(byDate).map(([date, parties]) => `
-    <div style="margin-bottom:14px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--border-light);">
-        <span style="font-size:12px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.06em;">📅 ${date}</span>
-        <button onclick="deleteDay('${date}')" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;font-weight:700;padding:4px 12px;cursor:pointer;font-family:inherit;">🗑 Supprimer ce jour</button>
-      </div>
-      ${parties.map(p => `
-        <div style="background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:8px;border:1px solid #e0ddd6;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-          <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
-            <div style="flex:1;">
-              <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px;">🏆 ${p.winner}</div>
-              <div style="font-size:12px;color:var(--text2);margin-bottom:2px;">${p.t1} <span style="font-weight:700;color:var(--text);">${p.score1}</span> — ${p.t2} <span style="font-weight:700;color:var(--text);">${p.score2}</span></div>
-              <div style="font-size:11px;color:var(--text3);">${p.manches} manche${p.manches>1?'s':''} · ${p.time}</div>
-            </div>
-            <button onclick="deleteGame(${p.id})" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;font-weight:700;padding:4px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;">✕ Suppr.</button>
-          </div>
+  el.innerHTML = Object.entries(byDate).map(([date, parties]) => {
+    const sanitized = date.replace(/[^a-zA-Z0-9]/g, '_');
+    return `
+    <div style="margin-bottom:10px;">
+      <!-- Header jour — cliquable -->
+      <div onclick="toggleDay('${date}')" style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:10px;background:var(--border-light);cursor:pointer;user-select:none;">
+        <span style="font-size:12px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.06em;">📅 ${date} <span style="font-weight:500;color:var(--text2);">(${parties.length} partie${parties.length>1?'s':''})</span></span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button onclick="event.stopPropagation();deleteDay('${date}')" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;font-weight:700;padding:3px 10px;cursor:pointer;font-family:inherit;">🗑</button>
+          <span id="day-arrow-${sanitized}" style="font-size:16px;color:var(--text2);transition:transform 0.2s;">▼</span>
         </div>
-      `).join('')}
-    </div>
-  `).join('');
+      </div>
+      <!-- Contenu du jour — pliable -->
+      <div id="day-wrap-${sanitized}" style="margin-top:6px;">
+        ${parties.map(p => `
+          <div style="background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:6px;border:1px solid #e0ddd6;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+            <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px;">🏆 ${p.winner}</div>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:2px;">${p.t1} <span style="font-weight:700;color:var(--text);">${p.score1}</span> — ${p.t2} <span style="font-weight:700;color:var(--text);">${p.score2}</span></div>
+                <div style="font-size:11px;color:var(--text3);">${p.manches} manche${p.manches>1?'s':''} · ${p.time}</div>
+              </div>
+              <button onclick="deleteGame(${p.id})" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;font-weight:700;padding:4px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;">✕</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function deleteGame(id) {
@@ -2026,11 +2058,11 @@ function renderEnjeu() {
     <!-- Bordure intérieure -->
     <rect x="${cx-54}" y="${cy-80}" width="104" height="156" rx="9" fill="none" stroke="rgba(200,168,74,0.45)" stroke-width="1"/>
 
-    <!-- Couleur aux 4 coins — symétrique, taille uniforme 22px -->
-    <text x="${cx-44}" y="${cy-62}" text-anchor="start" font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
-    <text x="${cx+44}" y="${cy-62}" text-anchor="end"   font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
-    <text x="${cx-44}" y="${cy+75}" text-anchor="start" font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
-    <text x="${cx+44}" y="${cy+75}" text-anchor="end"   font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
+    <!-- Couleur aux 4 coins — parfaitement symétriques -->
+    <text x="${cx-42}" y="${cy-62}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
+    <text x="${cx+42}" y="${cy-62}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
+    <text x="${cx-42}" y="${cy+75}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
+    <text x="${cx+42}" y="${cy+75}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="22" fill="${suitColor}">${contratSuit}</text>
 
     <!-- Hauteur du contrat — taille adaptée pour éviter débordement (Capot plus petit) -->
     <text x="${cx}" y="${cy-8}" text-anchor="middle" font-family="-apple-system,sans-serif"
