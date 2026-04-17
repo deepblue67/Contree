@@ -90,7 +90,7 @@
     #tab-enjeu > div:nth-child(3) .btn-row .btn { flex: none !important; font-size: 11px !important; padding: 8px 4px !important; text-align: center !important; }
 
     /* ── TABS OVERLAY (contrat, score, historique, marque) ── */
-    #tab-contrat, #tab-saisie, #tab-history, #tab-marque {
+    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
       position: fixed !important;
       top: 44px !important;
       left: 0 !important;
@@ -283,7 +283,7 @@
     #app { max-width: 100%; width: 100%; }
 
     /* En paysage, les tabs non-enjeu s'affichent en overlay plein écran */
-    #tab-contrat, #tab-saisie, #tab-history, #tab-marque {
+    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
       position: fixed !important;
       top: 60px !important;
       left: 0 !important;
@@ -946,6 +946,37 @@
       </div>
     </div>
 
+    <!-- TAB: STATS -->
+    <div id="tab-stats" class="body" style="display:none;">
+
+      <!-- Partie en cours -->
+      <div class="card" id="stats-current-card">
+        <div class="card-title">📊 Partie en cours</div>
+        <div id="stats-current-content"></div>
+      </div>
+
+      <!-- Graphique évolution scores -->
+      <div class="card">
+        <div class="card-title">📈 Évolution des scores</div>
+        <div id="stats-chart-wrap" style="overflow-x:auto;">
+          <canvas id="stats-chart" style="width:100%;height:180px;display:block;"></canvas>
+        </div>
+      </div>
+
+      <!-- Stats par équipe -->
+      <div class="card">
+        <div class="card-title">🏆 Stats des équipes — toutes parties</div>
+        <div id="stats-teams-content"></div>
+      </div>
+
+      <!-- Stats par joueur -->
+      <div class="card">
+        <div class="card-title">👤 Stats par joueur — toutes parties</div>
+        <div id="stats-players-content"></div>
+      </div>
+
+    </div>
+
     <!-- TAB: MARQUE -->
     <div id="tab-marque" class="body" style="display:none;">
       <div class="card">
@@ -974,8 +1005,8 @@
       <button class="nav-item" id="nav-history" onclick="showTab('history')">
         <span class="ni-icon">📋</span>Historique
       </button>
-      <button class="nav-item" id="nav-marque" onclick="showTab('marque')">
-        <span class="ni-icon">📊</span>Marque
+      <button class="nav-item" id="nav-stats" onclick="showTab('stats')">
+        <span class="ni-icon">📈</span>Stats
       </button>
     </div>
   </div>
@@ -1175,20 +1206,20 @@ function initGameUI() {
 }
 
 function showTab(tab) {
-  ['contrat','saisie','history','marque','enjeu'].forEach(t=>{
+  ['contrat','saisie','history','stats','marque','enjeu'].forEach(t=>{
     const el = document.getElementById('tab-'+t);
     if(el) el.style.display='none';
   });
   const target = document.getElementById('tab-'+tab);
   if(target) target.style.display='flex';
-  // nav highlight
-  ['table','score','contrat','history','marque'].forEach(t=>{
+  ['table','score','contrat','history','stats','marque'].forEach(t=>{
     const nav = document.getElementById('nav-'+t);
     if(nav) nav.classList.toggle('active',
       (t==='table' && tab==='enjeu') ||
       (t==='score' && tab==='saisie') ||
       (t==='contrat' && tab==='contrat') ||
       (t==='history' && tab==='history') ||
+      (t==='stats' && tab==='stats') ||
       (t==='marque' && tab==='marque')
     );
   });
@@ -1196,6 +1227,7 @@ function showTab(tab) {
   if(tab==='contrat') updateContractForm();
   if(tab==='saisie') updateSaisieForm();
   if(tab==='history') { renderHistory(); renderPastHistory(); }
+  if(tab==='stats') renderStats();
   if(tab==='marque') renderMarque();
 }
 
@@ -2031,7 +2063,260 @@ function saveEdit() {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  AIDE A LA MARQUE TABLE
+//  STATS
+// ═══════════════════════════════════════════════════════════
+function renderStats() {
+  renderStatsCurrent();
+  renderStatsChart();
+  renderStatsTeams();
+  renderStatsPlayers();
+}
+
+function renderStatsCurrent() {
+  const el = eid('stats-current-content');
+  if(!el) return;
+  const h = S.history.filter(m => m.contract && m.contract !== '—');
+  if(!h.length) {
+    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text3);font-size:13px;">Aucune manche jouée</div>';
+    return;
+  }
+  const total = h.length;
+  const faits  = h.filter(m => m.chute === false).length;
+  const chutes = h.filter(m => m.chute === true).length;
+  const capots = h.filter(m => m.contract && m.contract.startsWith('Capot')).length;
+  const belotes= h.filter(m => m.bel1 || m.bel2).length;
+
+  // Stats par équipe prenante
+  function teamStats(name) {
+    const played = h.filter(m => m.preneur === name);
+    const won    = played.filter(m => m.chute === false).length;
+    const avg1   = h.length ? Math.round(h.reduce((s,m)=>s+m.pts1,0)/h.length) : 0;
+    const avg2   = h.length ? Math.round(h.reduce((s,m)=>s+m.pts2,0)/h.length) : 0;
+    return {played: played.length, won, avg1, avg2};
+  }
+  const st1 = teamStats(S.t1.name);
+  const st2 = teamStats(S.t2.name);
+
+  // Meilleure série
+  let maxStreak=0, cur=0, lastWinner='';
+  h.forEach(m => {
+    const w = m.pts1>m.pts2?S.t1.name:S.t2.name;
+    if(w===lastWinner){ cur++; maxStreak=Math.max(maxStreak,cur); }
+    else { cur=1; lastWinner=w; maxStreak=Math.max(maxStreak,cur); }
+  });
+
+  el.innerHTML = `
+    <!-- Résumé partie -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;">
+      ${statBox('Manches','🃏',total,'var(--gold)')}
+      ${statBox('Réussies','✅',faits,'#2a8c2a')}
+      ${statBox('Chutées','⛔',chutes,'#cc2222')}
+      ${statBox('Capots','💀',capots,'#6a2a8c')}
+    </div>
+
+    <!-- Tableau par équipe -->
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <thead>
+        <tr style="border-bottom:2px solid rgba(255,255,255,0.15);">
+          <th style="text-align:left;padding:6px 4px;color:var(--text2);font-size:11px;text-transform:uppercase;">Équipe</th>
+          <th style="text-align:center;padding:6px 4px;color:var(--text2);font-size:11px;">Prises</th>
+          <th style="text-align:center;padding:6px 4px;color:var(--text2);font-size:11px;">Réussies</th>
+          <th style="text-align:center;padding:6px 4px;color:var(--text2);font-size:11px;">%</th>
+          <th style="text-align:center;padding:6px 4px;color:var(--text2);font-size:11px;">Score moy/manche</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
+          <td style="padding:8px 4px;font-weight:700;color:#7ddd82;">${S.t1.name}</td>
+          <td style="text-align:center;padding:8px 4px;">${st1.played}</td>
+          <td style="text-align:center;padding:8px 4px;">${st1.won}</td>
+          <td style="text-align:center;padding:8px 4px;">${st1.played?Math.round(st1.won/st1.played*100):0}%</td>
+          <td style="text-align:center;padding:8px 4px;">${st1.avg1}</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 4px;font-weight:700;color:#80b0ff;">${S.t2.name}</td>
+          <td style="text-align:center;padding:8px 4px;">${st2.played}</td>
+          <td style="text-align:center;padding:8px 4px;">${st2.won}</td>
+          <td style="text-align:center;padding:8px 4px;">${st2.played?Math.round(st2.won/st2.played*100):0}%</td>
+          <td style="text-align:center;padding:8px 4px;">${st2.avg2}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:10px;font-size:12px;color:var(--text2);">
+      🔥 Meilleure série victorieuse : <strong style="color:#fff;">${maxStreak} manche${maxStreak>1?'s':''}</strong>
+      &nbsp;•&nbsp; 🎴 Belotes annoncées : <strong style="color:#fff;">${belotes}</strong>
+    </div>`;
+}
+
+function statBox(label, icon, val, color) {
+  return `<div style="background:rgba(0,0,0,0.2);border-radius:12px;padding:10px 6px;text-align:center;">
+    <div style="font-size:20px;">${icon}</div>
+    <div style="font-size:22px;font-weight:900;color:${color};line-height:1.1;">${val}</div>
+    <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-top:2px;">${label}</div>
+  </div>`;
+}
+
+function renderStatsChart() {
+  const canvas = eid('stats-chart');
+  if(!canvas) return;
+  const h = S.history;
+  if(!h.length) {
+    eid('stats-chart-wrap').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px;">Pas encore de données</div>';
+    return;
+  }
+  const W = canvas.offsetWidth || 300;
+  const H = 180;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const pts = [0, ...h.map((_,i) => h.slice(0,i+1).reduce((s,m)=>s+m.pts1,0))];
+  const pts2 = [0, ...h.map((_,i) => h.slice(0,i+1).reduce((s,m)=>s+m.pts2,0))];
+  const maxVal = Math.max(...pts, ...pts2, 100);
+  const pad = {l:36, r:12, t:14, b:28};
+  const cW = W - pad.l - pad.r;
+  const cH = H - pad.t - pad.b;
+
+  const xP = i => pad.l + (i / (pts.length-1)) * cW;
+  const yP = v => pad.t + cH - (v / maxVal) * cH;
+
+  ctx.clearRect(0,0,W,H);
+
+  // Grille
+  ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1;
+  [0,0.25,0.5,0.75,1].forEach(r=>{
+    const y=yP(r*maxVal);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(r*maxVal), pad.l-4, y+3);
+  });
+
+  // Ligne 2001
+  const y2001 = yP(Math.min(2001, maxVal));
+  ctx.strokeStyle='rgba(200,168,74,0.6)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(pad.l,y2001); ctx.lineTo(W-pad.r,y2001); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Courbe T1
+  function drawLine(data, color) {
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=2.5;
+    data.forEach((v,i) => i===0 ? ctx.moveTo(xP(i),yP(v)) : ctx.lineTo(xP(i),yP(v)));
+    ctx.stroke();
+    data.forEach((v,i) => {
+      ctx.beginPath(); ctx.fillStyle=color;
+      ctx.arc(xP(i),yP(v),3,0,Math.PI*2); ctx.fill();
+    });
+  }
+  drawLine(pts,'#7ddd82');
+  drawLine(pts2,'#80b0ff');
+
+  // Labels X
+  ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='9px sans-serif'; ctx.textAlign='center';
+  h.forEach((_,i) => {
+    ctx.fillText('M'+(i+1), xP(i+1), H-8);
+  });
+
+  // Légende
+  ctx.font='11px sans-serif'; ctx.textAlign='left';
+  ctx.fillStyle='#7ddd82'; ctx.fillRect(pad.l,4,14,8);
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText(S.t1.name, pad.l+18, 12);
+  ctx.fillStyle='#80b0ff'; ctx.fillRect(pad.l+130,4,14,8);
+  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText(S.t2.name, pad.l+148, 12);
+}
+
+function renderStatsTeams() {
+  const el = eid('stats-teams-content');
+  if(!el) return;
+  let past = [];
+  try { past = JSON.parse(localStorage.getItem('belote_history')||'[]'); } catch(e) {}
+  if(!past.length) { el.innerHTML='<div style="text-align:center;padding:12px;color:var(--text3);font-size:13px;">Aucune partie enregistrée</div>'; return; }
+
+  // Confrontations
+  const duels = {};
+  past.forEach(p => {
+    const key = [p.t1,p.t2].sort().join(' vs ');
+    if(!duels[key]) duels[key]={key,t1:p.t1,t2:p.t2,games:0,wins:{}};
+    duels[key].games++;
+    const w = p.score1>=p.score2?p.t1:p.t2;
+    duels[key].wins[w] = (duels[key].wins[w]||0)+1;
+  });
+
+  el.innerHTML = Object.values(duels).map(d => {
+    const teams = d.key.split(' vs ');
+    return `<div style="background:rgba(0,0,0,0.15);border-radius:10px;padding:10px 12px;margin-bottom:8px;">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px;">${d.key} — ${d.games} partie${d.games>1?'s':''}</div>
+      <div style="display:flex;gap:8px;">
+        ${teams.map(t=>`<div style="flex:1;text-align:center;background:rgba(255,255,255,0.07);border-radius:8px;padding:6px;">
+          <div style="font-size:11px;color:var(--text2);">${t}</div>
+          <div style="font-size:20px;font-weight:800;color:#7ddd82;">${d.wins[t]||0}</div>
+          <div style="font-size:10px;color:var(--text3);">victoire${(d.wins[t]||0)>1?'s':''}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderStatsPlayers() {
+  const el = eid('stats-players-content');
+  if(!el) return;
+  let past = [];
+  try { past = JSON.parse(localStorage.getItem('belote_history')||'[]'); } catch(e) {}
+  if(!past.length) { el.innerHTML='<div style="text-align:center;padding:12px;color:var(--text3);font-size:13px;">Aucune partie enregistrée</div>'; return; }
+
+  // Collecter stats par joueur
+  const players = {};
+  function addPlayer(name) {
+    if(!players[name]) players[name]={name,parties:0,victoires:0,manchesPreneur:0,manchesFaites:0,manchesChutees:0,capots:0,totalPts:0};
+  }
+
+  past.forEach(p => {
+    const t1players = p.t1.split(' & ');
+    const t2players = p.t2.split(' & ');
+    const winner = p.score1>=p.score2 ? 't1' : 't2';
+    [...t1players,...t2players].forEach(n=>addPlayer(n));
+    t1players.forEach(n=>{ players[n].parties++; if(winner==='t1') players[n].victoires++; });
+    t2players.forEach(n=>{ players[n].parties++; if(winner==='t2') players[n].victoires++; });
+    if(p.history) p.history.forEach(m=>{
+      if(!m.preneur||m.preneur==='—') return;
+      const preneurs = m.preneur.split(' & ');
+      preneurs.forEach(n=>{
+        if(!players[n]) addPlayer(n);
+        players[n].manchesPreneur++;
+        if(m.chute===false) players[n].manchesFaites++;
+        if(m.chute===true)  players[n].manchesChutees++;
+        if(m.contract&&m.contract.startsWith('Capot')&&m.chute===false) players[n].capots++;
+      });
+    });
+  });
+
+  const sorted = Object.values(players).sort((a,b)=>b.parties-a.parties);
+  if(!sorted.length) { el.innerHTML='<div style="color:var(--text3);text-align:center;padding:12px;">Aucun joueur</div>'; return; }
+
+  el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <thead><tr style="border-bottom:2px solid rgba(255,255,255,0.15);">
+      <th style="text-align:left;padding:6px 4px;color:var(--text2);font-size:10px;text-transform:uppercase;">Joueur</th>
+      <th style="text-align:center;padding:6px 2px;color:var(--text2);font-size:10px;">Parties</th>
+      <th style="text-align:center;padding:6px 2px;color:var(--text2);font-size:10px;">Victoires</th>
+      <th style="text-align:center;padding:6px 2px;color:var(--text2);font-size:10px;">Prises</th>
+      <th style="text-align:center;padding:6px 2px;color:var(--text2);font-size:10px;">%Réussi</th>
+      <th style="text-align:center;padding:6px 2px;color:var(--text2);font-size:10px;">Capots</th>
+    </tr></thead>
+    <tbody>
+      ${sorted.map((p,i)=>`
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+          <td style="padding:7px 4px;font-weight:700;color:${i===0?'#f0c040':'#fff'};">${i===0?'🥇 ':''}${p.name}</td>
+          <td style="text-align:center;padding:7px 2px;">${p.parties}</td>
+          <td style="text-align:center;padding:7px 2px;color:#7ddd82;font-weight:700;">${p.victoires}</td>
+          <td style="text-align:center;padding:7px 2px;">${p.manchesPreneur}</td>
+          <td style="text-align:center;padding:7px 2px;">${p.manchesPreneur?Math.round(p.manchesFaites/p.manchesPreneur*100)+'%':'—'}</td>
+          <td style="text-align:center;padding:7px 2px;color:#b060ff;">${p.capots||0}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+
 // ═══════════════════════════════════════════════════════════
 function renderMarque() {
   const rows=[
