@@ -115,74 +115,61 @@
     .card { padding: 10px 12px; border-radius: 10px; }
     .card-title { font-size: 10px; margin-bottom: 8px; }
 
-    /* ── PAGE CONTRAT iPhone paysage — layout final ── */
+    /* ── PAGE CONTRAT iPhone paysage ── */
     #tab-contrat .card-title { display: none !important; }
     #tab-contrat .card { 
       padding: 10px 14px !important; 
       display: grid !important; 
       grid-template-columns: 1fr 1fr !important;
-      grid-template-rows: auto auto 1fr !important;
+      grid-template-rows: auto auto !important;
       gap: 8px 20px !important;
     }
+    /* nth-child(2) = Équipe preneuse → COL GAUCHE ligne 1 */
+    #tab-contrat .card > div:nth-child(2) { 
+      grid-column: 1 !important; grid-row: 1 !important; margin-bottom: 0 !important;
+    }
+    #tab-contrat .card > div:nth-child(2) > label { font-size: 12px !important; margin-bottom: 6px !important; }
+    #tab-contrat .card > div:nth-child(2) .btn-row { gap: 6px !important; flex-wrap: nowrap !important; }
+    #tab-contrat #btn-preneur-t1, #tab-contrat #btn-preneur-t2 { font-size: 12px !important; padding: 10px 4px !important; }
 
-    /* COL GAUCHE ligne 1 : Équipe preneuse (field 1) */
-    #tab-contrat .field:nth-of-type(1) { 
-      grid-column: 1 !important; grid-row: 1 !important;
-      margin-bottom: 0 !important;
+    /* nth-child(5) = Contre/Surcontre → COL GAUCHE ligne 2 */
+    #tab-contrat .card > div:nth-child(5) { 
+      grid-column: 1 !important; grid-row: 2 !important; margin-bottom: 0 !important;
     }
-    #tab-contrat .field:nth-of-type(1) > label { font-size: 12px !important; margin-bottom: 6px !important; }
-    #tab-contrat .field:nth-of-type(1) .btn-row { gap: 6px !important; flex-wrap: nowrap !important; }
-    #tab-contrat #btn-preneur-t1, #tab-contrat #btn-preneur-t2 { 
-      font-size: 12px !important; padding: 10px 4px !important; 
-    }
-
-    /* COL GAUCHE ligne 2 : Contre / Surcontre (field 4) */
-    #tab-contrat .field:nth-of-type(4) { 
-      grid-column: 1 !important; grid-row: 2 !important;
-      margin-bottom: 0 !important;
-    }
-    #tab-contrat .field:nth-of-type(4) > label { font-size: 12px !important; margin-bottom: 6px !important; }
+    #tab-contrat .card > div:nth-child(5) > label { font-size: 12px !important; margin-bottom: 6px !important; }
     #tab-contrat .chip-group { gap: 5px !important; flex-wrap: wrap !important; }
     #tab-contrat .chip { font-size: 11px !important; padding: 7px 8px !important; }
 
-    /* COL DROITE ligne 1 : Stepper + boutons rapides (field 2) */
-    #tab-contrat .field:nth-of-type(2) { 
-      grid-column: 2 !important; grid-row: 1 !important;
-      margin-bottom: 0 !important;
+    /* nth-child(3) = Stepper → COL DROITE ligne 1 */
+    #tab-contrat .card > div:nth-child(3) { 
+      grid-column: 2 !important; grid-row: 1 !important; margin-bottom: 0 !important;
     }
     #stepper-area { display: flex !important; align-items: center !important; gap: 6px !important; }
     #stepper-area .stepper { flex-shrink: 0 !important; width: 120px !important; }
     #stepper-area .stepper button { width: 32px !important; height: 32px !important; font-size: 15px !important; }
     #stepper-area .stepper .sv { font-size: 15px !important; }
-    #quick-btns { 
-      margin-top: 0 !important; flex-wrap: wrap !important; 
-      gap: 3px !important; flex: 1 !important; align-content: center !important;
-    }
+    #quick-btns { margin-top: 0 !important; flex-wrap: wrap !important; gap: 3px !important; flex: 1 !important; align-content: center !important; }
     #quick-btns span { font-size: 10px !important; padding: 3px 5px !important; }
 
-    /* COL DROITE ligne 2 : Couleur atout en grille 2×2 (field 3) */
-    #tab-contrat .field:nth-of-type(3) { 
-      grid-column: 2 !important; grid-row: 2 / 4 !important;
-      display: flex !important; flex-direction: column !important;
-      margin-bottom: 0 !important;
+    /* nth-child(4) = Couleur atout → COL DROITE ligne 2 */
+    #tab-contrat .card > div:nth-child(4) { 
+      grid-column: 2 !important; grid-row: 2 !important;
+      display: flex !important; flex-direction: column !important; margin-bottom: 0 !important;
     }
-    #tab-contrat .field:nth-of-type(3) > label { font-size: 12px !important; margin-bottom: 6px !important; }
-    #tab-contrat .suit-group { 
-      display: grid !important; grid-template-columns: 1fr 1fr !important;
-      gap: 6px !important; flex: 1 !important;
-    }
+    #tab-contrat .card > div:nth-child(4) > label { font-size: 12px !important; margin-bottom: 6px !important; }
+    #tab-contrat .suit-group { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
     #tab-contrat .suit-btn { font-size: 28px !important; padding: 10px 4px !important; }
     #tab-contrat .suit-name { display: none !important; }
 
-    /* Boutons bas : même ligne, même taille */
+    /* Boutons bas : même ligne */
     #contrat-btn-row { display: flex !important; flex-direction: row !important; gap: 8px !important; }
-    #contrat-confirmer-btn, #contrat-retour-btn { 
-      flex: 1 !important; font-size: 12px !important; padding: 10px 6px !important; 
-    }
+    #contrat-confirmer-btn, #contrat-retour-btn { flex: 1 !important; font-size: 12px !important; padding: 10px 6px !important; }
 
     /* ── PAGE SCORE compact iPhone paysage ── */
     /* Fond opaque pour éviter que la table transparaisse */
-    #tab-saisie { background: #2e6b28 !important; }
+    #tab-saisie, #tab-contrat, #tab-history, #tab-stats, #tab-marque { 
+      background: #2e6b28 !important; 
+    }
     /* Box contrat : tout sur une ligne compacte */
     #tab-saisie #contract-reminder > div {
       padding: 8px 12px !important;
