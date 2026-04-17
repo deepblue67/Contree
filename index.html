@@ -173,16 +173,44 @@
     }
     #tab-contrat .suit-name { display: none !important; }
 
-    /* ── PAGE SCORE SAISIE ── */
-    #contract-reminder > div { padding: 10px 12px !important; }
-    #contract-reminder .suit-icon { font-size: 36px !important; }
-    #tab-saisie .card { overflow: hidden; }
-    #tab-saisie [style*="grid-template-columns:1fr 1fr"] { gap: 6px !important; }
-    /* Boutons rapides score */
-    #tab-saisie span[onclick*="setQuickScore"] { font-size: 12px !important; padding: 4px 7px !important; }
-    #tab-saisie span[onclick*="setCapot"] { font-size: 12px !important; padding: 4px 7px !important; }
-    /* Labels équipes */
-    #lbl-pts-t1, #lbl-pts-t2 { font-size: 10px !important; }
+    /* ── PAGE SCORE compact iPhone paysage ── */
+    /* Box contrat : tout sur une ligne compacte */
+    #tab-saisie #contract-reminder > div {
+      padding: 8px 12px !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 10px !important;
+    }
+    #tab-saisie #contract-reminder > div > div:first-child { font-size: 32px !important; }
+    #tab-saisie #contract-reminder > div > div:last-child > div:first-child { font-size: 18px !important; }
+    #tab-saisie #contract-reminder > div > div:last-child > div:last-child { font-size: 13px !important; margin-top: 2px !important; }
+
+    /* Cacher "Résultat de la manche" */
+    #tab-saisie .card-title { display: none !important; }
+
+    /* Boutons rapides plus petits */
+    #tab-saisie span[onclick*="setQuickScore"],
+    #tab-saisie span[onclick*="setCapot"] { 
+      font-size: 11px !important; 
+      padding: 3px 5px !important; 
+    }
+
+    /* Calculer & Annuler sur la même ligne */
+    #saisie-actions {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 8px !important;
+    }
+    #calc-preview-btn { 
+      flex: 1 !important; 
+      font-size: 13px !important; 
+      padding: 11px 8px !important; 
+    }
+    #saisie-annuler-btn { 
+      flex: 1 !important; 
+      font-size: 13px !important; 
+      padding: 11px 8px !important; 
+    }
 
     /* ── PAGE CONFIG ── */
     #screen-setup .body {
@@ -852,15 +880,17 @@
 
       <div id="score-calc-result" style="display:none;"></div>
 
-      <button id="calc-preview-btn" class="btn btn-green btn-full" onclick="calcAndPreview()" style="font-size:15px;padding:15px;">
-        Calculer & Prévisualiser
-      </button>
-      <div id="confirm-score-btn" style="display:none;">
-        <button class="btn btn-gold btn-full" onclick="validateScore()" style="font-size:16px;padding:16px;">
-          ✓ Valider la manche
+      <div id="saisie-actions" style="display:contents;">
+        <button id="calc-preview-btn" class="btn btn-green btn-full" onclick="calcAndPreview()" style="font-size:15px;padding:15px;">
+          Calculer & Prévisualiser
         </button>
+        <div id="confirm-score-btn" style="display:none;">
+          <button class="btn btn-gold btn-full" onclick="validateScore()" style="font-size:16px;padding:16px;">
+            ✓ Valider la manche
+          </button>
+        </div>
+        <button id="saisie-annuler-btn" class="btn btn-outline btn-full" onclick="showTab('enjeu')" style="font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Annuler</button>
       </div>
-      <button class="btn btn-outline btn-full" onclick="showTab('enjeu')" style="font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Annuler</button>
     </div>
 
     <!-- TAB: HISTORY -->
