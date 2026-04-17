@@ -168,7 +168,11 @@
     /* ── PAGE SCORE compact iPhone paysage ── */
     /* Fond opaque pour éviter que la table transparaisse */
     #tab-saisie, #tab-contrat, #tab-history, #tab-stats, #tab-marque { 
-      background: #2e6b28 !important; 
+      background: #2e6b28 !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+      -webkit-overflow-scrolling: touch !important;
+      will-change: transform !important;
     }
     /* Box contrat : tout sur une ligne compacte */
     #tab-saisie #contract-reminder > div {
