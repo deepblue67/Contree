@@ -99,9 +99,16 @@
       z-index: 200 !important;
       overflow-y: auto !important;
       overflow-x: hidden !important;
+      -webkit-overflow-scrolling: touch !important;
+      overscroll-behavior: contain !important;
       padding: 8px 12px 8px !important;
       background: #2e6b28 !important;
       isolation: isolate !important;
+    }
+    /* Bloquer le scroll de la table derrière */
+    #tab-enjeu.overlay-open {
+      overflow: hidden !important;
+      pointer-events: none !important;
     }
 
     /* ── CARDS compactes ── */
@@ -290,9 +297,11 @@
       bottom: 70px !important;
       z-index: 200 !important;
       overflow-y: auto !important;
+      overflow-x: hidden !important;
       padding-top: 16px !important;
       padding-bottom: 16px !important;
-      background: var(--bg) !important;
+      background: #2e6b28 !important;
+      isolation: isolate !important;
     }
 
     /* Page TABLE : table à gauche, scores + boutons à droite */
@@ -1213,6 +1222,12 @@ function showTab(tab) {
   });
   const target = document.getElementById('tab-'+tab);
   if(target) target.style.display='flex';
+
+  // Bloquer le scroll de la table quand un overlay est actif (iPhone paysage)
+  const enjeu = document.getElementById('tab-enjeu');
+  const isOverlay = ['contrat','saisie','history','stats','marque'].includes(tab);
+  if(enjeu) enjeu.classList.toggle('overlay-open', isOverlay);
+
   ['table','score','contrat','history','stats','marque'].forEach(t=>{
     const nav = document.getElementById('nav-'+t);
     if(nav) nav.classList.toggle('active',
