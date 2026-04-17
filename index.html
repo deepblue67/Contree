@@ -2,11 +2,15 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<!-- PWA iOS -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Belote">
-<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCI+CiAgPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMCIgZmlsbD0iIzJkNmIyNiIvPgogIDxwYXR0ZXJuIGlkPSJwMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgIDxwYXRoIGQ9Ik01LDBMMTAsNUw1LDEwTDAsNVoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLDAsMCwwLjEpIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogIDwvcGF0dGVybj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSJ1cmwoI3AxKSIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI4NCIgaGVpZ2h0PSI4NCIgcng9IjE0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOGE4NGEiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgPHJlY3QgeD0iMjIiIHk9IjEyIiB3aWR0aD0iNTYiIGhlaWdodD0iNzYiIHJ4PSI3IiBmaWxsPSIjZjhmNGVjIiBzdHJva2U9IiNjOGE4NGEiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjMwIiB5PSIyOCIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzExMSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5BPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSI2MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIzNCIgZmlsbD0iIzExMSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiPiYjOTgyNDs8L3RleHQ+CiAgPHRleHQgeD0iNzAiIHk9IjgyIiBmb250LXNpemU9IjExIiBmaWxsPSIjMTExIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA3MCA4MikiPkE8L3RleHQ+Cjwvc3ZnPg==">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2e6b28">
+<!-- Icône écran d'accueil -->
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCI+CiAgPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMCIgZmlsbD0iIzJkNmIyNiIvPgogIDxwYXR0ZXJuIGlkPSJwMSIgeD0iMCIgeT0iMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgIDxwYXRoIGQ9Ik01LDBMMTAsNUw1LDEwTDAsNVoiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLDAsMCwwLjEpIiBzdHJva2Utd2lkdGg9IjAuNSIvPgogIDwvcGF0dGVybj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSJ1cmwoI3AxKSIvPgogIDxyZWN0IHg9IjgiIHk9IjgiIHdpZHRoPSI4NCIgaGVpZ2h0PSI4NCIgcng9IjE0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOGE4NGEiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgPHJlY3QgeD0iMjIiIHk9IjEyIiB3aWR0aD0iNTYiIGhlaWdodD0iNzYiIHJ4PSI3IiBmaWxsPSIjZjhmNGVjIiBzdHJva2U9IiNjOGE4NGEiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjMwIiB5PSIyOCIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzExMSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5BPC90ZXh0PgogIDx0ZXh0IHg9IjUwIiB5PSI2MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIzNCIgZmlsbD0iIzExMSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiPiYjOTgyNDs8L3RleHQ+CiAgPHRleHQgeD0iNzAiIHk9IjgyIiBmb250LXNpemU9IjExIiBmaWxsPSIjMTExIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA3MCA4MikiPkE8L3RleHQ+Cjwvc3ZnPg==">
 <title>Belote Contrée</title>
 <style>
   :root {
@@ -37,8 +41,19 @@
     --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; background: var(--bg); font-family: -apple-system, 'SF Pro Rounded', 'SF Pro Display', 'Helvetica Neue', sans-serif; color: var(--text); }
-  body { overflow-x: hidden;
+  html, body { 
+    height: 100%; 
+    background: var(--bg); 
+    font-family: -apple-system, 'SF Pro Rounded', 'SF Pro Display', 'Helvetica Neue', sans-serif; 
+    color: var(--text);
+    /* Fix scroll bounce iOS — empêche l'espace blanc au rebond */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: auto;
+    overflow: hidden;
+  }
+  body { 
+    overflow-x: hidden;
+    background: #2e6b28; /* fond solide même au rebond */
     background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px),
                       repeating-linear-gradient(-45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 8px);
   }
@@ -79,8 +94,14 @@
     #ej-table-wrap svg { max-height: calc(100vh - 95px) !important; width: 100% !important; }
     #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; align-self: start; padding: 0 !important; margin: 0 !important; }
     #tab-enjeu > div:nth-child(3) { grid-column: 2; grid-row: 2; padding: 0 !important; }
-    #ej-score-wrap { margin: 0 !important; padding: 8px 10px !important; }
-    #tab-enjeu > div:nth-child(2) .score-board { grid-template-columns: 1fr !important; gap: 5px !important; }
+    #ej-score-wrap { 
+      margin: 0 !important; 
+      padding: 10px !important;
+      background: rgba(0,0,0,0.25) !important;
+      border: 1px solid rgba(255,255,255,0.12) !important;
+      border-radius: var(--radius) !important;
+    }
+    #tab-enjeu > div:nth-child(2) .score-board { grid-template-columns: 1fr !important; gap: 6px !important; }
     #tab-enjeu > div:nth-child(2) .score-team { display: flex !important; align-items: center !important; justify-content: space-between !important; text-align: left !important; padding: 8px 12px !important; }
     #tab-enjeu > div:nth-child(2) .score-team .t-name { margin-bottom: 0 !important; font-size: 10px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 32px !important; line-height: 1 !important; font-weight: 800 !important; }
@@ -296,6 +317,10 @@
       padding-bottom: 16px !important;
       background: #2e6b28 !important;
       isolation: isolate !important;
+      -webkit-transform: translateZ(0) !important;
+      transform: translateZ(0) !important;
+      -webkit-overflow-scrolling: touch !important;
+      will-change: transform !important;
     }
 
     /* Page TABLE : table à gauche, scores + boutons à droite */
@@ -534,12 +559,36 @@
   .bottom-nav { background: var(--panel); border-top: 1px solid rgba(255,255,255,0.08); display: grid; padding-bottom: env(safe-area-inset-bottom, 0); position: fixed; bottom: 0; left: 0; right: 0; z-index: 300; }
   .bottom-nav.nav4 { grid-template-columns: repeat(4, 1fr); }
   .bottom-nav.nav5 { grid-template-columns: repeat(5, 1fr); }
+  .bottom-nav.nav6 { grid-template-columns: repeat(6, 1fr); }
   .bottom-nav.nav3 { grid-template-columns: repeat(3, 1fr); }
   .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.35); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-family: inherit; transition: color 0.15s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; }
   .nav-item .ni-icon { font-size: 20px; line-height: 1; }
   .nav-item.active { color: #7ddd82; }
 
   /* ── WINNER SCREEN ── */
+  /* ── MANCHE EN COURS ── */
+  #screen-mancheencours { background: var(--bg); display: flex; flex-direction: column; min-height: 100vh; }
+  .mec-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 16px; }
+  #mec-card-wrap { width: 200px; flex-shrink: 0; }
+  #mec-card-svg { width: 100%; height: auto; display: block; }
+  #mec-scores { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; }
+  .mec-score-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .mec-team-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: .06em; }
+  .mec-team-score { font-size: 52px; font-weight: 800; color: #fff; line-height: 1; }
+  .mec-need { font-size: 11px; color: rgba(255,255,255,0.5); }
+  /* Paysage */
+  @media (orientation: landscape) {
+    .mec-body { flex-direction: row; align-items: center; justify-content: center; gap: 40px; }
+    #mec-card-wrap { width: min(45vh, 260px); }
+    #mec-scores { max-width: 340px; }
+  }
+  /* iPad portrait */
+  @media (min-width: 700px) and (orientation: portrait) {
+    #mec-card-wrap { width: 260px; }
+    .mec-team-score { font-size: 72px; }
+    .mec-team-name { font-size: 16px; }
+  }
+
   .winner-screen { background: radial-gradient(ellipse at top, #1e6b22 0%, #0d3a10 100%); flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; color: #fff; gap: 16px; }
   .winner-trophy { font-size: 80px; animation: bounce 1s ease infinite alternate; }
   @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
@@ -550,7 +599,91 @@
   .winner-score-item .ws-name { font-size: 11px; opacity: 0.75; margin-bottom: 4px; }
   .winner-score-item .ws-val { font-size: 28px; font-weight: 800; }
 
-  /* ── MISC ── */
+  /* ── STANDARD APPLE 44pt TOUCH TARGET ── */
+  /* Zone tactile minimum sans changer l'apparence visuelle */
+  button, .btn, .chip, .suit-btn, .nav-item,
+  input[type="checkbox"], .chip-group > div,
+  #quick-btns span, .lbl-bel-t1-box, .lbl-bel-t2-box,
+  [id^="lbl-bel-"], [id^="btn-capot-"],
+  [onclick], .history-item button, .setup-sel,
+  .mec-score-box { 
+    min-height: 44px;
+    position: relative;
+  }
+  /* Pour les petits éléments, agrandir la zone de tap sans changer le visuel */
+  #quick-btns span, [id^="btn-capot-"] {
+    min-height: 44px;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  input[type="checkbox"] {
+    min-width: 44px;
+    min-height: 44px;
+    cursor: pointer;
+  }
+  /* Stepper +/- */
+  .stepper button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  /* ── SPLASH SCREEN ── */
+  #splash {
+    position: fixed; inset: 0; z-index: 99999;
+    background: #2e6b28;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 20px;
+    transition: opacity 0.5s ease;
+  }
+  #splash.hide { opacity: 0; pointer-events: none; }
+  #splash-card {
+    width: 100px; height: 140px;
+    background: #faf6ee; border-radius: 14px;
+    border: 2px solid #c8a84a;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: splashCard 0.6s ease-out;
+  }
+  @keyframes splashCard {
+    from { transform: scale(0.7) rotate(-8deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  #splash-title {
+    font-size: 22px; font-weight: 900; color: #fff;
+    letter-spacing: -0.5px; text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    animation: splashCard 0.6s ease-out 0.15s both;
+  }
+  #splash-sub {
+    font-size: 13px; color: rgba(255,255,255,0.6);
+    animation: splashCard 0.6s ease-out 0.25s both;
+  }
+  /* Transition entrée des écrans */
+  .screen.active { animation: screenFadeIn 0.22s ease-out; }
+  @keyframes screenFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* Flash tap : scale down au toucher */
+  .btn:active, .chip:active, .suit-btn:active, .nav-item:active,
+  #quick-btns span:active, [id^="btn-capot-"]:active,
+  [id^="lbl-bel-"]:active, .history-item button:active {
+    transform: scale(0.93);
+    transition: transform 0.07s ease;
+    opacity: 0.85;
+  }
+  /* Bounce sur action importante */
+  @keyframes btnBounce {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(0.91); }
+    65%  { transform: scale(1.07); }
+    85%  { transform: scale(0.97); }
+    100% { transform: scale(1); }
+  }
+  .btn-bounce { animation: btnBounce 0.38s ease forwards; }
+
   .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 4px 0; }
   .card .divider { background: #ccc8be; }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -600,6 +733,16 @@
 </head>
 <body>
 <div id="app">
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash">
+    <div id="splash-card">
+      <div style="font-size:48px;line-height:1;">♠</div>
+      <div style="font-size:12px;font-weight:700;color:#5a3a0a;letter-spacing:.05em;">BELOTE</div>
+    </div>
+    <div id="splash-title">Belote Contrée</div>
+    <div id="splash-sub">Chargement…</div>
+  </div>
 
   <!-- ════════════════════════════════ SCREEN: SETUP ════════════════════════════════ -->
   <div id="screen-setup" class="screen active">
@@ -695,7 +838,7 @@
         </div>
       </div>
 
-      <button id="setup-start-btn" class="btn btn-green btn-full" onclick="startGame()" style="font-size:16px;padding:16px;">
+      <button id="setup-start-btn" class="btn btn-green btn-full" onclick="haptic('medium');bounce(this);startGame();" style="font-size:16px;padding:16px;">
         Commencer la partie ▶
       </button>
     </div>
@@ -802,7 +945,7 @@
       </div>
 
       <div id="contrat-btn-row" style="display:flex;gap:8px;">
-        <button id="contrat-confirmer-btn" class="btn btn-green btn-full" onclick="confirmContract()" style="flex:1;font-size:16px;padding:16px;">
+        <button id="contrat-confirmer-btn" class="btn btn-green btn-full" onclick="haptic('medium');bounce(this);confirmContract();" style="flex:1;font-size:16px;padding:16px;">
           ✓ Confirmer le contrat
         </button>
         <button id="contrat-retour-btn" class="btn btn-outline btn-full" onclick="showTab('enjeu')" style="flex:1;font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Retour à la table</button>
@@ -889,7 +1032,7 @@
           Calculer & Prévisualiser
         </button>
         <div id="confirm-score-btn" style="display:none;">
-          <button class="btn btn-gold btn-full" onclick="validateScore()" style="font-size:16px;padding:16px;">
+          <button class="btn btn-gold btn-full" onclick="haptic('success');bounce(this);validateScore();" style="font-size:16px;padding:16px;">
             ✓ Valider la manche
           </button>
         </div>
@@ -979,6 +1122,16 @@
         <div id="stats-players-content"></div>
       </div>
 
+      <!-- Bouton export -->
+      <div style="display:flex;gap:10px;">
+        <button onclick="exportStats('copy')" class="btn btn-outline btn-full" style="flex:1;font-size:14px;padding:13px;">
+          📋 Copier
+        </button>
+        <button onclick="exportStats('share')" class="btn btn-green btn-full" style="flex:1;font-size:14px;padding:13px;">
+          📤 Partager
+        </button>
+      </div>
+
     </div>
 
     <!-- TAB: MARQUE -->
@@ -996,7 +1149,7 @@
     </div>
 
     <!-- BOTTOM NAV -->
-    <div class="bottom-nav nav5" id="bottom-nav">
+    <div class="bottom-nav nav6" id="bottom-nav">
       <button class="nav-item active" id="nav-table" onclick="showTab('enjeu')">
         <span class="ni-icon">🎯</span>Table
       </button>
@@ -1011,6 +1164,9 @@
       </button>
       <button class="nav-item" id="nav-stats" onclick="showTab('stats')">
         <span class="ni-icon">📈</span>Stats
+      </button>
+      <button class="nav-item" id="nav-marque" onclick="showTab('marque')">
+        <span class="ni-icon">📊</span>Marque
       </button>
     </div>
   </div>
@@ -1033,6 +1189,39 @@
       </div>
       <button class="btn btn-gold btn-full" onclick="newGame()" style="font-size:16px;padding:16px;margin-top:8px;">
         Nouvelle partie
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════ SCREEN: MANCHE EN COURS ════════════ -->
+  <div id="screen-mancheencours" class="screen">
+    <div class="header">
+      <h1 id="mec-title">Manche en cours</h1>
+    </div>
+    <div id="mec-body" class="mec-body">
+      <!-- Joueur qui commence -->
+      <div id="mec-first-player" style="width:100%;max-width:420px;background:rgba(0,0,0,0.2);border-radius:12px;padding:10px 16px;margin-bottom:0;"></div>
+      <!-- Carte SVG -->
+      <div id="mec-card-wrap">
+        <svg id="mec-card-svg" viewBox="0 0 240 340" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <!-- Scores -->
+      <div id="mec-scores">
+        <div class="mec-score-box" id="mec-st1">
+          <div class="mec-team-name" id="mec-n1"></div>
+          <div class="mec-team-score" id="mec-s1">0</div>
+          <div class="mec-need" id="mec-k1"></div>
+        </div>
+        <div class="mec-score-box" id="mec-st2">
+          <div class="mec-team-name" id="mec-n2"></div>
+          <div class="mec-team-score" id="mec-s2">0</div>
+          <div class="mec-need" id="mec-k2"></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:16px;">
+      <button class="btn btn-outline btn-full" onclick="showScreen('game');showTab('enjeu');" style="font-size:15px;padding:14px;color:rgba(255,255,255,0.85);border-color:rgba(255,255,255,0.3);">
+        ← Retour à la table
       </button>
     </div>
   </div>
@@ -1168,6 +1357,7 @@ function startGame() {
     S.dealerIdx = S.dealerOrder.indexOf(pos);
   }
   showScreen('game');
+  haptic('medium');
   initGameUI();
   showTab('enjeu');
 }
@@ -1210,6 +1400,7 @@ function initGameUI() {
 }
 
 function showTab(tab) {
+  haptic('light');
   ['contrat','saisie','history','stats','marque','enjeu'].forEach(t=>{
     const el = document.getElementById('tab-'+t);
     if(el) el.style.display='none';
@@ -1288,12 +1479,14 @@ function updateContractForm() {
 }
 
 function selectPreneur(t, silent) {
+  haptic('light');
   S.form.preneur = t;
   eid('btn-preneur-t1').className = 'btn '+(t==='t1'?'btn-green':'btn-outline');
   eid('btn-preneur-t2').className = 'btn '+(t==='t2'?'btn-green':'btn-outline');
 }
 
 function selectSuit(suit, key, color, silent) {
+  if(!silent) haptic('light');
   S.form.suit=suit; S.form.suitKey=key; S.form.suitColor=color;
   ['h','d','c','s'].forEach(k=>{
     const el = eid('suit-'+k);
@@ -1312,6 +1505,7 @@ function clearSuitSelection() {
 }
 
 function selectContre(v, silent) {
+  if(!silent) haptic('light');
   S.form.contre=v;
   ['none','contre','surcontre'].forEach(k=>{
     eid('chip-contre-'+k).className='chip'+(k===v?' selected-'+(v==='none'?'green':'gold'):'');
@@ -1361,6 +1555,9 @@ function confirmContract() {
     dealer: S.pos[S.dealerOrder[S.dealerIdx]]
   };
   showTab('enjeu');
+  haptic('medium');
+  bounce(eid('btn-action-contrat'));
+  autoSave();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1460,6 +1657,7 @@ function onCapotChange(team) {
 }
 
 function setCapot(team) {
+  haptic('light');
   const c1 = eid('chk-cap-t1'), c2 = eid('chk-cap-t2');
   const b1 = eid('btn-capot-t1'), b2 = eid('btn-capot-t2');
   const isActive = (team==='t1') ? c1.checked : c2.checked;
@@ -1497,6 +1695,7 @@ function setCapot(team) {
 }
 
 function setQuickScore(team, val) {
+  haptic('light');
   const inp = eid('inp-pts-'+team);
   inp.value = val;
   // Auto-complétion à 160
@@ -1561,6 +1760,7 @@ function refreshCapotBoxes() {
 }
 
 function calcAndPreview() {
+  haptic('light');
   const pts1Raw = parseInt(eid('inp-pts-t1').value)||0;
   const pts2Raw = parseInt(eid('inp-pts-t2').value)||0;
   const bel1 = eid('chk-bel-t1').checked;
@@ -1590,27 +1790,24 @@ function calcAndPreview() {
   const hasBelPre = preneурIsT1 ? bel1 : bel2;
   const hasBelAdv = preneурIsT1 ? bel2 : bel1;
 
-  // Points de plis bruts saisis — si capot coché, on met 162/0 automatiquement
-  const plisPre = capotFait ? (capotByPreneur ? 162 : 0) : (preneурIsT1 ? pts1Raw : pts2Raw);
-  // Les plis adversaires = 162 - plisPre (arrondi à 6 selon règlement : 156 vaut 160)
-  // On accepte aussi la saisie manuelle si l'utilisateur l'a renseignée
-  const plisAdvSaisi = capotFait ? (capotByPreneur ? 0 : 162) : (preneурIsT1 ? pts2Raw : pts1Raw);
-  // Si le champ adverse est vide (0), on calcule automatiquement
-  const plisAdv = (plisAdvSaisi > 0) ? plisAdvSaisi : Math.round((162 - plisPre) / 6) * 6;
+  // Points de plis — capot = 250 pts (pas 162)
+  const plisPre = capotFait ? (capotByPreneur ? 250 : 0) : (preneурIsT1 ? pts1Raw : pts2Raw);
+  const plisAdvSaisi = capotFait ? (capotByPreneur ? 0 : 250) : (preneурIsT1 ? pts2Raw : pts1Raw);
+  const plisAdv = (plisAdvSaisi > 0) ? plisAdvSaisi : Math.round((162 - Math.min(plisPre,162)) / 6) * 6;
 
   // ── DÉTERMINATION CHUTE ──────────────────────────────────────
-  // Contrat Capot annoncé : réussi si le preneur a coché Capot
-  // Contrat normal : chute si plis preneurs + belote preneur < annonce
-  // Capot surprise (adversaires font capot sur contrat normal) : le preneur chute
   let chute;
   if (c.isCapot) {
-    // Contrat capot : réussi seulement si C'EST le preneur qui a fait capot
+    // Contrat capot annoncé : réussi seulement si C'EST le preneur qui a fait capot
     chute = !capotByPreneur;
+  } else if (capotFait && capotByPreneur) {
+    // Contrat normal, preneur fait capot = 250 pts → toujours FAIT (250 >= toute annonce)
+    chute = false;
   } else if (capotFait && !capotByPreneur) {
     // Les adversaires ont fait capot → le preneur chute automatiquement
     chute = true;
   } else {
-    // Contrat normal
+    // Contrat normal sans capot
     chute = (plisPre + (hasBelPre ? 20 : 0)) < c.value;
   }
 
@@ -1799,21 +1996,25 @@ function validateScore() {
   }
   S.contract = null;
   S.form = {preneur:'',suit:'',suitKey:'',suitColor:'',value:80,isCapot:false,contre:'none'};
+  const ps = pendingScore; // sauvegarder avant de mettre à null
   pendingScore = null;
 
   // Check winner
   const w1 = S.score.t1>=2001, w2=S.score.t2>=2001;
   if(w1||w2) {
-    // Special rule: if capot + belote tips past 2001, game not over
-    // (handled by user deciding — we show winner screen)
     showWinner(w1&&w2?(S.score.t1>S.score.t2?'t1':'t2'):(w1?'t1':'t2'));
     return;
   }
-  showTab('enjeu');
+  autoSave();
+  haptic('success');
+  // Résumé de fin de manche
+  showMancheSummary(ps, function() { showTab('enjeu'); });
 }
 
 function showWinner(team) {
   savePastGame();
+  clearAutoSave();
+  haptic('heavy');
   const wTeam = S[team];
   const lTeam = team==='t1'?S.t2:S.t1;
   eid('w-title').textContent = '🏆 '+wTeam.name;
@@ -1827,6 +2028,7 @@ function showWinner(team) {
 
 function newGame() {
   if(S.history.length) savePastGame();
+  clearAutoSave();
   S.score={t1:0,t2:0};
   S.history=[];
   S.manche=1;
@@ -1902,6 +2104,71 @@ function renderHistory() {
 //  HISTORIQUE PERSISTANT (localStorage)
 // ═══════════════════════════════════════════════════════════
 
+// ── SAUVEGARDE AUTOMATIQUE ──────────────────────────────────
+function autoSave() {
+  try {
+    localStorage.setItem('belote_autosave', JSON.stringify({
+      pos: S.pos, t1: S.t1, t2: S.t2,
+      score: S.score, history: S.history,
+      manche: S.manche, dealerIdx: S.dealerIdx,
+      contract: S.contract, form: S.form,
+      savedAt: new Date().toISOString()
+    }));
+  } catch(e) {}
+}
+
+function clearAutoSave() {
+  try { localStorage.removeItem('belote_autosave'); } catch(e) {}
+}
+
+function checkAutoSave() {
+  try {
+    const snap = JSON.parse(localStorage.getItem('belote_autosave') || 'null');
+    if(!snap || !snap.t1 || !snap.t1.name) return;
+    if(snap.manche <= 1 && !snap.history.length && !snap.contract) return;
+    const d = new Date(snap.savedAt);
+    const dateStr = d.toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'2-digit'});
+    const timeStr = d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    const modal = document.createElement('div');
+    modal.id = 'autosave-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+    modal.innerHTML = `
+      <div style="background:#1a3318;border-radius:20px;padding:28px;width:100%;max-width:400px;border:2px solid rgba(200,168,74,0.5);text-align:center;">
+        <div style="font-size:40px;margin-bottom:12px;">🃏</div>
+        <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">Partie en cours trouvée</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:4px;font-weight:600;">${snap.t1.name} vs ${snap.t2.name}</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:4px;">Manche ${snap.manche} &nbsp;·&nbsp; ${snap.score.t1} – ${snap.score.t2}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:24px;">Sauvegardée le ${dateStr} à ${timeStr}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button onclick="resumeGame()" style="background:#3d8b3d;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;">▶ Reprendre la partie</button>
+          <button onclick="discardAutoSave()" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:12px;font-size:14px;cursor:pointer;">Commencer une nouvelle partie</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+  } catch(e) {}
+}
+
+function resumeGame() {
+  try {
+    const snap = JSON.parse(localStorage.getItem('belote_autosave'));
+    S.pos=snap.pos; S.t1=snap.t1; S.t2=snap.t2;
+    S.score=snap.score; S.history=snap.history;
+    S.manche=snap.manche; S.dealerIdx=snap.dealerIdx;
+    S.contract=snap.contract;
+    S.form=snap.form||{preneur:'',suit:'',suitKey:'',suitColor:'',value:80,isCapot:false,contre:'none'};
+    eid('autosave-modal')?.remove();
+    showScreen('game'); initGameUI(); showTab('enjeu');
+  } catch(e) { eid('autosave-modal')?.remove(); }
+}
+
+function discardAutoSave() {
+  clearAutoSave();
+  eid('autosave-modal')?.remove();
+}
+
+
+// ═══════════════════════════════════════════════════════════
+
 function savePastGame() {
   // Sauvegarde la partie en cours dans l'historique persistant
   if(!S.history.length) return;
@@ -1970,11 +2237,11 @@ function renderPastHistory() {
         <span style="font-size:12px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.06em;">📅 ${date} <span style="font-weight:500;color:var(--text2);">(${parties.length} partie${parties.length>1?'s':''})</span></span>
         <div style="display:flex;align-items:center;gap:8px;">
           <button onclick="event.stopPropagation();deleteDay('${date}')" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;font-weight:700;padding:3px 10px;cursor:pointer;font-family:inherit;">🗑</button>
-          <span id="day-arrow-${sanitized}" style="font-size:16px;color:var(--text2);transition:transform 0.2s;">▼</span>
+          <span id="day-arrow-${sanitized}" style="font-size:16px;color:var(--text2);transition:transform 0.2s;transform:rotate(-90deg);">▼</span>
         </div>
       </div>
       <!-- Contenu du jour — pliable -->
-      <div id="day-wrap-${sanitized}" style="margin-top:6px;">
+      <div id="day-wrap-${sanitized}" style="margin-top:6px;display:none;">
         ${parties.map(p => `
           <div style="background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:6px;border:1px solid #e0ddd6;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
             <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
@@ -2259,8 +2526,8 @@ function renderStatsTeams() {
       <div style="display:flex;gap:8px;">
         ${teams.map(t=>`<div style="flex:1;text-align:center;background:rgba(255,255,255,0.07);border-radius:8px;padding:6px;">
           <div style="font-size:11px;color:var(--text2);">${t}</div>
-          <div style="font-size:20px;font-weight:800;color:#7ddd82;">${d.wins[t]||0}</div>
-          <div style="font-size:10px;color:var(--text3);">victoire${(d.wins[t]||0)>1?'s':''}</div>
+          <div style="font-size:20px;font-weight:800;color:var(--text);">${d.wins[t]||0}</div>
+          <div style="font-size:10px;color:var(--text);">victoire${(d.wins[t]||0)>1?'s':''}</div>
         </div>`).join('')}
       </div>
     </div>`;
@@ -2315,12 +2582,12 @@ function renderStatsPlayers() {
     <tbody>
       ${sorted.map((p,i)=>`
         <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
-          <td style="padding:7px 4px;font-weight:700;color:${i===0?'#f0c040':'#fff'};">${i===0?'🥇 ':''}${p.name}</td>
-          <td style="text-align:center;padding:7px 2px;">${p.parties}</td>
-          <td style="text-align:center;padding:7px 2px;color:#7ddd82;font-weight:700;">${p.victoires}</td>
-          <td style="text-align:center;padding:7px 2px;">${p.manchesPreneur}</td>
-          <td style="text-align:center;padding:7px 2px;">${p.manchesPreneur?Math.round(p.manchesFaites/p.manchesPreneur*100)+'%':'—'}</td>
-          <td style="text-align:center;padding:7px 2px;color:#b060ff;">${p.capots||0}</td>
+          <td style="padding:7px 4px;font-weight:700;color:${i===0?'#b07000':'var(--text)'};">${i===0?'🥇 ':''}${p.name}</td>
+          <td style="text-align:center;padding:7px 2px;color:var(--text);">${p.parties}</td>
+          <td style="text-align:center;padding:7px 2px;color:var(--text);font-weight:700;">${p.victoires}</td>
+          <td style="text-align:center;padding:7px 2px;color:var(--text);">${p.manchesPreneur}</td>
+          <td style="text-align:center;padding:7px 2px;color:var(--text);">${p.manchesPreneur?Math.round(p.manchesFaites/p.manchesPreneur*100)+'%':'—'}</td>
+          <td style="text-align:center;padding:7px 2px;color:var(--text);">${p.capots||0}</td>
         </tr>`).join('')}
     </tbody>
   </table>`;
@@ -2414,10 +2681,10 @@ function renderEnjeu() {
 
   // Positions des joueurs — décalés du bord pour laisser voir la bordure dorée
   const positions = {
-    nord:  { x:200, y:30,  anchor:'middle' },
-    sud:   { x:200, y:370, anchor:'middle' },
-    est:   { x:372, y:200, anchor:'end'    },
-    ouest: { x:28,  y:200, anchor:'start'  },
+    nord:  { x:200, y:34,  anchor:'middle' },
+    sud:   { x:200, y:366, anchor:'middle' },
+    est:   { x:366, y:200, anchor:'end'    },
+    ouest: { x:34,  y:200, anchor:'start'  },
   };
 
   // Couleurs équipes
@@ -2439,8 +2706,8 @@ function renderEnjeu() {
 
     let out = '';
 
-    const badgeW = Math.min(name.length * 10 + 20, 110);
-    const badgeH = 42;
+    const badgeW = Math.min(name.length * 12 + 24, 130);
+    const badgeH = 52;
     let bx = p.x, by = p.y;
     let bxOff = anchor==='middle' ? -badgeW/2 : anchor==='end' ? -badgeW : 0;
     let byOff = pos==='nord' ? 0 : pos==='sud' ? -badgeH : -badgeH/2;
@@ -2453,12 +2720,12 @@ function renderEnjeu() {
     // Nom — police plus grande
     const tx = anchor==='start' ? bx+bxOff+12 : anchor==='end' ? bx+bxOff+badgeW-12 : bx;
     const ta = anchor==='start' ? 'start' : anchor==='end' ? 'end' : 'middle';
-    out += `<text x="${tx}" y="${by+byOff+19}" text-anchor="${ta}"
-      font-family="-apple-system,sans-serif" font-size="16" font-weight="800" fill="#fff">${name}</text>`;
+    out += `<text x="${tx}" y="${by+byOff+22}" text-anchor="${ta}"
+      font-family="-apple-system,sans-serif" font-size="19" font-weight="800" fill="#fff">${name}</text>`;
 
     // Label position
-    out += `<text x="${tx}" y="${by+byOff+35}" text-anchor="${ta}"
-      font-family="-apple-system,sans-serif" font-size="10" font-weight="600" fill="rgba(255,255,255,0.65)" letter-spacing="1.5">${posLabels[pos]}</text>`;
+    out += `<text x="${tx}" y="${by+byOff+40}" text-anchor="${ta}"
+      font-family="-apple-system,sans-serif" font-size="11" font-weight="600" fill="rgba(255,255,255,0.65)" letter-spacing="1.5">${posLabels[pos]}</text>`;
 
     // Jeton donneur — à la DROITE du joueur selon son orientation à table
     // Nord regarde Sud → droite = Ouest → jeton à gauche du badge
@@ -2584,6 +2851,8 @@ function renderEnjeu() {
     <rect x="${cx-38}" y="${cy+60}" width="76" height="16" rx="8" fill="#c8960a"/>
     <text x="${cx}" y="${cy+72}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" font-weight="800" fill="#fff">${contreLabel}</text>
     ` : ''}
+    <!-- Zone cliquable sur la carte -->
+    <rect x="${cx-60}" y="${cy-86}" width="116" height="168" rx="12" fill="transparent" style="cursor:pointer;" onclick="showMancheEnCours()"/>
     ` : ''}
 
     <!-- Joueurs aux 4 côtés -->
@@ -2598,9 +2867,262 @@ function renderEnjeu() {
 
 // ═══════════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════════
+function showMancheEnCours() {
+  if(!S.contract) return;
+  const c = S.contract;
+  const isRed = c.suit==='♥' || c.suit==='♦';
+  const suitColor = isRed ? '#cc1f1f' : '#111111';
+  const pTeam = c.preneurTeam==='t1' ? S.t1.name : S.t2.name;
+  const contratValue = c.isCapot ? 'Capot' : c.value;
+
+  // Joueur qui commence (à droite du donneur)
+  const firstIdx = (S.dealerIdx + 1) % 4;
+  const firstPos = S.dealerOrder[firstIdx];
+  const firstPlayer = S.pos[firstPos];
+  const dealerPlayer = S.pos[S.dealerOrder[S.dealerIdx]];
+
+  eid('mec-title').textContent = 'Manche ' + S.manche + ' en cours';
+
+  // Info joueur qui commence
+  eid('mec-first-player').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;">🃏 Donneur</div>
+        <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.85);">${dealerPlayer}</div>
+      </div>
+      <div style="width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;">🎯 Premier à jouer</div>
+        <div style="font-size:17px;font-weight:800;color:#f0c040;">${firstPlayer}</div>
+      </div>
+    </div>`;
+
+  // Carte SVG
+  const cx=120, cy=165;
+  const svg = `
+    <rect x="2" y="2" width="236" height="336" rx="16" fill="#faf6ee" stroke="#c8a84a" stroke-width="2"/>
+    <rect x="8" y="8" width="224" height="324" rx="13" fill="none" stroke="rgba(200,168,74,0.4)" stroke-width="1"/>
+    <text x="26" y="44" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="28" fill="${suitColor}">${c.suit}</text>
+    <text x="214" y="44" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="28" fill="${suitColor}">${c.suit}</text>
+    <text x="26" y="308" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="28" fill="${suitColor}">${c.suit}</text>
+    <text x="214" y="308" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="28" fill="${suitColor}">${c.suit}</text>
+    <text x="${cx}" y="${cy-25}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="72" fill="${suitColor}">${c.suit}</text>
+    <text x="${cx}" y="${cy+50}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="${c.isCapot?36:52}" font-weight="900" fill="${suitColor}">${contratValue}</text>
+    ${(()=>{
+      const parts = pTeam.split(' & ');
+      if(parts.length===2) return `
+        <text x="${cx}" y="${cy+80}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">${parts[0]}</text>
+        <text x="${cx}" y="${cy+98}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">&amp;</text>
+        <text x="${cx}" y="${cy+116}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">${parts[1]}</text>`;
+      return `<text x="${cx}" y="${cy+98}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">${pTeam}</text>`;
+    })()}
+    ${c.contre && c.contre!=='none' ? `<rect x="${cx-40}" y="${cy+122}" width="80" height="18" rx="9" fill="#c8960a"/><text x="${cx}" y="${cy+135}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="800" fill="#fff">${c.contre}</text>` : ''}
+  `;
+  eid('mec-card-svg').innerHTML = svg;
+
+  // Scores
+  eid('mec-n1').textContent = S.t1.name;
+  eid('mec-s1').textContent = S.score.t1;
+  eid('mec-k1').textContent = Math.max(0, 2001 - S.score.t1) + ' pts pour gagner';
+  eid('mec-n2').textContent = S.t2.name;
+  eid('mec-s2').textContent = S.score.t2;
+  eid('mec-k2').textContent = Math.max(0, 2001 - S.score.t2) + ' pts pour gagner';
+
+  const leading = S.score.t1 >= S.score.t2 ? 'mec-st1' : 'mec-st2';
+  ['mec-st1','mec-st2'].forEach(id => {
+    const el = eid(id);
+    el.style.borderColor = id===leading ? 'var(--green)' : 'rgba(255,255,255,0.12)';
+    el.style.background  = id===leading ? 'rgba(58,140,63,0.25)' : 'rgba(0,0,0,0.25)';
+  });
+
+  showScreen('mancheencours');
+}
+
+// ── RÉSUMÉ FIN DE MANCHE ──────────────────────────────────
+function showMancheSummary(ps, onConfirm) {
+  const isChute = ps.chute === true;
+  const c = S.contract;
+  const pTeam = c ? (c.preneurTeam==='t1' ? S.t1.name : S.t2.name) : '—';
+  const newT1 = S.score.t1 + ps.pts1;
+  const newT2 = S.score.t2 + ps.pts2;
+  const nextDealerIdx = (S.dealerIdx + 1) % 4;
+  const nextDealer = S.pos[S.dealerOrder[nextDealerIdx]];
+  const nextFirstPlayer = S.pos[S.dealerOrder[(nextDealerIdx + 1) % 4]];
+
+  const modal = document.createElement('div');
+  modal.id = 'manche-summary-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+
+  const badgeHtml = isChute
+    ? '<span style="background:#cc2222;color:#fff;font-size:13px;font-weight:800;padding:4px 16px;border-radius:99px;">⛔ CHUTE</span>'
+    : '<span style="background:#2a8c2a;color:#fff;font-size:13px;font-weight:800;padding:4px 16px;border-radius:99px;">✅ FAIT</span>';
+
+  const c1 = ps.pts1 > ps.pts2 ? '#2a8c2a' : ps.pts1 < ps.pts2 ? '#cc2222' : '#555';
+  const c2 = ps.pts2 > ps.pts1 ? '#2a8c2a' : ps.pts2 < ps.pts1 ? '#cc2222' : '#555';
+
+  modal.innerHTML = `
+    <div style="background:#f0ede6;border-radius:20px;padding:24px;width:100%;max-width:420px;text-align:center;">
+      <div style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Résumé — Manche ${S.manche}</div>
+      <div style="margin-bottom:14px;">${badgeHtml}</div>
+
+      <!-- Contrat -->
+      <div style="font-size:13px;color:#555;margin-bottom:14px;">
+        ${c ? `Contrat ${c.isCapot?'Capot':c.value} ${c.suit} — <strong>${pTeam}</strong>` : ''}
+      </div>
+
+      <!-- Scores de la manche -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div style="background:#fff;border-radius:12px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:4px;">${S.t1.name}</div>
+          <div style="font-size:32px;font-weight:900;color:${c1};">+${ps.pts1}</div>
+          <div style="font-size:12px;color:#999;margin-top:4px;">Total : <strong style="color:#333;">${newT1}</strong></div>
+        </div>
+        <div style="background:#fff;border-radius:12px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;margin-bottom:4px;">${S.t2.name}</div>
+          <div style="font-size:32px;font-weight:900;color:${c2};">+${ps.pts2}</div>
+          <div style="font-size:12px;color:#999;margin-top:4px;">Total : <strong style="color:#333;">${newT2}</strong></div>
+        </div>
+      </div>
+
+      <!-- Manche suivante -->
+      <div style="background:rgba(0,0,0,0.06);border-radius:12px;padding:10px;margin-bottom:18px;font-size:13px;color:#555;">
+        <span style="font-weight:700;color:#333;">Manche ${S.manche + 1}</span> — 
+        🃏 Donneur : <strong>${nextDealer}</strong> &nbsp;·&nbsp;
+        🎯 Premier : <strong style="color:#b07000;">${nextFirstPlayer}</strong>
+      </div>
+
+      <button onclick="eid('manche-summary-modal').remove();(${onConfirm.toString()})()" 
+        style="width:100%;background:#3d8b3d;color:#fff;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;">
+        Manche suivante ▶
+      </button>
+    </div>`;
+
+  document.body.appendChild(modal);
+}
+
+
+function exportStats(mode) {
+  let past = [];
+  try { past = JSON.parse(localStorage.getItem('belote_history')||'[]'); } catch(e) {}
+
+  const now = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  let txt = `🃏 BELOTE CONTRÉE — STATISTIQUES\n`;
+  txt += `📅 Exporté le ${now}\n`;
+  txt += `${'─'.repeat(36)}\n\n`;
+
+  // Partie en cours
+  const h = S.history.filter(m => m.contract && m.contract !== '—');
+  if(h.length) {
+    txt += `📊 PARTIE EN COURS — Manche ${S.manche}\n`;
+    txt += `${S.t1.name} : ${S.score.t1} pts\n`;
+    txt += `${S.t2.name} : ${S.score.t2} pts\n`;
+    const faits = h.filter(m=>m.chute===false).length;
+    const chutes = h.filter(m=>m.chute===true).length;
+    txt += `Manches : ${h.length} (${faits} réussies, ${chutes} chutées)\n\n`;
+  }
+
+  // Stats équipes
+  if(past.length) {
+    txt += `🏆 CONFRONTATIONS — ${past.length} partie${past.length>1?'s':''}\n`;
+    const duels = {};
+    past.forEach(p => {
+      const key = [p.t1,p.t2].sort().join(' vs ');
+      if(!duels[key]) duels[key]={games:0,wins:{}};
+      duels[key].games++;
+      const w = p.score1>=p.score2?p.t1:p.t2;
+      duels[key].wins[w]=(duels[key].wins[w]||0)+1;
+    });
+    Object.entries(duels).forEach(([key,d])=>{
+      const teams = key.split(' vs ');
+      txt += `${key} (${d.games} parties)\n`;
+      teams.forEach(t => txt += `  • ${t} : ${d.wins[t]||0} victoire${(d.wins[t]||0)>1?'s':''}\n`);
+    });
+    txt += '\n';
+
+    // Stats joueurs
+    const players = {};
+    past.forEach(p => {
+      [p.t1,p.t2].forEach(team => {
+        team.split(' & ').forEach(name => {
+          if(!players[name]) players[name]={parties:0,victoires:0,prises:0,faites:0,capots:0};
+        });
+      });
+      const win = p.score1>=p.score2?p.t1:p.t2;
+      p.t1.split(' & ').forEach(n=>{players[n].parties++;if(win===p.t1)players[n].victoires++;});
+      p.t2.split(' & ').forEach(n=>{players[n].parties++;if(win===p.t2)players[n].victoires++;});
+      if(p.history) p.history.forEach(m=>{
+        if(!m.preneur||m.preneur==='—') return;
+        m.preneur.split(' & ').forEach(n=>{
+          if(!players[n]) return;
+          players[n].prises++;
+          if(m.chute===false) players[n].faites++;
+          if(m.contract&&m.contract.startsWith('Capot')&&m.chute===false) players[n].capots++;
+        });
+      });
+    });
+
+    txt += `👤 STATS PAR JOUEUR\n`;
+    Object.values(players).sort((a,b)=>b.victoires-a.victoires).forEach(p=>{
+      const pct = p.prises ? Math.round(p.faites/p.prises*100) : 0;
+      txt += `${p.name} : ${p.parties} parties, ${p.victoires} victoires, ${p.prises} prises (${pct}% réussies)${p.capots?`, ${p.capots} capot${p.capots>1?'s':''}`:''}\n`;
+    });
+  }
+
+  txt += `\n— Généré par Belote Contrée App`;
+
+  if(mode === 'copy') {
+    navigator.clipboard.writeText(txt).then(()=>{
+      showToast('📋 Statistiques copiées !');
+    }).catch(()=>{
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = txt; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('📋 Statistiques copiées !');
+    });
+  } else {
+    if(navigator.share) {
+      navigator.share({ title:'Belote Contrée — Stats', text: txt })
+        .catch(()=>{});
+    } else {
+      // Fallback : copier
+      navigator.clipboard.writeText(txt).then(()=>showToast('📋 Copié (partage non disponible)'));
+    }
+  }
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;font-weight:600;z-index:9999;transition:opacity 0.4s;white-space:nowrap;';
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(),400); }, 2000);
+}
+
+
 function showScreen(name) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
+}
+
+// ── HAPTIC & VISUAL FEEDBACK ─────────────────────────────
+function haptic(type='light') {
+  try {
+    if(window.navigator && window.navigator.vibrate) {
+      const patterns = { light:40, medium:80, heavy:120, success:[40,30,80], error:[80,40,80] };
+      window.navigator.vibrate(patterns[type]||40);
+    }
+  } catch(e) {}
+}
+
+function bounce(el) {
+  if(!el) return;
+  el.classList.remove('btn-bounce');
+  void el.offsetWidth; // force reflow
+  el.classList.add('btn-bounce');
+  el.addEventListener('animationend', ()=>el.classList.remove('btn-bounce'), {once:true});
 }
 function eid(id) { return document.getElementById(id); }
 function v(id) { return document.getElementById(id).value; }
@@ -2665,6 +3187,16 @@ refreshTeamPreview();
 // Charger la dernière configuration sauvegardée
 loadLastConfig();
 refreshTeamPreview();
+checkAutoSave();
+
+// Splash screen — disparaît après 1.5s
+setTimeout(() => {
+  const splash = eid('splash');
+  if(splash) {
+    splash.classList.add('hide');
+    setTimeout(() => splash.remove(), 500);
+  }
+}, 1500);
 </script>
 </body>
 </html>
