@@ -174,12 +174,8 @@
     #tab-contrat .suit-btn { font-size: 28px !important; padding: 10px 4px !important; }
     #tab-contrat .suit-name { display: none !important; }
 
-    /* COL GAUCHE ligne 3 : Confirmer + Retour sur la même ligne */
-    #contrat-btn-row { 
-      grid-column: 1 !important; grid-row: 3 !important;
-      display: flex !important; flex-direction: row !important; gap: 8px !important;
-      align-items: flex-end !important;
-    }
+    /* Boutons bas : même ligne, même taille */
+    #contrat-btn-row { display: flex !important; flex-direction: row !important; gap: 8px !important; }
     #contrat-confirmer-btn, #contrat-retour-btn { 
       flex: 1 !important; font-size: 12px !important; padding: 10px 6px !important; 
     }
@@ -814,11 +810,11 @@
         </div>
       </div>
 
-      <div id="contrat-btn-row" style="display:contents;">
-        <button id="contrat-confirmer-btn" class="btn btn-green btn-full" onclick="confirmContract()" style="font-size:16px;padding:16px;">
+      <div id="contrat-btn-row" style="display:flex;gap:8px;">
+        <button id="contrat-confirmer-btn" class="btn btn-green btn-full" onclick="confirmContract()" style="flex:1;font-size:16px;padding:16px;">
           ✓ Confirmer le contrat
         </button>
-        <button id="contrat-retour-btn" class="btn btn-outline btn-full" onclick="showTab('enjeu')" style="font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Retour à la table</button>
+        <button id="contrat-retour-btn" class="btn btn-outline btn-full" onclick="showTab('enjeu')" style="flex:1;font-size:14px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Retour à la table</button>
       </div>
     </div>
 
