@@ -77,17 +77,19 @@
       padding: 0 !important;
     }
     #ej-table-wrap svg { max-height: calc(100vh - 95px) !important; width: 100% !important; }
-    #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; padding: 0 !important; margin: 0 !important; align-self: start; }
+    #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; align-self: start; padding: 0 !important; margin: 0 !important; }
     #tab-enjeu > div:nth-child(3) { grid-column: 2; grid-row: 2; padding: 0 !important; }
-    /* Score wrap — aligné avec le haut de la table */
-    #tab-enjeu > div:nth-child(2) #ej-score-wrap { margin: 0 !important; padding: 8px 10px !important; }
-    #tab-enjeu > div:nth-child(2) .score-board { grid-template-columns: 1fr !important; gap: 5px; }
-    #tab-enjeu > div:nth-child(2) .score-team { display: flex !important; align-items: center !important; justify-content: space-between !important; padding: 7px 10px !important; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-name { margin-bottom: 0 !important; font-size: 9px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 28px !important; line-height: 1 !important; }
+    /* Score wrap — même style qu'iPad paysage */
+    #tab-enjeu > div:nth-child(2) #ej-score-wrap { margin: 0 !important; padding: 8px !important; }
+    #tab-enjeu > div:nth-child(2) .score-board { grid-template-columns: 1fr !important; gap: 5px !important; }
+    #tab-enjeu > div:nth-child(2) .score-team { display: flex !important; align-items: center !important; justify-content: space-between !important; text-align: left !important; padding: 8px 12px !important; }
+    #tab-enjeu > div:nth-child(2) .score-team .t-name { margin-bottom: 0 !important; font-size: 10px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 32px !important; line-height: 1 !important; font-weight: 800 !important; }
     #tab-enjeu > div:nth-child(2) .score-team .t-need { display: none !important; }
+    /* Boutons */
+    #tab-enjeu > div:nth-child(3) { display: flex !important; flex-direction: column !important; gap: 5px !important; }
     #tab-enjeu > div:nth-child(3) .btn-row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 5px !important; }
-    #tab-enjeu > div:nth-child(3) .btn-row .btn { font-size: 11px !important; padding: 8px 4px !important; }
+    #tab-enjeu > div:nth-child(3) .btn-row .btn { flex: none !important; font-size: 11px !important; padding: 8px 4px !important; text-align: center !important; }
 
     /* ── TABS OVERLAY (contrat, score, historique, marque) ── */
     #tab-contrat, #tab-saisie, #tab-history, #tab-marque {
