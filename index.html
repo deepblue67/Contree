@@ -71,9 +71,14 @@
     .header .sub { font-size: 10px; }
 
     /* Nav compacte */
-    .nav-item { padding: 6px 4px 5px; font-size: 8px; }
-    .nav-item .ni-icon { font-size: 16px; }
-    .bottom-nav { position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 300; }
+    .nav-item { padding: 4px 4px 3px; font-size: 8px; min-height: 0 !important; }
+    .nav-item .ni-icon { font-size: 15px; min-height: 0 !important; }
+    .bottom-nav { position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 300; height: 46px !important; overflow: hidden; }
+
+    /* Ajuster les overlays pour la nav réduite */
+    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
+      bottom: 46px !important;
+    }
 
     /* ── PAGE TABLE : table gauche, scores+boutons droite ── */
     #tab-enjeu {
@@ -168,7 +173,7 @@
     #stepper-area { display: flex !important; align-items: center !important; gap: 6px !important; }
     #stepper-area .stepper { flex-shrink: 0 !important; width: 120px !important; }
     #stepper-area .stepper button { width: 32px !important; height: 32px !important; font-size: 15px !important; }
-    #stepper-area .stepper .sv { font-size: 15px !important; }
+    #stepper-area .stepper .sv { font-size: 22px !important; font-weight: 800 !important; color: var(--text) !important; }
     #quick-btns { margin-top: 0 !important; flex-wrap: wrap !important; gap: 3px !important; flex: 1 !important; align-content: center !important; }
     #quick-btns span { font-size: 10px !important; padding: 3px 5px !important; }
 
@@ -1393,7 +1398,7 @@ function initGameUI() {
   document.getElementById('btn-preneur-t1').textContent = S.t1.name;
   document.getElementById('btn-preneur-t2').textContent = S.t2.name;
   const qb = document.getElementById('quick-btns');
-  qb.innerHTML = [80,90,100,110,120,130,140,150,160,170].map(v=>`<span onclick="setContractVal(${v})" style="cursor:pointer;font-size:12px;padding:3px 8px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;margin:2px;display:inline-block;font-weight:600;">${v}</span>`).join('')
+  qb.innerHTML = [90,100,110,120,130,140,150,160,170].map(v=>`<span onclick="setContractVal(${v})" style="cursor:pointer;font-size:12px;padding:3px 8px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;margin:2px;display:inline-block;font-weight:600;">${v}</span>`).join('')
     + `<span onclick="setContractVal(250)" style="cursor:pointer;font-size:12px;padding:3px 10px;border-radius:99px;border:1px solid #1a5295;background:#e8f0fb;color:#1a5295;margin:2px;display:inline-block;font-weight:700;">Capot</span>`;
   renderMarque();
   updateScoreDisplay();
