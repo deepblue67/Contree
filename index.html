@@ -107,9 +107,9 @@
     #tab-enjeu > div:nth-child(2) .score-team .t-name { margin-bottom: 0 !important; font-size: 10px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 32px !important; line-height: 1 !important; font-weight: 800 !important; }
     #tab-enjeu > div:nth-child(2) .score-team .t-need { display: none !important; }
-    #tab-enjeu > div:nth-child(3) { display: flex !important; flex-direction: column !important; gap: 5px !important; }
-    #tab-enjeu > div:nth-child(3) .btn-row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 5px !important; }
-    #tab-enjeu > div:nth-child(3) .btn-row .btn { flex: none !important; font-size: 11px !important; padding: 8px 4px !important; text-align: center !important; }
+    #ej-action-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 5px !important; padding: 0 !important; max-width: none !important; margin: 0 !important; }
+    #ej-action-grid .btn { font-size: 11px !important; padding: 8px 4px !important; }
+    #ej-score-wrap { max-width: none !important; margin: 0 !important; }
 
     /* ── TABS OVERLAY (contrat, score, historique, marque) ── */
     #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
@@ -280,8 +280,8 @@
     }
     #confirm-score-btn {
       flex: 1 !important;
-      display: flex !important;
       min-height: 0 !important;
+      /* Pas de display ici : JS gère display:none / display:block */
     }
     #confirm-score-btn .btn {
       flex: 1 !important;
@@ -395,6 +395,8 @@
     .hi-bottom { font-size: 13px; }
     input[type=text], input[type=number], select { font-size: 17px; padding: 14px 16px; }
     #ej-table-wrap { max-width: 100% !important; }
+  #ej-score-wrap { max-width: none !important; margin: 0 !important; }
+  #ej-action-grid { max-width: none !important; margin: 0 !important; }
     #ej-table-wrap svg { max-height: 55vh !important; }
     #tab-enjeu { padding: 16px 16px 24px !important; }
     .score-board { gap: 14px; }
@@ -457,9 +459,9 @@
     #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 52px !important; line-height: 1 !important; }
     #tab-enjeu > div:nth-child(2) .score-team .t-need { display: none !important; }
     /* 4 boutons même taille en 2x2 */
-    #tab-enjeu > div:nth-child(3) { display: flex !important; flex-direction: column !important; gap: 8px !important; padding: 0 !important; }
-    #tab-enjeu > div:nth-child(3) .btn-row { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
-    #tab-enjeu > div:nth-child(3) .btn-row .btn { flex: none !important; font-size: 15px !important; padding: 14px 8px !important; text-align: center !important; }
+    #ej-action-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; padding: 0 !important; max-width: none !important; margin: 0 !important; }
+    #ej-action-grid .btn { font-size: 15px !important; padding: 14px 8px !important; }
+    #ej-score-wrap { max-width: none !important; margin: 0 !important; }
 
     /* Page SETUP : table à gauche, donneur + bouton à droite */
     #screen-setup .body {
@@ -663,8 +665,8 @@
   .bottom-nav.nav5 { grid-template-columns: repeat(5, 1fr); }
   .bottom-nav.nav6 { grid-template-columns: repeat(6, 1fr); }
   .bottom-nav.nav3 { grid-template-columns: repeat(3, 1fr); }
-  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 4px 8px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.35); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-family: inherit; transition: color 0.15s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; }
-  .nav-item .ni-icon { font-size: 20px; line-height: 1; }
+  .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 4px 5px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.35); font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-family: inherit; transition: color 0.15s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; }
+  .nav-item .ni-icon { font-size: 17px; line-height: 1; }
   .nav-item.active { color: #7ddd82; }
 
   /* ── WINNER SCREEN ── */
@@ -687,7 +689,7 @@
   #mec-card-wrap {
     cursor: pointer;
     border-radius: 20px;
-    animation: card-pulse 1.8s ease-in-out infinite;
+    animation: card-pulse 3.5s ease-in-out infinite;
     -webkit-tap-highlight-color: transparent;
   }
   #mec-card-wrap:active { transform: scale(0.96) !important; opacity: 0.85; }
@@ -977,23 +979,19 @@
       </div>
 
       <!-- Score sous la table -->
-      <div id="ej-score-wrap" style="border-radius:var(--radius);background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.12);">
+      <div id="ej-score-wrap" style="border-radius:var(--radius);background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.12);max-width:420px;margin:0 auto;width:100%;">
         <div class="score-board">
           <div class="score-team" id="ej-st1"><div class="t-name" id="ej-stn1"></div><div class="t-score" id="ej-sts1">0</div><div class="t-need" id="ej-stk1"></div></div>
           <div class="score-team" id="ej-st2"><div class="t-name" id="ej-stn2"></div><div class="t-score" id="ej-sts2">0</div><div class="t-need" id="ej-stk2"></div></div>
         </div>
       </div>
 
-      <!-- Boutons action -->
-      <div style="padding:8px 8px 0;display:flex;flex-direction:column;gap:10px;">
-        <div class="btn-row">
-          <button id="btn-action-contrat" class="btn btn-outline" onclick="showTab('contrat')" style="flex:1;">✏️ Contrat</button>
-          <button id="btn-action-saisie" class="btn btn-green" onclick="showTab('saisie');updateSaisieForm();" style="flex:1.5;">📊 Saisir score</button>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-outline" onclick="askNewGame()" style="flex:1;font-size:12px;">Nouvelle partie</button>
-          <button class="btn btn-outline" onclick="askChangeTeams()" style="flex:1;font-size:12px;opacity:0.7;">Changement d'équipe</button>
-        </div>
+      <!-- Boutons action — grille 2×2 uniforme -->
+      <div id="ej-action-grid" style="padding:8px 8px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:420px;margin:0 auto;width:100%;">
+        <button id="btn-action-contrat" class="btn btn-outline" onclick="showTab('contrat')">✏️ Contrat</button>
+        <button id="btn-action-saisie" class="btn btn-green" onclick="showTab('saisie');updateSaisieForm();">📊 Saisir score</button>
+        <button class="btn btn-outline" onclick="askNewGame()" style="font-size:13px;">Nouvelle partie</button>
+        <button class="btn btn-outline" onclick="askChangeTeams()" style="font-size:13px;opacity:0.8;">Changement d'équipe</button>
       </div>
 
       <!-- Modale confirmation -->
@@ -1090,7 +1088,7 @@
             </div>
 
             <!-- Boutons rapides style contrat -->
-            <div style="display:flex;gap:3px;justify-content:center;flex-wrap:nowrap;">
+            <div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;">
               <span onclick="setQuickScore('t1',80)"  style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
               <span onclick="setQuickScore('t1',100)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
               <span onclick="setQuickScore('t1',120)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
@@ -1116,7 +1114,7 @@
             </div>
 
             <!-- Boutons rapides style contrat -->
-            <div style="display:flex;gap:3px;justify-content:center;flex-wrap:nowrap;">
+            <div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;">
               <span onclick="setQuickScore('t2',80)"  style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">80</span>
               <span onclick="setQuickScore('t2',100)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">100</span>
               <span onclick="setQuickScore('t2',120)" style="cursor:pointer;font-size:14px;padding:6px 10px;border-radius:99px;border:1px solid #bbb8b0;background:#e8e4dc;color:#1a1a1a;font-weight:600;touch-action:manipulation;white-space:nowrap;">120</span>
@@ -2070,7 +2068,7 @@ function showScoreResult(ps) {
     <div id="score-detail-body" style="display:none;margin-top:10px;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.8;border-top:1px solid rgba(255,255,255,0.1);padding-top:8px;">${detailLines}</div>
   </div>`;
 
-  eid('confirm-score-btn').style.display='block';
+  eid('confirm-score-btn').style.display = window.matchMedia('(orientation:landscape)').matches ? 'flex' : 'block';
   const btn = eid('calc-preview-btn');
   if(btn) btn.style.display='none';
 }
@@ -3060,10 +3058,10 @@ function showMancheEnCours() {
   // Scores
   eid('mec-n1').textContent = S.t1.name;
   eid('mec-s1').textContent = S.score.t1;
-  eid('mec-k1').textContent = Math.max(0, 2001 - S.score.t1) + ' pts pour gagner';
+  eid('mec-k1').textContent = '';
   eid('mec-n2').textContent = S.t2.name;
   eid('mec-s2').textContent = S.score.t2;
-  eid('mec-k2').textContent = Math.max(0, 2001 - S.score.t2) + ' pts pour gagner';
+  eid('mec-k2').textContent = '';
 
   const leading = S.score.t1 >= S.score.t2 ? 'mec-st1' : 'mec-st2';
   ['mec-st1','mec-st2'].forEach(id => {
