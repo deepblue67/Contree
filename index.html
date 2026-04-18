@@ -71,7 +71,7 @@
     .header .sub { font-size: 10px; }
 
     /* Nav compacte — icône AU-DESSUS du texte */
-    .bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; z-index: 9000 !important; height: 48px !important; }
+    .bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; transform: none !important; max-width: none !important; border-radius: 0 !important; z-index: 9000 !important; height: 48px !important; }
     .bottom-nav .nav-item { display: -webkit-flex !important; display: flex !important; -webkit-flex-direction: column !important; flex-direction: column !important; -webkit-align-items: center !important; align-items: center !important; -webkit-justify-content: center !important; justify-content: center !important; padding: 3px 2px 2px !important; font-size: 7px !important; min-height: 0 !important; height: 48px !important; gap: 0 !important; box-sizing: border-box !important; }
     .bottom-nav .nav-item .ni-icon { display: block !important; font-size: 15px !important; line-height: 1.1 !important; margin-bottom: 2px !important; }
     .bottom-nav button, .bottom-nav .nav-item { min-height: 0 !important; }
@@ -373,6 +373,7 @@
     .hi-num { font-size: 10px; }
   }
   @media (min-width: 700px) and (orientation: portrait) {
+    .bottom-nav { max-width: none !important; transform: none !important; border-radius: 0 !important; left: 0 !important; }
     #app { max-width: 100%; width: 100%; }
     .body { padding: 20px 28px; gap: 18px; }
     .card { padding: 22px 28px; border-radius: 22px; }
@@ -406,6 +407,7 @@
   /* ══ IPAD PAYSAGE (900px+) ══ */
   @media (min-width: 900px) and (orientation: landscape) {
     #app { max-width: 100%; width: 100%; }
+    .bottom-nav { max-width: none !important; transform: none !important; border-radius: 0 !important; left: 0 !important; }
 
     /* En paysage, les tabs non-enjeu s'affichent en overlay plein écran */
     #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
@@ -514,7 +516,7 @@
   .screen.active { display: flex; }
 
   /* ── HEADER ── */
-  .header { background: var(--panel); color: var(--text-light); padding: 14px 16px 12px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .header { background: var(--panel); color: var(--text-light); padding: 14px 16px 12px; padding-top: max(14px, calc(env(safe-area-inset-top, 0px) + 8px)); display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.08); }
   .header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; flex: 1; }
   .header .sub { font-size: 12px; opacity: 0.65; margin-top: 1px; }
 
@@ -660,7 +662,7 @@
   .marque-table .pts-zero { color: var(--red); font-weight: 700; text-align: center; }
 
   /* ── BOTTOM NAV ── */
-  .bottom-nav { background: var(--panel); border-top: 1px solid rgba(255,255,255,0.08); display: grid; padding-bottom: env(safe-area-inset-bottom, 0); position: fixed; bottom: 0; left: 0; right: 0; z-index: 300; }
+  .bottom-nav { background: var(--panel); border-top: 1px solid rgba(255,255,255,0.08); display: grid; padding-bottom: env(safe-area-inset-bottom, 0); position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; z-index: 300; border-radius: 16px 16px 0 0; }
   .bottom-nav.nav4 { grid-template-columns: repeat(4, 1fr); }
   .bottom-nav.nav5 { grid-template-columns: repeat(5, 1fr); }
   .bottom-nav.nav6 { grid-template-columns: repeat(6, 1fr); }
