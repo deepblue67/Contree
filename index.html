@@ -203,42 +203,90 @@
       -webkit-overflow-scrolling: touch !important;
       will-change: transform !important;
     }
-    /* Box contrat : tout sur une ligne compacte */
+
+    /* Box contrat : une ligne ultra-compacte */
     #tab-saisie #contract-reminder > div {
-      padding: 8px 12px !important;
+      padding: 5px 10px !important;
       flex-direction: row !important;
       align-items: center !important;
-      gap: 10px !important;
+      gap: 8px !important;
+      border-radius: 8px !important;
     }
-    #tab-saisie #contract-reminder > div > div:first-child { font-size: 32px !important; }
-    #tab-saisie #contract-reminder > div > div:last-child > div:first-child { font-size: 18px !important; }
-    #tab-saisie #contract-reminder > div > div:last-child > div:last-child { font-size: 13px !important; margin-top: 2px !important; }
+    #tab-saisie #contract-reminder > div > div:first-child { font-size: 22px !important; }
+    #tab-saisie #contract-reminder > div > div:last-child > div:first-child { font-size: 14px !important; }
+    #tab-saisie #contract-reminder > div > div:last-child > div:last-child { font-size: 11px !important; margin-top: 1px !important; }
 
     /* Cacher "Résultat de la manche" */
     #tab-saisie .card-title { display: none !important; }
 
-    /* Boutons rapides plus petits */
-    #tab-saisie span[onclick*="setQuickScore"],
-    #tab-saisie span[onclick*="setCapot"] { 
-      font-size: 11px !important; 
-      padding: 3px 5px !important; 
+    /* Card saisie : padding réduit et gap minimal */
+    #tab-saisie .card { padding: 6px 10px !important; gap: 0 !important; }
+    #tab-saisie .card > div[style*="grid"] { gap: 8px !important; }
+
+    /* Labels équipes plus petits */
+    #tab-saisie #lbl-pts-t1,
+    #tab-saisie #lbl-pts-t2 { font-size: 9px !important; margin-bottom: 2px !important; }
+
+    /* Colonnes internes : gap réduit */
+    #tab-saisie .card > div > div[style*="flex-direction:column"],
+    #tab-saisie .card > div > div[style*="flex-direction: column"] { gap: 4px !important; }
+
+    /* Steppers plus fins */
+    #stp-t1, #stp-t2 { min-height: 0 !important; }
+    #stp-t1 button, #stp-t2 button { 
+      height: 34px !important; 
+      width: 34px !important; 
+      font-size: 18px !important;
+      min-height: 0 !important;
+    }
+    #inp-pts-t1, #inp-pts-t2 { 
+      font-size: 16px !important; 
+      min-height: 0 !important;
     }
 
-    /* Calculer & Annuler sur la même ligne */
+    /* Boutons rapides beaucoup plus petits */
+    #tab-saisie span[onclick*="setQuickScore"],
+    #tab-saisie span[onclick*="setCapot"] { 
+      font-size: 10px !important; 
+      padding: 3px 6px !important;
+      min-height: 0 !important;
+    }
+
+    /* Belote plus compacte */
+    #lbl-bel-t1-box, #lbl-bel-t2-box {
+      padding: 4px 8px !important;
+      font-size: 10px !important;
+      min-height: 0 !important;
+    }
+    #lbl-bel-t1-box input, #lbl-bel-t2-box input {
+      width: 13px !important;
+      height: 13px !important;
+      min-height: 0 !important;
+      min-width: 0 !important;
+    }
+
+    /* Calculer & Annuler sur la même ligne, compacts */
     #saisie-actions {
       display: flex !important;
       flex-direction: row !important;
-      gap: 8px !important;
+      gap: 6px !important;
     }
     #calc-preview-btn { 
       flex: 1 !important; 
-      font-size: 13px !important; 
-      padding: 11px 8px !important; 
+      font-size: 12px !important; 
+      padding: 9px 6px !important;
+      min-height: 0 !important;
     }
     #saisie-annuler-btn { 
       flex: 1 !important; 
-      font-size: 13px !important; 
-      padding: 11px 8px !important; 
+      font-size: 12px !important; 
+      padding: 9px 6px !important;
+      min-height: 0 !important;
+    }
+    #confirm-score-btn .btn {
+      font-size: 12px !important;
+      padding: 9px 6px !important;
+      min-height: 0 !important;
     }
 
     /* ── PAGE CONFIG ── */
