@@ -2101,6 +2101,8 @@ function validateScore() {
     total2: S.score.t2
   };
   S.history.push(h);
+  // Sauvegarder le numéro de manche AVANT incrémentation pour l'afficher dans le résumé
+  const mancheJouee = S.manche;
   // On n'incrémente la manche et on ne change le donneur que s'il y avait un vrai contrat
   if(S.contract) {
     S.manche++;
@@ -2119,8 +2121,8 @@ function validateScore() {
   }
   autoSave();
   haptic('success');
-  // Résumé de fin de manche
-  showMancheSummary(ps, function() { showTab('enjeu'); });
+  // Résumé de fin de manche — on passe le bon numéro
+  showMancheSummary(ps, mancheJouee, function() { showTab('enjeu'); });
 }
 
 function showWinner(team) {
@@ -3051,7 +3053,7 @@ function showMancheEnCours() {
 }
 
 // ── RÉSUMÉ FIN DE MANCHE ──────────────────────────────────
-function showMancheSummary(ps, onConfirm) {
+function showMancheSummary(ps, mancheJouee, onConfirm) {
   const isChute = ps.chute === true;
   const c = S.contract;
   const pTeam = c ? (c.preneurTeam==='t1' ? S.t1.name : S.t2.name) : '—';
@@ -3074,7 +3076,7 @@ function showMancheSummary(ps, onConfirm) {
 
   modal.innerHTML = `
     <div style="background:#f0ede6;border-radius:20px;padding:24px;width:100%;max-width:420px;text-align:center;">
-      <div style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Résumé — Manche ${S.manche}</div>
+      <div style="font-size:13px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Résumé — Manche ${mancheJouee}</div>
       <div style="margin-bottom:14px;">${badgeHtml}</div>
 
       <!-- Contrat -->
@@ -3098,7 +3100,7 @@ function showMancheSummary(ps, onConfirm) {
 
       <!-- Manche suivante -->
       <div style="background:rgba(0,0,0,0.06);border-radius:12px;padding:10px;margin-bottom:18px;font-size:13px;color:#555;">
-        <span style="font-weight:700;color:#333;">Manche ${S.manche + 1}</span> — 
+        <span style="font-weight:700;color:#333;">Manche ${S.manche}</span> — 
         🃏 Donneur : <strong>${nextDealer}</strong> &nbsp;·&nbsp;
         🎯 Premier : <strong style="color:#b07000;">${nextFirstPlayer}</strong>
       </div>
