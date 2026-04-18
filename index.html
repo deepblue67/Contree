@@ -2374,28 +2374,46 @@ function renderPastHistory() {
 }
 
 function deleteGame(id) {
-  try {
-    let past = JSON.parse(localStorage.getItem('belote_history') || '[]');
-    past = past.filter(p => p.id !== id);
-    localStorage.setItem('belote_history', JSON.stringify(past));
-    renderPastHistory();
-  } catch(e) {}
+  eid('confirm-msg').textContent = 'Supprimer cette partie ? Cette action est irréversible.';
+  eid('confirm-ok').onclick = () => {
+    closeConfirm();
+    try {
+      let past = JSON.parse(localStorage.getItem('belote_history') || '[]');
+      past = past.filter(p => p.id !== id);
+      localStorage.setItem('belote_history', JSON.stringify(past));
+      renderPastHistory();
+      renderStats();
+    } catch(e) {}
+  };
+  eid('confirm-modal').style.display = 'flex';
 }
 
 function deleteDay(date) {
-  try {
-    let past = JSON.parse(localStorage.getItem('belote_history') || '[]');
-    past = past.filter(p => p.date !== date);
-    localStorage.setItem('belote_history', JSON.stringify(past));
-    renderPastHistory();
-  } catch(e) {}
+  eid('confirm-msg').textContent = 'Supprimer toutes les parties de ce jour ? Cette action est irréversible.';
+  eid('confirm-ok').onclick = () => {
+    closeConfirm();
+    try {
+      let past = JSON.parse(localStorage.getItem('belote_history') || '[]');
+      past = past.filter(p => p.date !== date);
+      localStorage.setItem('belote_history', JSON.stringify(past));
+      renderPastHistory();
+      renderStats();
+    } catch(e) {}
+  };
+  eid('confirm-modal').style.display = 'flex';
 }
 
 function clearAllHistory() {
-  try {
-    localStorage.removeItem('belote_history');
-    renderPastHistory();
-  } catch(e) {}
+  eid('confirm-msg').textContent = "Supprimer tout l'historique ? Cette action est irréversible.";
+  eid('confirm-ok').onclick = () => {
+    closeConfirm();
+    try {
+      localStorage.removeItem('belote_history');
+      renderPastHistory();
+      renderStats();
+    } catch(e) {}
+  };
+  eid('confirm-modal').style.display = 'flex';
 }
 
 let editingManche = null;
@@ -2820,7 +2838,11 @@ function renderEnjeu() {
 
     let out = '';
 
-    const badgeW = Math.min(name.length * 12 + 24, 130);
+    // EST et OUEST : limiter la largeur pour ne pas chevaucher la carte centrale (cx±60=140/260)
+    // OUEST part de x=34 → max x de fin = 132 → maxW = 98
+    // EST finit à x=366, commence au plus tôt à x=268 → maxW = 98
+    const maxW = (pos==='ouest' || pos==='est') ? 98 : 130;
+    const badgeW = Math.min(name.length * 12 + 24, maxW);
     const badgeH = 52;
     let bx = p.x, by = p.y;
     let bxOff = anchor==='middle' ? -badgeW/2 : anchor==='end' ? -badgeW : 0;
@@ -2831,11 +2853,12 @@ function renderEnjeu() {
     // Badge
     out += `<rect x="${bx+bxOff}" y="${by+byOff}" width="${badgeW}" height="${badgeH}" rx="10" fill="${color}"/>`;
 
-    // Nom — police plus grande
+    // Nom — police adaptée : plus petite pour EST/OUEST (espace limité)
     const tx = anchor==='start' ? bx+bxOff+12 : anchor==='end' ? bx+bxOff+badgeW-12 : bx;
     const ta = anchor==='start' ? 'start' : anchor==='end' ? 'end' : 'middle';
+    const nameFontSize = (pos==='ouest'||pos==='est') ? (name.length > 7 ? 14 : 17) : 19;
     out += `<text x="${tx}" y="${by+byOff+22}" text-anchor="${ta}"
-      font-family="-apple-system,sans-serif" font-size="19" font-weight="800" fill="#fff">${name}</text>`;
+      font-family="-apple-system,sans-serif" font-size="${nameFontSize}" font-weight="800" fill="#fff">${name}</text>`;
 
     // Label position
     out += `<text x="${tx}" y="${by+byOff+40}" text-anchor="${ta}"
@@ -3059,7 +3082,9 @@ function showMancheSummary(ps, mancheJouee, onConfirm) {
   const pTeam = c ? (c.preneurTeam==='t1' ? S.t1.name : S.t2.name) : '—';
   const newT1 = S.score.t1 + ps.pts1;
   const newT2 = S.score.t2 + ps.pts2;
-  const nextDealerIdx = (S.dealerIdx + 1) % 4;
+  // S.dealerIdx est déjà incrémenté dans validateScore avant cet appel
+  // → S.dealerIdx pointe directement sur le prochain donneur
+  const nextDealerIdx = S.dealerIdx;
   const nextDealer = S.pos[S.dealerOrder[nextDealerIdx]];
   const nextFirstPlayer = S.pos[S.dealerOrder[(nextDealerIdx + 1) % 4]];
 
