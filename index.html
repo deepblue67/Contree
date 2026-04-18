@@ -70,15 +70,19 @@
     .header h1 { font-size: 14px; }
     .header .sub { font-size: 10px; }
 
-    /* Nav compacte */
-    .nav-item { padding: 4px 4px 3px; font-size: 8px; min-height: 0 !important; flex-direction: column !important; }
-    .nav-item .ni-icon { font-size: 15px; min-height: 0 !important; }
-    .bottom-nav { position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 300; height: 52px !important; overflow: hidden; }
-
-    /* Ajuster les overlays pour la nav réduite */
-    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
-      bottom: 52px !important;
+    /* Nav compacte — icône AU-DESSUS du texte */
+    .nav-item {
+      padding: 5px 2px 4px !important;
+      font-size: 7px !important;
+      min-height: 0 !important;
+      flex-direction: column !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 1px !important;
     }
+    .nav-item .ni-icon { font-size: 14px !important; min-height: 0 !important; order: 0 !important; line-height: 1 !important; }
+    .bottom-nav { position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 300; height: 50px !important; }
+    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque { bottom: 50px !important; }
 
     /* ── PAGE TABLE : table gauche, scores+boutons droite ── */
     #tab-enjeu {
@@ -170,18 +174,19 @@
     #tab-contrat .card > div:nth-child(3) { 
       grid-column: 2 !important; grid-row: 1 !important; margin-bottom: 0 !important;
     }
-    #stepper-area { display: flex !important; align-items: center !important; gap: 6px !important; }
-    #stepper-area .stepper { flex-shrink: 0 !important; width: 140px !important; }
-    #stepper-area .stepper button { width: 36px !important; height: 36px !important; font-size: 17px !important; }
-    #stepper-area .stepper .sv { font-size: 24px !important; font-weight: 800 !important; color: var(--text) !important; }
+    #stepper-area { display: flex !important; align-items: center !important; gap: 4px !important; }
+    #stepper-area .stepper { flex-shrink: 0 !important; width: 110px !important; }
+    #stepper-area .stepper button { width: 28px !important; height: 28px !important; font-size: 14px !important; min-height: 0 !important; }
+    #stepper-area .stepper .sv { font-size: 20px !important; font-weight: 800 !important; color: var(--text) !important; }
     #quick-btns { 
       margin-top: 0 !important; 
       display: grid !important;
       grid-template-columns: repeat(5, 1fr) !important;
-      gap: 3px !important; 
+      gap: 2px !important; 
       flex: 1 !important;
+      align-content: center !important;
     }
-    #quick-btns span { font-size: 11px !important; padding: 5px 2px !important; text-align: center !important; }
+    #quick-btns span { font-size: 9px !important; padding: 3px 1px !important; text-align: center !important; min-height: 0 !important; }
 
     /* nth-child(4) = Couleur atout → COL DROITE ligne 2 */
     #tab-contrat .card > div:nth-child(4) { 
