@@ -71,17 +71,10 @@
     .header .sub { font-size: 10px; }
 
     /* Nav compacte — icône AU-DESSUS du texte */
-    .nav-item {
-      padding: 5px 2px 4px !important;
-      font-size: 7px !important;
-      min-height: 0 !important;
-      flex-direction: column !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 1px !important;
-    }
-    .nav-item .ni-icon { font-size: 14px !important; min-height: 0 !important; order: -1 !important; line-height: 1 !important; display: block !important; }
-    .bottom-nav { position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 300; height: 50px !important; }
+    .bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; z-index: 9000 !important; height: 48px !important; }
+    .bottom-nav .nav-item { display: -webkit-flex !important; display: flex !important; -webkit-flex-direction: column !important; flex-direction: column !important; -webkit-align-items: center !important; align-items: center !important; -webkit-justify-content: center !important; justify-content: center !important; padding: 3px 2px 2px !important; font-size: 7px !important; min-height: 0 !important; height: 48px !important; gap: 0 !important; box-sizing: border-box !important; }
+    .bottom-nav .nav-item .ni-icon { display: block !important; font-size: 15px !important; line-height: 1.1 !important; margin-bottom: 2px !important; }
+    .bottom-nav button, .bottom-nav .nav-item { min-height: 0 !important; }
 
     /* ── PAGE TABLE : table gauche, scores+boutons droite ── */
     #tab-enjeu {
@@ -124,7 +117,7 @@
       top: 44px !important;
       left: 0 !important;
       right: 0 !important;
-      bottom: 50px !important;
+      bottom: 48px !important;
       z-index: 200 !important;
       overflow-y: auto !important;
       overflow-x: hidden !important;
@@ -173,8 +166,8 @@
     #tab-contrat .card > div:nth-child(3) { 
       grid-column: 2 !important; grid-row: 1 !important; margin-bottom: 0 !important;
     }
-    #stepper-area { display: flex !important; align-items: center !important; gap: 4px !important; }
-    #stepper-area .stepper { flex-shrink: 0 !important; width: 110px !important; }
+    #stepper-area { display: flex !important; flex-direction: column !important; gap: 3px !important; }
+    #stepper-area .stepper { width: 140px !important; }
     #stepper-area .stepper button { width: 28px !important; height: 28px !important; font-size: 14px !important; min-height: 0 !important; }
     #stepper-area .stepper .sv { font-size: 22px !important; font-weight: 900 !important; color: #111 !important; background: transparent !important; width: 100% !important; }
     #quick-btns { 
