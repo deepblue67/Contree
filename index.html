@@ -374,9 +374,8 @@
     .hi-num { font-size: 10px; }
   }
   @media (min-width: 700px) and (orientation: portrait) {
-    body { background: var(--panel) !important; }
     .bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; max-width: none !important; transform: none !important; border-radius: 0 !important; height: auto !important; z-index: 9999 !important; padding-bottom: 0 !important; }
-    #app { max-width: 100%; width: 100%; }
+    #app { max-width: 100%; width: 100%; min-height: 100dvh; }
     .body { padding: 20px 28px; gap: 18px; }
     .card { padding: 22px 28px; border-radius: 22px; }
     .card-title { font-size: 14px; }
@@ -408,8 +407,7 @@
 
   /* ══ IPAD PAYSAGE (900px+) ══ */
   @media (min-width: 900px) and (orientation: landscape) {
-    #app { max-width: 100%; width: 100%; }
-    body { background: var(--panel) !important; }
+    #app { max-width: 100%; width: 100%; min-height: 100dvh; }
     .bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; max-width: none !important; transform: none !important; border-radius: 0 !important; height: auto !important; z-index: 9999 !important; padding-bottom: 0 !important; }
 
     /* En paysage, les tabs non-enjeu s'affichent en overlay plein écran */
