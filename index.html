@@ -2159,7 +2159,7 @@ function validateScore() {
   autoSave();
   haptic('success');
   // Résumé de fin de manche — on passe le bon numéro
-  showMancheSummary(ps, mancheJouee, function() { showTab('enjeu'); });
+  showMancheSummary(ps, mancheJouee, function() { showScreen('game'); showTab('enjeu'); });
 }
 
 function showWinner(team) {
