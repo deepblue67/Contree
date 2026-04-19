@@ -2121,6 +2121,9 @@ function toggleScoreDetail() {
 
 function validateScore() {
   if(!pendingScore) return;
+  // Fermer la modale portrait si elle existe
+  const modal = document.getElementById('score-result-modal');
+  if(modal) modal.remove();
   S.score.t1 += pendingScore.pts1;
   S.score.t2 += pendingScore.pts2;
   const h = {
