@@ -391,7 +391,7 @@
     .chip { font-size: 16px; padding: 12px 20px; }
     .header h1 { font-size: 24px; }
     .nav-item { padding: 14px 8px 12px; font-size: 11px; }
-    .nav-item .ni-icon { font-size: 26px; }
+    .nav-item .ni-icon { font-size: 32px; }
     .marque-table { font-size: 15px; }
     .marque-table td { padding: 10px 6px; }
     .hi-contract { font-size: 16px; }
@@ -404,6 +404,7 @@
     #tab-enjeu { padding: 16px 16px 24px !important; }
     .score-board { gap: 14px; }
     #setup-table-wrap { max-width: 100% !important; }
+    #setup-table-wrap svg { max-height: calc(100vh - 220px) !important; width: 100% !important; height: auto !important; }
   }
 
   /* ══ IPAD PAYSAGE (900px+) ══ */
@@ -453,7 +454,7 @@
     #ej-table-wrap svg {
       width: 100% !important;
       height: auto !important;
-      max-height: calc(100vh - 220px) !important;
+      max-height: calc(100vh - 280px) !important;
       display: block !important;
     }
     #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; align-self: start; }
@@ -488,7 +489,7 @@
     #setup-table-wrap svg {
       width: 100% !important;
       height: auto !important;
-      max-height: calc(100vh - 250px) !important;
+      max-height: calc(100vh - 300px) !important;
       display: block !important;
     }
     #setup-donneur-wrap {
@@ -2862,8 +2863,8 @@ function renderEnjeu() {
   const positions = {
     nord:  { x:200, y:34,  anchor:'middle' },
     sud:   { x:200, y:366, anchor:'middle' },
-    est:   { x:366, y:200, anchor:'end'    },
-    ouest: { x:34,  y:200, anchor:'start'  },
+    est:   { x:356, y:200, anchor:'end'    },
+    ouest: { x:44,  y:200, anchor:'start'  },
   };
 
   // Couleurs équipes
