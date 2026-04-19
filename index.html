@@ -448,11 +448,14 @@
       padding: 0 !important;
       align-self: stretch;
     }
-    #ej-table-wrap svg {
-      height: calc(100vh - 210px) !important;
+    #ej-table-wrap {
       max-height: calc(100vh - 210px) !important;
-      width: auto !important;
-      max-width: 100% !important;
+      overflow: hidden !important;
+    }
+    #ej-table-wrap svg {
+      width: 100% !important;
+      height: auto !important;
+      max-height: calc(100vh - 210px) !important;
       display: block !important;
     }
     #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; align-self: start; }
@@ -483,11 +486,14 @@
       grid-row: 1 / 3 !important;
       max-width: 100% !important;
     }
-    #setup-table-wrap svg {
-      height: calc(100vh - 210px) !important;
+    #setup-table-wrap {
       max-height: calc(100vh - 210px) !important;
-      width: auto !important;
-      max-width: 100% !important;
+      overflow: hidden !important;
+    }
+    #setup-table-wrap svg {
+      width: 100% !important;
+      height: auto !important;
+      max-height: calc(100vh - 210px) !important;
       display: block !important;
     }
     #setup-donneur-wrap {
@@ -513,8 +519,8 @@
     .stepper .sv { font-size: 30px; }
     .chip { font-size: 16px; padding: 12px 22px; }
     .header h1 { font-size: 26px; }
-    .nav-item { padding: 14px 12px 12px; font-size: 12px; }
-    .nav-item .ni-icon { font-size: 28px; }
+    .nav-item { padding: 16px 12px 14px; font-size: 13px; }
+    .nav-item .ni-icon { font-size: 36px; }
     .marque-table { font-size: 15px; }
     .marque-table td { padding: 10px 8px; }
     .hi-contract { font-size: 16px; }
