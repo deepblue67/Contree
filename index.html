@@ -80,12 +80,12 @@
     /* ── PAGE TABLE : table gauche, scores+boutons droite ── */
     #tab-enjeu {
       display: grid !important;
-      grid-template-columns: 1fr 210px;
-      grid-template-rows: auto auto;
-      column-gap: 6px;
-      row-gap: 6px;
+      grid-template-columns: 1fr 210px !important;
+      grid-template-rows: auto auto !important;
+      column-gap: 6px !important;
+      row-gap: 6px !important;
       padding: 6px 8px 6px !important;
-      align-items: start;
+      align-items: start !important;
     }
     #ej-table-wrap {
       grid-column: 1 !important;
@@ -94,22 +94,23 @@
       padding: 0 !important;
     }
     #ej-table-wrap svg { max-height: calc(100vh - 90px) !important; width: 100% !important; }
-    #tab-enjeu > div:nth-child(2) { grid-column: 2; grid-row: 1; align-self: start; padding: 0 !important; margin: 0 !important; }
-    #tab-enjeu > div:nth-child(3) { grid-column: 2; grid-row: 2; padding: 0 !important; }
     #ej-score-wrap { 
+      grid-column: 2 !important; grid-row: 1 !important;
+      align-self: start !important;
       margin: 0 !important; 
       padding: 10px !important;
       background: rgba(0,0,0,0.35) !important;
       border: 1px solid rgba(255,255,255,0.18) !important;
       border-radius: 14px !important;
       max-width: none !important;
+      width: 100% !important;
     }
-    #tab-enjeu > div:nth-child(2) .score-board { grid-template-columns: 1fr !important; gap: 8px !important; }
-    #tab-enjeu > div:nth-child(2) .score-team { display: flex !important; align-items: center !important; justify-content: space-between !important; text-align: left !important; padding: 10px 12px !important; gap: 8px !important; background: rgba(255,255,255,0.10) !important; border-radius: 10px !important; border: 1px solid rgba(255,255,255,0.12) !important; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-name { margin-bottom: 0 !important; font-size: 10px !important; white-space: normal !important; overflow: visible !important; text-overflow: unset !important; flex-shrink: 1 !important; line-height: 1.3 !important; font-weight: 700 !important; color: rgba(255,255,255,0.7) !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-score { font-size: 46px !important; line-height: 1 !important; font-weight: 900 !important; flex-shrink: 0 !important; color: #fff !important; }
-    #tab-enjeu > div:nth-child(2) .score-team .t-need { display: none !important; }
-    #ej-action-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 4px !important; padding: 0 !important; max-width: none !important; margin: 0 !important; }
+    #ej-score-wrap .score-board { grid-template-columns: 1fr !important; gap: 8px !important; }
+    #ej-score-wrap .score-team { display: flex !important; align-items: center !important; justify-content: space-between !important; text-align: left !important; padding: 10px 12px !important; gap: 8px !important; background: rgba(255,255,255,0.10) !important; border-radius: 10px !important; border: 1px solid rgba(255,255,255,0.12) !important; }
+    #ej-score-wrap .score-team .t-name { margin-bottom: 0 !important; font-size: 10px !important; white-space: normal !important; overflow: visible !important; text-overflow: unset !important; flex-shrink: 1 !important; line-height: 1.3 !important; font-weight: 700 !important; color: rgba(255,255,255,0.7) !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; }
+    #ej-score-wrap .score-team .t-score { font-size: 46px !important; line-height: 1 !important; font-weight: 900 !important; flex-shrink: 0 !important; color: #fff !important; }
+    #ej-score-wrap .score-team .t-need { display: none !important; }
+    #ej-action-grid { grid-column: 2 !important; grid-row: 2 !important; display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 4px !important; padding: 0 !important; max-width: none !important; margin: 0 !important; width: 100% !important; }
     #ej-action-grid .btn { font-size: 10px !important; padding: 7px 3px !important; }
 
     /* ── MODALES : padding-bottom pour éviter la nav ── */
@@ -886,7 +887,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1050</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1055</span></div>
       </div>
     </div>
     <div class="body">
