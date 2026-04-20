@@ -756,7 +756,7 @@
       display: none !important;
     }
     /* Carte : centre, plus petite */
-    #mec-card-wrap { width: min(calc(100vh - 120px), 200px); flex-shrink: 0; }
+    #mec-card-wrap { width: min(calc(100vh - 150px), 200px) !important; flex-shrink: 0 !important; margin-bottom: 20px !important; }
     /* Droite : scores */
     #mec-scores {
       max-width: 220px !important;
@@ -939,7 +939,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1150</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1200</span></div>
       </div>
     </div>
     <div class="body">
@@ -1363,7 +1363,7 @@
     </div>
     <div id="mec-body" class="mec-body">
       <!-- Joueur qui commence -->
-      <div id="mec-first-player" style="width:100%;max-width:420px;background:rgba(0,0,0,0.2);border-radius:12px;padding:10px 16px;margin-bottom:0;"></div>
+      <div id="mec-first-player" style="width:100%;background:rgba(0,0,0,0.2);border-radius:12px;padding:10px 16px;margin-bottom:0;"></div>
       <!-- Carte SVG -->
       <div id="mec-card-wrap" onclick="showScreen('game');showTab('enjeu');" title="Retour à la table">
         <svg id="mec-card-svg" viewBox="0 0 240 340" xmlns="http://www.w3.org/2000/svg"></svg>
