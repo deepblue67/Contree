@@ -717,9 +717,53 @@
   #mec-card-wrap:active { transform: scale(0.96) !important; opacity: 0.85; }
   /* Paysage */
   @media (orientation: landscape) {
-    .mec-body { flex-direction: row; align-items: center; justify-content: center; gap: 40px; padding-bottom: 52px; }
-    #mec-card-wrap { width: min(calc(100vh - 100px), 260px); }
-    #mec-scores { max-width: 340px; }
+    .mec-body {
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 8px 40px 52px 20px;
+    }
+    /* Gauche : donneur + premier séparés en colonne */
+    #mec-first-player {
+      width: 160px !important;
+      max-width: 160px !important;
+      flex-shrink: 0 !important;
+      background: transparent !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+    #mec-first-player > div {
+      flex-direction: column !important;
+      flex-wrap: nowrap !important;
+      gap: 10px !important;
+    }
+    #mec-first-player > div > div:nth-child(1),
+    #mec-first-player > div > div:nth-child(3) {
+      background: rgba(0,0,0,0.25) !important;
+      border-radius: 12px !important;
+      padding: 10px 14px !important;
+      text-align: left !important;
+    }
+    #mec-first-player > div > div:nth-child(2) {
+      display: none !important;
+    }
+    /* Carte : centre, plus petite */
+    #mec-card-wrap { width: min(calc(100vh - 120px), 200px); flex-shrink: 0; }
+    /* Droite : scores */
+    #mec-scores {
+      max-width: 220px !important;
+      width: 220px !important;
+      flex-shrink: 0 !important;
+    }
+    .mec-score-box {
+      padding: 12px 14px !important;
+    }
+    .mec-team-score {
+      font-size: clamp(28px, 4vw, 48px) !important;
+    }
   }
   /* iPad portrait */
   @media (min-width: 700px) and (orientation: portrait) {
@@ -890,7 +934,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1130</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1140</span></div>
       </div>
     </div>
     <div class="body">
