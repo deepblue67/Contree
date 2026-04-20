@@ -695,6 +695,9 @@
   /* ── MANCHE EN COURS ── */
   #screen-mancheencours { background: var(--bg); flex-direction: column; min-height: 100vh; }
   .mec-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 16px; padding-bottom: 60px; }
+  /* 2 boxes toujours séparées */
+  #mec-first-player { display: flex; flex-direction: row; gap: 12px; width: 100%; max-width: 420px; background: transparent !important; padding: 0 !important; border-radius: 0 !important; }
+  #mec-fp-donneur, #mec-fp-premier { flex: 1; }
   #mec-card-wrap { width: 200px; flex-shrink: 0; }
   #mec-card-svg { width: 100%; height: auto; display: block; }
   #mec-scores { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; }
@@ -724,36 +727,17 @@
       gap: 16px;
       padding: 8px 40px 70px 20px;
     }
-    /* Gauche : donneur + premier séparés en colonne */
+    /* Gauche : 2 boxes en colonne, même taille */
     #mec-first-player {
-      width: 160px !important;
-      max-width: 160px !important;
+      width: 155px !important;
       flex-shrink: 0 !important;
-      background: transparent !important;
-      padding: 0 !important;
-      display: flex !important;
       flex-direction: column !important;
-      gap: 12px !important;
-    }
-    #mec-first-player > div {
-      flex-direction: column !important;
-      flex-wrap: nowrap !important;
       gap: 10px !important;
-      height: 100% !important;
+      align-self: center !important;
     }
-    #mec-first-player > div > div:nth-child(1),
-    #mec-first-player > div > div:nth-child(3) {
-      background: rgba(0,0,0,0.25) !important;
-      border-radius: 12px !important;
-      padding: 10px 14px !important;
-      text-align: left !important;
+    #mec-fp-donneur, #mec-fp-premier {
       flex: 1 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: center !important;
-    }
-    #mec-first-player > div > div:nth-child(2) {
-      display: none !important;
+      min-height: 60px !important;
     }
     /* Carte : centre, plus petite */
     #mec-card-wrap { width: min(calc(100vh - 170px), 195px) !important; flex-shrink: 0 !important; }
@@ -939,7 +923,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1220</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1235</span></div>
       </div>
     </div>
     <div class="body">
@@ -3157,35 +3141,17 @@ function showMancheEnCours() {
   eid('mec-title').textContent = 'Manche ' + S.manche + ' en cours';
 
   // Info joueur qui commence
-  const isMECLandscape = window.matchMedia('(orientation:landscape) and (max-width:899px)').matches;
-  if(isMECLandscape) {
-    eid('mec-first-player').innerHTML = `
-      <div style="display:flex;flex-direction:column;gap:10px;width:100%;height:100%;">
-        <div style="flex:1;background:rgba(0,0,0,0.28);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">🃏 Donneur</div>
-          <div style="font-size:16px;font-weight:700;color:rgba(255,255,255,0.9);">${dealerPlayer}</div>
-        </div>
-        <div style="flex:1;background:rgba(0,0,0,0.28);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;justify-content:center;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">🎯 Premier à jouer</div>
-          <div style="font-size:16px;font-weight:800;color:#f0c040;">${firstPlayer}</div>
-        </div>
-      </div>`;
-    eid('mec-first-player').style.cssText = 'width:155px;height:140px;flex-shrink:0;background:transparent;padding:0;border-radius:0;display:flex;flex-direction:column;';
-  } else {
-    eid('mec-first-player').innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
-        <div style="text-align:center;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;">🃏 Donneur</div>
-          <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.85);">${dealerPlayer}</div>
-        </div>
-        <div style="width:1px;height:30px;background:rgba(255,255,255,0.15);"></div>
-        <div style="text-align:center;">
-          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;">🎯 Premier à jouer</div>
-          <div style="font-size:17px;font-weight:800;color:#f0c040;">${firstPlayer}</div>
-        </div>
-      </div>`;
-    eid('mec-first-player').style.cssText = 'width:100%;background:rgba(0,0,0,0.2);border-radius:12px;padding:10px 16px;margin-bottom:0;';
-  }
+  // Toujours 2 boxes séparées — le CSS gère l'orientation
+  eid('mec-first-player').innerHTML = `
+    <div id="mec-fp-donneur" style="background:rgba(0,0,0,0.28);border-radius:12px;padding:10px 14px;">
+      <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">🃏 Donneur</div>
+      <div style="font-size:16px;font-weight:700;color:rgba(255,255,255,0.9);">${dealerPlayer}</div>
+    </div>
+    <div id="mec-fp-premier" style="background:rgba(0,0,0,0.28);border-radius:12px;padding:10px 14px;">
+      <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">🎯 Premier à jouer</div>
+      <div style="font-size:16px;font-weight:800;color:#f0c040;">${firstPlayer}</div>
+    </div>`;
+  eid('mec-first-player').style.cssText = '';
 
   // Carte SVG
   const cx=120, cy=165;
