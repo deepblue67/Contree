@@ -923,7 +923,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1310</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1330</span></div>
       </div>
     </div>
     <div class="body">
@@ -1049,16 +1049,6 @@
         <button class="btn btn-outline" onclick="askChangeTeams()" style="font-size:12px;padding:10px 6px;opacity:0.8;">Changement d'équipe</button>
       </div>
 
-      <!-- Modale confirmation -->
-      <div id="confirm-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;align-items:flex-end;justify-content:center;padding:20px;">
-        <div style="background:#1a2e1a;border-radius:var(--radius);padding:22px;width:100%;max-width:420px;border:1px solid rgba(255,255,255,0.15);">
-          <div id="confirm-msg" style="font-size:16px;font-weight:600;color:#fff;text-align:center;margin-bottom:20px;"></div>
-          <div style="display:flex;gap:10px;">
-            <button id="confirm-ok" class="btn btn-green" style="flex:1;font-size:15px;">Confirmer</button>
-            <button class="btn btn-outline" onclick="closeConfirm()" style="flex:1;font-size:15px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Annuler</button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- TAB: CONTRACT INPUT -->
@@ -1368,6 +1358,17 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- MODALE CONFIRMATION — niveau app pour être visible partout -->
+  <div id="confirm-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9998;align-items:flex-end;justify-content:center;padding:20px;">
+    <div style="background:#1a2e1a;border-radius:var(--radius);padding:22px;width:100%;max-width:420px;border:1px solid rgba(255,255,255,0.15);">
+      <div id="confirm-msg" style="font-size:16px;font-weight:600;color:#fff;text-align:center;margin-bottom:20px;"></div>
+      <div style="display:flex;gap:10px;">
+        <button id="confirm-ok" class="btn btn-green" style="flex:1;font-size:15px;">Confirmer</button>
+        <button class="btn btn-outline" onclick="closeConfirm()" style="flex:1;font-size:15px;color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.3);">Annuler</button>
+      </div>
+    </div>
   </div>
 
   <!-- BOTTOM NAV — directement dans #app, fixed bottom -->
@@ -2296,8 +2297,8 @@ function renderHistory() {
         ${numHtml}
         <span class="hi-contract">${ligne1}</span>
         ${resultHtml}
-        <button onclick="openEdit(${h.manche})" style="background:#d8d4c8;border:1px solid #aaa;border-radius:99px;color:#111;font-size:11px;padding:3px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:600;">✏️ Modifier</button>
-        <button onclick="deleteManche(${h.manche})" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;padding:3px 10px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:700;">🗑</button>
+        <button onclick="openEdit(${h.manche})" style="background:#d8d4c8;border:1px solid #aaa;border-radius:99px;color:#111;font-size:11px;padding:3px 8px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:600;">✏️</button>
+        <button onclick="deleteManche(${h.manche})" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;padding:3px 8px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:700;">🗑</button>
       </div>
       <div class="hi-bottom">${ligne2}</div>
     </div>`;
