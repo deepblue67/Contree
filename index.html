@@ -48,8 +48,7 @@
     color: var(--text);
     /* Fix scroll bounce iOS — empêche l'espace blanc au rebond */
     overscroll-behavior: none;
-    -webkit-overflow-scrolling: auto;
-    overflow: hidden;
+    overflow-x: hidden;
   }
   body { 
     overflow-x: hidden;
@@ -551,7 +550,7 @@
   .header .sub { font-size: 12px; opacity: 0.65; margin-top: 1px; }
 
   /* ── SCROLL BODY ── */
-  .body { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 90px; }
+  .body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 14px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 90px; }
 
   /* ── CARDS ── */
   .card { background: var(--card); border-radius: var(--radius); border: none; padding: 16px; box-shadow: var(--shadow); color: var(--text); }
@@ -716,6 +715,11 @@
   .mec-team-score { font-size: 40px; font-weight: 800; color: #fff; line-height: 1; }
   .mec-need { font-size: 11px; color: rgba(255,255,255,0.5); }
   /* Carte cliquable — animation pulsation */
+  @keyframes svgCardPulse {
+    0%   { filter: drop-shadow(0 0 2px rgba(200,168,74,0.5)); }
+    50%  { filter: drop-shadow(0 0 16px rgba(200,168,74,1)) drop-shadow(0 0 6px rgba(255,220,100,0.8)); }
+    100% { filter: drop-shadow(0 0 2px rgba(200,168,74,0.5)); }
+  }
   @keyframes card-pulse {
     0%   { box-shadow: 0 0 0 0 rgba(200,168,74,0.8), 0 8px 32px rgba(0,0,0,0.4); transform: scale(1); }
     50%  { box-shadow: 0 0 0 14px rgba(200,168,74,0), 0 8px 32px rgba(0,0,0,0.4); transform: scale(1.03); }
@@ -933,7 +937,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250422_1400</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250422_1500</span></div>
       </div>
     </div>
     <div class="body">
@@ -1412,7 +1416,7 @@
       <span class="ni-icon">🃏</span>Contrat
     </button>
     <button class="nav-item" id="nav-score" onclick="showTab('saisie');updateSaisieForm();">
-      <span class="ni-icon">🏆</span>Score
+      <span class="ni-icon">🏆</span>Résultat
     </button>
     <button class="nav-item" id="nav-history" onclick="showTab('history')">
       <span class="ni-icon">📋</span>Historique
@@ -2720,7 +2724,7 @@ function renderStatsCurrent() {
     <!-- Tableau par équipe -->
     <table style="width:100%;border-collapse:collapse;font-size:13px;">
       <thead>
-        <tr style="border-bottom:2px solid rgba(255,255,255,0.15);">
+        <tr style="border-bottom:2px solid rgba(0,0,0,0.15);">
           <th style="text-align:left;padding:6px 4px;color:var(--text2);font-size:11px;text-transform:uppercase;">Équipe</th>
           <th style="text-align:center;padding:6px 4px;color:var(--text2);font-size:11px;">Prises</th>
           <th style="text-align:center;padding:6px 4px;color:var(--text2);font-size:11px;">Réussies</th>
@@ -2729,15 +2733,15 @@ function renderStatsCurrent() {
         </tr>
       </thead>
       <tbody>
-        <tr style="border-bottom:1px solid rgba(255,255,255,0.08);">
-          <td style="padding:8px 4px;font-weight:700;color:#7ddd82;">${S.t1.name}</td>
+        <tr style="border-bottom:1px solid rgba(0,0,0,0.08);">
+          <td style="padding:8px 4px;font-weight:700;color:#1a6b3c;">${S.t1.name}</td>
           <td style="text-align:center;padding:8px 4px;">${st1.played}</td>
           <td style="text-align:center;padding:8px 4px;">${st1.won}</td>
           <td style="text-align:center;padding:8px 4px;">${st1.played?Math.round(st1.won/st1.played*100):0}%</td>
           <td style="text-align:center;padding:8px 4px;">${st1.avg1}</td>
         </tr>
         <tr>
-          <td style="padding:8px 4px;font-weight:700;color:#80b0ff;">${S.t2.name}</td>
+          <td style="padding:8px 4px;font-weight:700;color:#1a3a8c;">${S.t2.name}</td>
           <td style="text-align:center;padding:8px 4px;">${st2.played}</td>
           <td style="text-align:center;padding:8px 4px;">${st2.won}</td>
           <td style="text-align:center;padding:8px 4px;">${st2.played?Math.round(st2.won/st2.played*100):0}%</td>
@@ -2747,8 +2751,8 @@ function renderStatsCurrent() {
     </table>
 
     <div style="margin-top:10px;font-size:12px;color:var(--text2);">
-      🔥 Meilleure série victorieuse : <strong style="color:#fff;">${maxStreak} manche${maxStreak>1?'s':''}</strong>
-      &nbsp;•&nbsp; 🎴 Belotes annoncées : <strong style="color:#fff;">${belotes}</strong>
+      🔥 Meilleure série victorieuse : <strong style="color:#111;">${maxStreak} manche${maxStreak>1?'s':''}</strong>
+      &nbsp;•&nbsp; 🎴 Belotes annoncées : <strong style="color:#111;">${belotes}</strong>
     </div>`;
 }
 
@@ -2787,11 +2791,11 @@ function renderStatsChart() {
   ctx.clearRect(0,0,W,H);
 
   // Grille
-  ctx.strokeStyle='rgba(255,255,255,0.1)'; ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(0,0,0,0.12)'; ctx.lineWidth=1;
   [0,0.25,0.5,0.75,1].forEach(r=>{
     const y=yP(r*maxVal);
     ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px sans-serif';ctx.textAlign='right';
+    ctx.fillStyle='rgba(0,0,0,0.5)';ctx.font='9px sans-serif';ctx.textAlign='right';
     ctx.fillText(Math.round(r*maxVal), pad.l-4, y+3);
   });
 
@@ -2811,21 +2815,21 @@ function renderStatsChart() {
       ctx.arc(xP(i),yP(v),3,0,Math.PI*2); ctx.fill();
     });
   }
-  drawLine(pts,'#7ddd82');
-  drawLine(pts2,'#80b0ff');
+  drawLine(pts,'#1a6b3c');
+  drawLine(pts2,'#1a3a8c');
 
   // Labels X
-  ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='9px sans-serif'; ctx.textAlign='center';
+  ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.font='9px sans-serif'; ctx.textAlign='center';
   h.forEach((_,i) => {
     ctx.fillText('M'+(i+1), xP(i+1), H-8);
   });
 
   // Légende
   ctx.font='11px sans-serif'; ctx.textAlign='left';
-  ctx.fillStyle='#7ddd82'; ctx.fillRect(pad.l,4,14,8);
-  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText(S.t1.name, pad.l+18, 12);
-  ctx.fillStyle='#80b0ff'; ctx.fillRect(pad.l+130,4,14,8);
-  ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fillText(S.t2.name, pad.l+148, 12);
+  ctx.fillStyle='#1a6b3c'; ctx.fillRect(pad.l,4,14,8);
+  ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.fillText(S.t1.name, pad.l+18, 12);
+  ctx.fillStyle='#1a3a8c'; ctx.fillRect(pad.l+130,4,14,8);
+  ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.fillText(S.t2.name, pad.l+148, 12);
 }
 
 function renderStatsTeams() {
@@ -2897,7 +2901,7 @@ function renderStatsPlayers() {
   if(!sorted.length) { el.innerHTML='<div style="color:var(--text3);text-align:center;padding:12px;">Aucun joueur</div>'; return; }
 
   el.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:12px;">
-    <thead><tr style="border-bottom:2px solid rgba(255,255,255,0.15);">
+    <thead><tr style="border-bottom:2px solid rgba(0,0,0,0.15);">
       <th style="text-align:left;padding:6px 4px;color:var(--text2);font-size:10px;text-transform:uppercase;">Joueur</th>
       <th style="text-align:center;padding:6px 2px;color:var(--text2);font-size:10px;">Parties</th>
       <th style="text-align:center;padding:6px 2px;color:var(--text2);font-size:10px;">Victoires</th>
@@ -3149,6 +3153,7 @@ function renderEnjeu() {
 
     <!-- ── CARTE AU CENTRE si contrat ── -->
     ${contratValue ? `
+    <g id="contract-card-group" style="animation: svgCardPulse 3.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center;">
     <!-- Ombre -->
     <rect x="${cx-58}" y="${cy-84}" width="116" height="168" rx="12" fill="rgba(0,0,0,0.35)"/>
     <!-- Corps carte -->
@@ -3182,6 +3187,7 @@ function renderEnjeu() {
     <rect x="${cx-38}" y="${cy+60}" width="76" height="16" rx="8" fill="#c8960a"/>
     <text x="${cx}" y="${cy+72}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" font-weight="800" fill="#fff">${contreLabel}</text>
     ` : ''}
+    </g>
     <!-- Zone cliquable sur la carte -->
     <rect x="${cx-60}" y="${cy-86}" width="116" height="168" rx="12" fill="transparent" style="cursor:pointer;" onclick="showMancheEnCours()"/>
     ` : ''}
