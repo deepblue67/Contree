@@ -923,7 +923,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250420_1330</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250422_1100</span></div>
       </div>
     </div>
     <div class="body">
@@ -1203,7 +1203,7 @@
       <!-- Historique de la partie en cours -->
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <div class="card-title" style="margin-bottom:0;">Partie en cours</div>
+          <div class="card-title" style="margin-bottom:0;" id="history-title">Partie en cours</div>
         </div>
         <div id="history-content"></div>
       </div>
@@ -2273,36 +2273,81 @@ function changeTeams() {
 // ═══════════════════════════════════════════════════════════
 //  HISTORY
 // ═══════════════════════════════════════════════════════════
+function initiales(name) {
+  // "Florent & Balou" -> "F&B"
+  return name.split('&').map(p => p.trim()[0].toUpperCase()).join('&');
+}
+
 function renderHistory() {
-  const el=eid('history-content');
+  const el = eid('history-content');
   if(!S.history.length) {
-    el.innerHTML='<div style="text-align:center;padding:20px 16px;color:var(--text3);font-size:14px;"><div style="font-size:32px;margin-bottom:8px;">📋</div>Aucune manche jouée dans cette partie</div>';
+    el.innerHTML = '<div style="text-align:center;padding:20px 16px;color:var(--text3);font-size:14px;"><div style="font-size:32px;margin-bottom:8px;">📋</div>Aucune manche jouée dans cette partie</div>';
     return;
   }
-  el.innerHTML=[...S.history].map(h=>{
+
+  // Mettre à jour le titre
+  const titleEl = eid('history-title');
+  if(titleEl) titleEl.textContent = 'En cours : ' + S.t1.name + ' VS ' + S.t2.name;
+  const i1 = initiales(S.t1.name);
+  const i2 = initiales(S.t2.name);
+  const tot1 = S.history[S.history.length-1].total1;
+  const tot2 = S.history[S.history.length-1].total2;
+
+  const rows = S.history.map(h => {
     const hasContract = h.contract && h.contract !== '—';
-    const contreTxt = hasContract && h.contre && h.contre!=='none'
-      ? ` <span class="tag tag-gold">${h.contre}</span>` : '';
-    const ligne1 = hasContract
-      ? `${h.contract}${contreTxt} <span style="color:var(--text2);font-weight:400;font-size:12px;">— ${h.preneur}</span>`
-      : `<span style="color:#b07800;font-style:italic;">Correction manuelle</span>`;
-    const resultHtml = hasContract
-      ? (h.chute===true ? '<span class="hi-result chute">Chute</span>'
-        : h.chute===false ? '<span class="hi-result fait">Fait</span>' : '')
+    // Contrat : "100 ♥" ou "Correction"
+    const contrat = hasContract ? h.contract : '<em style="color:#b07800;font-size:11px;">Corr.</em>';
+    // Équipe preneuse : initiales
+    const preneur = hasContract ? initiales(h.preneur) : '';
+    // Fait / Chute
+    const result = hasContract
+      ? (h.chute===true
+          ? '<span style="background:#cc2222;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;">Chute</span>'
+          : '<span style="background:#2a7d2e;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;">Fait</span>')
       : '';
-    const ligne2 = `${S.t1.name} : <span class="hi-pts">${h.pts1}</span> &nbsp;•&nbsp; ${S.t2.name} : <span class="hi-pts">${h.pts2}</span> &nbsp;•&nbsp; Total : ${h.total1} / ${h.total2}`;
-    const numHtml = hasContract ? `<span class="hi-num">${h.manche}</span>` : `<span class="hi-num"></span>`;
-    return `<div class="history-item">
-      <div class="hi-top">
-        ${numHtml}
-        <span class="hi-contract">${ligne1}</span>
-        ${resultHtml}
-        <button onclick="openEdit(${h.manche})" style="background:#d8d4c8;border:1px solid #aaa;border-radius:99px;color:#111;font-size:11px;padding:3px 8px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:600;">✏️</button>
-        <button onclick="deleteManche(${h.manche})" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:99px;color:#cc1f1f;font-size:11px;padding:3px 8px;cursor:pointer;font-family:inherit;flex-shrink:0;font-weight:700;">🗑</button>
-      </div>
-      <div class="hi-bottom">${ligne2}</div>
-    </div>`;
+    // Contre/surcontre
+    const contre = hasContract && h.contre && h.contre !== 'none'
+      ? `<span style="font-size:9px;color:#c8960a;font-weight:700;">${h.contre}</span>` : '';
+
+    return `<tr style="border-bottom:1px solid rgba(0,0,0,0.06);">
+      <td style="padding:5px 4px;font-size:12px;color:var(--text2);font-weight:600;white-space:nowrap;">${String(h.manche).padStart(2,'0')}</td>
+      <td style="padding:5px 4px;font-size:12px;font-weight:700;white-space:nowrap;">${contrat} ${contre}</td>
+      <td style="padding:5px 4px;font-size:11px;color:#1a5295;font-weight:700;text-align:center;">${preneur}</td>
+      <td style="padding:5px 4px;text-align:center;">${result}</td>
+      <td style="padding:5px 4px;font-size:13px;font-weight:800;text-align:right;color:${h.pts1>0?'#1a6b3c':'#cc2222'};">${h.pts1}</td>
+      <td style="padding:5px 4px;font-size:13px;font-weight:800;text-align:right;color:${h.pts2>0?'#1a6b3c':'#cc2222'};">${h.pts2}</td>
+      <td style="padding:5px 4px;text-align:center;">
+        <button onclick="openEdit(${h.manche})" style="background:#e8e4dc;border:1px solid #bbb;border-radius:6px;color:#444;font-size:13px;padding:2px 6px;cursor:pointer;font-family:inherit;">✏️</button>
+      </td>
+      <td style="padding:5px 4px;text-align:center;">
+        <button onclick="deleteManche(${h.manche})" style="background:#fce8e8;border:1px solid #e8b0b0;border-radius:6px;color:#cc1f1f;font-size:13px;padding:2px 6px;cursor:pointer;font-family:inherit;">🗑</button>
+      </td>
+    </tr>`;
   }).join('');
+
+  el.innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-family:inherit;">
+      <thead>
+        <tr style="border-bottom:2px solid rgba(0,0,0,0.12);">
+          <th style="padding:4px 4px;font-size:10px;color:var(--text2);text-align:left;font-weight:700;">#</th>
+          <th style="padding:4px 4px;font-size:10px;color:var(--text2);text-align:left;font-weight:700;">Contrat</th>
+          <th style="padding:4px 4px;font-size:10px;color:var(--text2);text-align:center;font-weight:700;">Pren.</th>
+          <th style="padding:4px 4px;font-size:10px;color:var(--text2);text-align:center;font-weight:700;">Résult.</th>
+          <th style="padding:4px 4px;font-size:10px;color:var(--text2);text-align:right;font-weight:700;">${i1}</th>
+          <th style="padding:4px 4px;font-size:10px;color:var(--text2);text-align:right;font-weight:700;">${i2}</th>
+          <th colspan="2" style="padding:4px 4px;font-size:10px;color:var(--text2);text-align:center;font-weight:700;"></th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+      <tfoot>
+        <tr style="border-top:2px solid rgba(0,0,0,0.12);background:rgba(0,0,0,0.03);">
+          <td colspan="4" style="padding:6px 4px;font-size:12px;font-weight:800;color:var(--text);">Total manche</td>
+          <td style="padding:6px 4px;font-size:14px;font-weight:900;text-align:right;color:#1a3a8c;">${tot1}</td>
+          <td style="padding:6px 4px;font-size:14px;font-weight:900;text-align:right;color:#1a3a8c;">${tot2}</td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>`;
 }
 
 // ═══════════════════════════════════════════════════════════
