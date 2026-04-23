@@ -121,7 +121,7 @@
     #players-modal { padding-bottom: 60px !important; }
 
     /* ── TABS OVERLAY (contrat, score, historique, marque) ── */
-    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
+    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque, #tab-feuille {
       position: fixed !important;
       top: 44px !important;
       left: 0 !important;
@@ -404,6 +404,11 @@
     .marque-table td { padding: 10px 6px; }
     .hi-contract { font-size: 16px; }
     .hi-bottom { font-size: 13px; }
+    /* Tableau historique iPad paysage */
+    #history-content table td, #history-content table th { font-size: 14px !important; padding: 8px 8px !important; }
+    #history-content table td:nth-child(5), #history-content table td:nth-child(6) { font-size: 17px !important; }
+    #history-content table tfoot td { font-size: 18px !important; }
+    #history-title { font-size: 16px !important; }
     input[type=text], input[type=number], select { font-size: 17px; padding: 14px 16px; }
     #ej-table-wrap { max-width: 100% !important; }
   #ej-score-wrap { max-width: none !important; margin: 0 !important; }
@@ -422,7 +427,7 @@
     .bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; max-width: none !important; transform: none !important; border-radius: 0 !important; height: auto !important; z-index: 9999 !important; padding-bottom: env(safe-area-inset-bottom, 0px) !important; background: var(--panel) !important; }
 
     /* En paysage, les tabs non-enjeu s'affichent en overlay plein écran */
-    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque {
+    #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque, #tab-feuille {
       position: fixed !important;
       top: 60px !important;
       left: 0 !important;
@@ -529,6 +534,11 @@
     .marque-table td { padding: 10px 8px; }
     .hi-contract { font-size: 16px; }
     .hi-bottom { font-size: 13px; }
+    /* Tableau historique iPad paysage */
+    #history-content table td, #history-content table th { font-size: 14px !important; padding: 8px 8px !important; }
+    #history-content table td:nth-child(5), #history-content table td:nth-child(6) { font-size: 17px !important; }
+    #history-content table tfoot td { font-size: 18px !important; }
+    #history-title { font-size: 16px !important; }
     input[type=text], input[type=number], select { font-size: 17px; padding: 14px 16px; }
     .score-board { gap: 16px; }
   }
@@ -923,7 +933,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250422_1100</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250422_1400</span></div>
       </div>
     </div>
     <div class="body">
@@ -1292,10 +1302,32 @@
 
     </div>
 
+    <!-- TAB: FEUILLE DE SCORE -->
+    <div id="tab-feuille" class="body" style="display:none;">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div id="feuille-title" class="card-title" style="margin-bottom:0;font-size:14px;">Feuille de score</div>
+          <button onclick="showTab('marque');renderMarque();" style="background:rgba(0,0,0,0.08);border:1px solid var(--border-light);border-radius:10px;padding:6px 10px;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;">📊 Aide à la marque</button>
+        </div>
+        <div id="feuille-content"></div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px;">
+        <button onclick="exportFeuille('copy')" class="btn btn-outline btn-full" style="flex:1;font-size:14px;padding:13px;">
+          📋 Copier
+        </button>
+        <button onclick="exportFeuille('share')" class="btn btn-green btn-full" style="flex:1;font-size:14px;padding:13px;">
+          📤 Partager
+        </button>
+      </div>
+    </div>
+
     <!-- TAB: MARQUE -->
     <div id="tab-marque" class="body" style="display:none;">
       <div class="card">
-        <div class="card-title">Aide à la marque</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div class="card-title" style="margin-bottom:0;">Aide à la marque</div>
+          <button onclick="showTab('feuille');renderFeuille();" style="background:rgba(0,0,0,0.08);border:1px solid var(--border-light);border-radius:10px;padding:6px 10px;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;">← Feuille de score</button>
+        </div>
         <div class="info-note" style="margin-bottom:12px;font-size:12px;">
           Total cartes = 162 pts (arrondi à 6). Chute = annonce × mult + 160. Belote = +20 pts (non doublé/triplé). Partie = 2001 pts.
         </div>
@@ -1388,8 +1420,8 @@
     <button class="nav-item" id="nav-stats" onclick="showTab('stats')">
       <span class="ni-icon">📈</span>Stats
     </button>
-    <button class="nav-item" id="nav-marque" onclick="showTab('marque')">
-      <span class="ni-icon">📊</span>Marque
+    <button class="nav-item" id="nav-marque" onclick="showTab('feuille')">
+      <span class="ni-icon">📋</span>Score
     </button>
   </div>
 
@@ -1595,6 +1627,7 @@ function showTab(tab) {
   if(tab==='contrat') updateContractForm();
   if(tab==='saisie') updateSaisieForm();
   if(tab==='history') { renderHistory(); renderPastHistory(); }
+  if(tab==='feuille') { renderFeuille(); }
   if(tab==='stats') renderStats();
   if(tab==='marque') renderMarque();
 }
@@ -2273,11 +2306,6 @@ function changeTeams() {
 // ═══════════════════════════════════════════════════════════
 //  HISTORY
 // ═══════════════════════════════════════════════════════════
-function initiales(name) {
-  // "Florent & Balou" -> "F&B"
-  return name.split('&').map(p => p.trim()[0].toUpperCase()).join('&');
-}
-
 function renderHistory() {
   const el = eid('history-content');
   if(!S.history.length) {
@@ -3304,6 +3332,107 @@ function showMancheSummary(ps, mancheJouee, onConfirm) {
   document.body.appendChild(modal);
 }
 
+
+function initiales(name) {
+  if(typeof name !== 'string' || !name) return '?';
+  return name.split('&').map(p => p.trim()[0] ? p.trim()[0].toUpperCase() : '?').join('&');
+}
+
+function renderFeuille() {
+  const el = eid('feuille-content');
+  const titleEl = eid('feuille-title');
+  if(titleEl) titleEl.textContent = 'En cours : ' + S.t1.name + ' VS ' + S.t2.name;
+
+  if(!S.history.length) {
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);">Aucune manche jouée</div>';
+    return;
+  }
+
+  const i1 = initiales(S.t1.name);
+  const i2 = initiales(S.t2.name);
+  const tot1 = S.history[S.history.length-1].total1;
+  const tot2 = S.history[S.history.length-1].total2;
+
+  const rows = S.history.map(h => {
+    const hasContract = h.contract && h.contract !== '—';
+    const contrat = hasContract ? h.contract : '<em style="color:#b07800;font-size:11px;">Corr.</em>';
+    const preneur = hasContract ? initiales(h.preneur) : '';
+    const contre = hasContract && h.contre && h.contre !== 'none'
+      ? `<span style="font-size:9px;color:#c8960a;font-weight:700;">${h.contre}</span>` : '';
+    const result = hasContract
+      ? (h.chute===true
+          ? '<span style="background:#cc2222;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;">Chute</span>'
+          : '<span style="background:#2a7d2e;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;">Fait</span>')
+      : '';
+    return `<tr style="border-bottom:1px solid rgba(0,0,0,0.06);">
+      <td style="padding:5px 4px;font-size:12px;color:var(--text2);font-weight:600;">${String(h.manche).padStart(2,'0')}</td>
+      <td style="padding:5px 4px;font-size:12px;font-weight:700;white-space:nowrap;">${contrat} ${contre}</td>
+      <td style="padding:5px 4px;font-size:11px;color:#1a5295;font-weight:700;text-align:center;">${preneur}</td>
+      <td style="padding:5px 4px;text-align:center;">${result}</td>
+      <td style="padding:5px 4px;font-size:13px;font-weight:800;text-align:right;color:${h.pts1>0?'#1a6b3c':'#cc2222'};">${h.pts1}</td>
+      <td style="padding:5px 4px;font-size:13px;font-weight:800;text-align:right;color:${h.pts2>0?'#1a6b3c':'#cc2222'};">${h.pts2}</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-family:inherit;">
+      <thead>
+        <tr style="border-bottom:2px solid rgba(0,0,0,0.12);">
+          <th style="padding:4px;font-size:10px;color:var(--text2);text-align:left;">#</th>
+          <th style="padding:4px;font-size:10px;color:var(--text2);text-align:left;">Contrat</th>
+          <th style="padding:4px;font-size:10px;color:var(--text2);text-align:center;">Pren.</th>
+          <th style="padding:4px;font-size:10px;color:var(--text2);text-align:center;">Résult.</th>
+          <th style="padding:4px;font-size:10px;color:var(--text2);text-align:right;">${i1}</th>
+          <th style="padding:4px;font-size:10px;color:var(--text2);text-align:right;">${i2}</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+      <tfoot>
+        <tr style="border-top:2px solid rgba(0,0,0,0.12);background:rgba(0,0,0,0.03);">
+          <td colspan="4" style="padding:6px 4px;font-size:12px;font-weight:800;color:var(--text);">Total manche</td>
+          <td style="padding:6px 4px;font-size:14px;font-weight:900;text-align:right;color:#1a3a8c;">${tot1}</td>
+          <td style="padding:6px 4px;font-size:14px;font-weight:900;text-align:right;color:#1a3a8c;">${tot2}</td>
+        </tr>
+      </tfoot>
+    </table>`;
+}
+
+function exportFeuille(mode) {
+  if(!S.history.length) { showToast('Aucune manche à exporter'); return; }
+  const i1 = initiales(S.t1.name);
+  const i2 = initiales(S.t2.name);
+  let txt = '🃏 FEUILLE DE SCORE — BELOTE CONTRÉE\n';
+  txt += 'En cours : ' + S.t1.name + ' VS ' + S.t2.name + '\n';
+  txt += '─'.repeat(40) + '\n';
+  txt += '#   Contrat        Résult.  ' + i1.padStart(6) + '  ' + i2.padStart(6) + '\n';
+  txt += '─'.repeat(40) + '\n';
+  S.history.forEach(h => {
+    const num = String(h.manche).padStart(2,'0');
+    const contrat = (h.contract||'—').padEnd(14);
+    const res = h.chute===true ? 'Chute  ' : h.chute===false ? 'Fait   ' : '       ';
+    txt += num + '  ' + contrat + '  ' + res + String(h.pts1).padStart(6) + '  ' + String(h.pts2).padStart(6) + '\n';
+  });
+  txt += '─'.repeat(40) + '\n';
+  const tot1 = S.history[S.history.length-1].total1;
+  const tot2 = S.history[S.history.length-1].total2;
+  txt += 'TOTAL'.padEnd(23) + String(tot1).padStart(6) + '  ' + String(tot2).padStart(6) + '\n';
+
+  if(mode === 'copy') {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('📋 Copié !');
+    } catch(e) { showToast('Erreur copie'); }
+  } else {
+    if(navigator.share) {
+      navigator.share({ title:'Feuille de score Belote', text: txt }).catch(()=>{});
+    } else {
+      showToast('Partage non disponible');
+    }
+  }
+}
 
 function exportStats(mode) {
   let past = [];
