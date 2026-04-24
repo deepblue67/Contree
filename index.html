@@ -116,8 +116,12 @@
     #ej-action-grid { grid-column: 2 !important; grid-row: 2 !important; display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 4px !important; padding: 0 !important; max-width: none !important; margin: 0 !important; width: 100% !important; }
     #ej-action-grid .btn { font-size: 10px !important; padding: 7px 3px !important; }
 
-    /* ── MODALES : padding-bottom pour éviter la nav ── */
-    #confirm-modal { padding-bottom: 60px !important; }
+    /* ── MODALES : centrer en iPad paysage ── */
+    #confirm-modal { 
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 20px !important;
+    }
     #players-modal { padding: 50px 16px 70px !important; }
 
     /* ── TABS OVERLAY (contrat, score, historique, marque) ── */
@@ -1000,7 +1004,7 @@
       <button onclick="eid('players-modal').style.cssText='display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:flex-start;justify-content:center;padding:110px 16px 70px;overflow-y:auto;'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1815</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1820</span></div>
       </div>
     </div>
     <div class="body">
