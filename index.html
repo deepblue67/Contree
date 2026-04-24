@@ -485,25 +485,21 @@
     /* Page SETUP : table à gauche, donneur + bouton à droite */
     #screen-setup .body {
       display: grid !important;
-      grid-template-columns: 1fr 380px;
-      grid-template-rows: auto auto;
-      column-gap: 28px;
-      row-gap: 16px;
-      align-items: center;
+      grid-template-columns: 1fr 380px !important;
+      grid-template-rows: auto auto !important;
+      column-gap: 28px !important;
+      row-gap: 16px !important;
+      align-items: center !important;
       padding: 10px 28px !important;
+      overflow: hidden !important;
+      padding-bottom: 10px !important;
     }
     #setup-table-wrap {
       grid-column: 1 !important;
       grid-row: 1 / 3 !important;
-      width: 100% !important;
-      align-self: center !important;
+      align-self: start !important;
       min-height: 0 !important;
-    }
-    #setup-table-wrap svg {
-      width: 100% !important;
-      height: auto !important;
-      max-height: calc(100dvh - 200px) !important;
-      display: block !important;
+      min-width: 0 !important;
     }
     #setup-donneur-wrap {
       grid-column: 2 !important;
@@ -943,7 +939,7 @@
       <button onclick="eid('players-modal').style.cssText='display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:flex-start;justify-content:center;padding:110px 16px 70px;overflow-y:auto;'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1650</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1710</span></div>
       </div>
     </div>
     <div class="body">
@@ -3639,15 +3635,21 @@ loadLastConfig();
 refreshTeamPreview();
 checkAutoSave();
 
-// Fix iPad paysage : taille fixe réduite pour tenir dans l'écran
+// Fix iPad paysage : taille calculée dynamiquement depuis le DOM réel
 function fixSetupTableSize() {
   const wrap = eid('setup-table-wrap');
   if (!wrap) return;
   const isLandscape = window.innerWidth > window.innerHeight;
   const isIPad = Math.min(window.screen.width, window.screen.height) >= 768;
-  if (!isIPad || !isLandscape) { wrap.style.cssText = ''; return; }
-  // Taille = hauteur écran - header - nav - marges
-  const size = window.innerHeight - 140;
+  if (!isIPad || !isLandscape) {
+    wrap.style.cssText = 'position:relative;overflow:hidden;';
+    const svg = wrap.querySelector('svg');
+    if (svg) svg.style.cssText = 'width:100%;height:auto;display:block;border-radius:16px;';
+    return;
+  }
+  // iPad paysage : taille fixe 500px — garantit que la table tient
+  // entre le header (~78px) et la nav (~80px) avec marges
+  const size = 500;
   wrap.style.cssText = 'position:relative;overflow:hidden;width:' + size + 'px;height:' + size + 'px;flex-shrink:0;';
   const svg = wrap.querySelector('svg');
   if (svg) {
