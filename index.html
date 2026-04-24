@@ -118,7 +118,7 @@
 
     /* ── MODALES : padding-bottom pour éviter la nav ── */
     #confirm-modal { padding-bottom: 60px !important; }
-    #players-modal { padding-bottom: 60px !important; }
+    #players-modal { padding: 50px 16px 70px !important; }
 
     /* ── TABS OVERLAY (contrat, score, historique, marque) ── */
     #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque, #tab-feuille {
@@ -704,11 +704,11 @@
   /* ── WINNER SCREEN ── */
   /* ── MANCHE EN COURS ── */
   #screen-mancheencours { background: var(--bg); flex-direction: column; min-height: 100vh; }
-  .mec-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; padding: 8px 16px 70px; }
+  .mec-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 28px; padding: 8px 16px 70px; }
   /* 2 boxes toujours séparées */
   #mec-first-player { display: flex; flex-direction: row; gap: 12px; width: 100%; max-width: 420px; background: transparent !important; padding: 0 !important; border-radius: 0 !important; }
   #mec-fp-donneur, #mec-fp-premier { flex: 1; }
-  #mec-card-wrap { width: 220px; flex-shrink: 0; }
+  #mec-card-wrap { width: 250px; flex-shrink: 0; }
   #mec-card-svg { width: 100%; height: auto; display: block; }
   #mec-scores { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; }
   .mec-score-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; }
@@ -943,7 +943,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1052</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1305</span></div>
       </div>
     </div>
     <div class="body">
@@ -1015,8 +1015,8 @@
       </div>
 
       <!-- Modale liste des joueurs -->
-      <div id="players-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:flex-end;justify-content:center;padding:16px;">
-        <div style="background:var(--card);border-radius:var(--radius);padding:20px;width:100%;max-width:440px;max-height:80vh;overflow-y:auto;">
+      <div id="players-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;padding:60px 16px 80px;">
+        <div style="background:var(--card);border-radius:var(--radius);padding:20px;width:100%;max-width:440px;max-height:100%;overflow-y:auto;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
             <span style="font-size:14px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;">Liste des joueurs</span>
             <span id="player-count-badge" style="background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;"></span>
@@ -3253,10 +3253,10 @@ function showMancheEnCours() {
     ${(()=>{
       const parts = pTeam.split(' & ');
       if(parts.length===2) return `
-        <text x="${cx}" y="${cy+80}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">${parts[0]}</text>
-        <text x="${cx}" y="${cy+98}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">&amp;</text>
-        <text x="${cx}" y="${cy+116}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">${parts[1]}</text>`;
-      return `<text x="${cx}" y="${cy+98}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="15" font-weight="700" fill="#5a3a0a">${pTeam}</text>`;
+        <text x="${cx}" y="${cy+82}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="19" font-weight="700" fill="#5a3a0a">${parts[0]}</text>
+        <text x="${cx}" y="${cy+104}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="19" font-weight="700" fill="#5a3a0a">&amp;</text>
+        <text x="${cx}" y="${cy+126}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="19" font-weight="700" fill="#5a3a0a">${parts[1]}</text>`;
+      return `<text x="${cx}" y="${cy+104}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="19" font-weight="700" fill="#5a3a0a">${pTeam}</text>`;
     })()}
     ${c.contre && c.contre!=='none' ? `<rect x="${cx-40}" y="${cy+122}" width="80" height="18" rx="9" fill="#c8960a"/><text x="${cx}" y="${cy+135}" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="800" fill="#fff">${c.contre}</text>` : ''}
   `;
