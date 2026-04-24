@@ -943,13 +943,13 @@
       <button onclick="eid('players-modal').style.cssText='display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:flex-start;justify-content:center;padding:110px 16px 70px;overflow-y:auto;'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1640</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1650</span></div>
       </div>
     </div>
     <div class="body">
 
       <!-- Table interactive pour placer les joueurs -->
-      <div id="setup-table-wrap" style="position:relative;width:100%;margin:0 auto;max-width:min(100%, calc(100vh - 190px));overflow:hidden;">
+      <div id="setup-table-wrap" style="position:relative;overflow:hidden;">
 
         <!-- SVG table -->
         <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;border-radius:16px;">
@@ -3639,37 +3639,23 @@ loadLastConfig();
 refreshTeamPreview();
 checkAutoSave();
 
-// Fix iPad paysage : forcer la taille du wrapper setup par JS
+// Fix iPad paysage : taille fixe réduite pour tenir dans l'écran
 function fixSetupTableSize() {
   const wrap = eid('setup-table-wrap');
   if (!wrap) return;
   const isLandscape = window.innerWidth > window.innerHeight;
   const isIPad = Math.min(window.screen.width, window.screen.height) >= 768;
-  if (!isIPad || !isLandscape) return;
-  const nav = document.querySelector('.bottom-nav');
-  const header = document.querySelector('#screen-setup .header');
-  const navH = nav ? nav.offsetHeight : 70;
-  const headerH = header ? header.offsetHeight : 60;
-  const available = window.innerHeight - navH - headerH - 20;
-  // Forcer height ET maxHeight ET width sur le wrapper
-  wrap.style.height = available + 'px';
-  wrap.style.maxHeight = available + 'px';
-  wrap.style.maxWidth = available + 'px';
-  wrap.style.overflow = 'hidden';
-  // Forcer aussi le SVG directement
+  if (!isIPad || !isLandscape) { wrap.style.cssText = ''; return; }
+  // Taille = hauteur écran - header - nav - marges
+  const size = window.innerHeight - 140;
+  wrap.style.cssText = 'position:relative;overflow:hidden;width:' + size + 'px;height:' + size + 'px;flex-shrink:0;';
   const svg = wrap.querySelector('svg');
   if (svg) {
-    svg.style.height = available + 'px';
-    svg.style.maxHeight = available + 'px';
-    svg.style.width = 'auto';
-    svg.style.maxWidth = '100%';
-    svg.style.display = 'block';
+    svg.style.cssText = 'width:' + size + 'px;height:' + size + 'px;display:block;border-radius:16px;';
   }
 }
-// Appeler après rendu complet
 window.addEventListener('load', fixSetupTableSize);
 window.addEventListener('resize', fixSetupTableSize);
-// Et aussi avec requestAnimationFrame pour Safari
 requestAnimationFrame(() => requestAnimationFrame(fixSetupTableSize));
 
 // Splash screen — disparaît après 1.5s
