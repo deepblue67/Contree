@@ -804,9 +804,26 @@
   }
   /* iPad portrait */
   @media (min-width: 700px) and (orientation: portrait) {
-    #mec-card-wrap { width: 260px; }
-    .mec-team-score { font-size: 72px; }
-    .mec-team-name { font-size: 16px; }
+    /* Body : espace entre haut et bas pour pousser scores tout en bas */
+    #screen-mancheencours .mec-body {
+      justify-content: space-between !important;
+      padding: 12px 24px 90px !important;
+      gap: 0 !important;
+    }
+    /* Carte : grande, prend tout l'espace central */
+    #mec-card-wrap {
+      width: min(65vw, 420px) !important;
+      flex-shrink: 0 !important;
+    }
+    /* Scores : collés en bas */
+    #mec-scores {
+      max-width: 560px !important;
+      width: 100% !important;
+      gap: 14px !important;
+    }
+    .mec-score-box { padding: 18px 24px !important; }
+    .mec-team-score { font-size: 80px !important; }
+    .mec-team-name { font-size: 16px !important; }
   }
 
   .winner-screen { background: radial-gradient(ellipse at top, #1e6b22 0%, #0d3a10 100%); flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; text-align: center; color: #fff; gap: 16px; }
@@ -971,7 +988,7 @@
       <button onclick="eid('players-modal').style.cssText='display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:flex-start;justify-content:center;padding:110px 16px 70px;overflow-y:auto;'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1725</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1730</span></div>
       </div>
     </div>
     <div class="body">
