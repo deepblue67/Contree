@@ -937,7 +937,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250422_1500</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250422_1515</span></div>
       </div>
     </div>
     <div class="body">
@@ -1604,7 +1604,7 @@ function initGameUI() {
 
 function showTab(tab) {
   haptic('light');
-  ['contrat','saisie','history','stats','marque','enjeu'].forEach(t=>{
+  ['contrat','saisie','history','stats','marque','feuille','enjeu'].forEach(t=>{
     const el = document.getElementById('tab-'+t);
     if(el) el.style.display='none';
   });
@@ -1613,7 +1613,7 @@ function showTab(tab) {
 
   // Bloquer le scroll de la table quand un overlay est actif (iPhone paysage)
   const enjeu = document.getElementById('tab-enjeu');
-  const isOverlay = ['contrat','saisie','history','stats','marque'].includes(tab);
+  const isOverlay = ['contrat','saisie','history','stats','marque','feuille'].includes(tab);
   if(enjeu) enjeu.classList.toggle('overlay-open', isOverlay);
 
   ['table','score','contrat','history','stats','marque'].forEach(t=>{
@@ -1624,7 +1624,7 @@ function showTab(tab) {
       (t==='contrat' && tab==='contrat') ||
       (t==='history' && tab==='history') ||
       (t==='stats' && tab==='stats') ||
-      (t==='marque' && tab==='marque')
+      (t==='marque' && (tab==='marque' || tab==='feuille'))
     );
   });
   if(tab==='enjeu') { renderEnjeu(); updatePulseButtons(); }
