@@ -943,7 +943,7 @@
       <button onclick="eid('players-modal').style.display='flex'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1035</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1052</span></div>
       </div>
     </div>
     <div class="body">
@@ -1316,8 +1316,8 @@
     <div id="tab-feuille" class="body" style="display:none;">
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <div id="feuille-title" class="card-title" style="margin-bottom:0;font-size:14px;">Feuille de score</div>
-          <button onclick="showTab('marque');renderMarque();" style="background:rgba(0,0,0,0.08);border:1px solid var(--border-light);border-radius:10px;padding:6px 10px;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;">📊 Aide à la marque</button>
+          <div id="feuille-title" class="card-title" style="margin-bottom:0;font-size:14px;line-height:1.4;">Feuille de score</div>
+          <button onclick="showTab('marque');renderMarque();" style="background:rgba(0,0,0,0.08);border:1px solid var(--border-light);border-radius:10px;padding:6px 10px;font-size:20px;cursor:pointer;font-family:inherit;" title="Aide à la marque">📊</button>
         </div>
         <div id="feuille-content"></div>
       </div>
@@ -2325,7 +2325,7 @@ function renderHistory() {
 
   // Mettre à jour le titre
   const titleEl = eid('history-title');
-  if(titleEl) titleEl.textContent = 'En cours : ' + S.t1.name + ' VS ' + S.t2.name;
+  if(titleEl) titleEl.innerHTML = S.t1.name + '<br><span style="font-size:11px;color:#888;font-weight:600;">VS</span><br>' + S.t2.name;
   const i1 = initiales(S.t1.name);
   const i2 = initiales(S.t2.name);
   const tot1 = S.history[S.history.length-1].total1;
@@ -3353,7 +3353,7 @@ function initiales(name) {
 function renderFeuille() {
   const el = eid('feuille-content');
   const titleEl = eid('feuille-title');
-  if(titleEl) titleEl.textContent = 'En cours : ' + S.t1.name + ' VS ' + S.t2.name;
+  if(titleEl) titleEl.innerHTML = S.t1.name + '<br><span style="font-size:11px;color:#888;font-weight:600;">VS</span><br>' + S.t2.name;
 
   if(!S.history.length) {
     el.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);">Aucune manche jouée</div>';
