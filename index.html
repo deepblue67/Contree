@@ -735,8 +735,8 @@
     -webkit-tap-highlight-color: transparent;
   }
   #mec-card-wrap:active { transform: scale(0.96) !important; opacity: 0.85; }
-  /* Paysage */
-  @media (orientation: landscape) {
+  /* Paysage iPhone */
+  @media (max-width: 899px) and (orientation: landscape) {
     .mec-body {
       flex-direction: row;
       align-items: center;
@@ -744,7 +744,6 @@
       gap: 16px;
       padding: 8px 40px 70px 20px;
     }
-    /* Gauche : 2 boxes en colonne, même taille */
     #mec-first-player {
       width: 155px !important;
       flex-shrink: 0 !important;
@@ -756,20 +755,52 @@
       flex: 1 !important;
       min-height: 60px !important;
     }
-    /* Carte : centre, plus petite */
     #mec-card-wrap { width: min(calc(100vh - 170px), 195px) !important; flex-shrink: 0 !important; }
-    /* Droite : scores */
     #mec-scores {
       max-width: 220px !important;
       width: 220px !important;
       flex-shrink: 0 !important;
     }
-    .mec-score-box {
-      padding: 12px 14px !important;
+    .mec-score-box { padding: 12px 14px !important; }
+    .mec-team-score { font-size: clamp(28px, 4vw, 48px) !important; }
+  }
+
+  /* Paysage iPad */
+  @media (min-width: 900px) and (orientation: landscape) {
+    .mec-body {
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 0 !important;
+      padding: 16px 48px 80px 48px !important;
     }
-    .mec-team-score {
-      font-size: clamp(28px, 4vw, 48px) !important;
+    /* Gauche : 2 boxes donneur/premier en colonne */
+    #mec-first-player {
+      width: 220px !important;
+      flex-shrink: 0 !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      align-self: center !important;
     }
+    #mec-fp-donneur, #mec-fp-premier {
+      flex: 1 !important;
+      min-height: 70px !important;
+    }
+    /* Carte : grande, centrée */
+    #mec-card-wrap {
+      width: 300px !important;
+      flex-shrink: 0 !important;
+    }
+    /* Droite : scores */
+    #mec-scores {
+      max-width: 260px !important;
+      width: 260px !important;
+      flex-shrink: 0 !important;
+      gap: 16px !important;
+    }
+    .mec-score-box { padding: 16px 18px !important; }
+    .mec-team-score { font-size: 56px !important; }
+    .mec-team-name { font-size: 14px !important; }
   }
   /* iPad portrait */
   @media (min-width: 700px) and (orientation: portrait) {
@@ -940,7 +971,7 @@
       <button onclick="eid('players-modal').style.cssText='display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:flex-start;justify-content:center;padding:110px 16px 70px;overflow-y:auto;'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1720</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1725</span></div>
       </div>
     </div>
     <div class="body">
