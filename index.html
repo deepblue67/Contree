@@ -425,18 +425,6 @@
     html { background: var(--panel) !important; }
     #app { max-width: 100%; width: 100%; min-height: 100dvh; }
     .bottom-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important; max-width: none !important; transform: none !important; border-radius: 0 !important; height: auto !important; z-index: 9999 !important; padding-bottom: env(safe-area-inset-bottom, 0px) !important; background: var(--panel) !important; }
-    /* Contraindre le wrapper par la hauteur disponible */
-    #setup-table-wrap {
-      max-width: calc(100dvh - 185px) !important;
-      overflow: hidden !important;
-      margin: 0 auto !important;
-    }
-    #setup-table-wrap svg {
-      width: 100% !important;
-      height: auto !important;
-      display: block !important;
-    }
-
     /* En paysage, les tabs non-enjeu s'affichent en overlay plein écran */
     #tab-contrat, #tab-saisie, #tab-history, #tab-stats, #tab-marque, #tab-feuille {
       position: fixed !important;
@@ -508,17 +496,13 @@
       grid-column: 1 !important;
       grid-row: 1 / 3 !important;
       width: 100% !important;
-      align-self: start !important;
+      align-self: center !important;
       min-height: 0 !important;
-      max-height: calc(100dvh - 130px) !important;
-      overflow: hidden !important;
-      display: flex !important;
-      align-items: flex-start !important;
     }
     #setup-table-wrap svg {
       width: 100% !important;
       height: auto !important;
-      max-height: calc(100dvh - 130px) !important;
+      max-height: calc(100dvh - 200px) !important;
       display: block !important;
     }
     #setup-donneur-wrap {
@@ -959,7 +943,7 @@
       <button onclick="eid('players-modal').style.cssText='display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:flex-start;justify-content:center;padding:110px 16px 70px;overflow-y:auto;'" style="position:absolute;left:14px;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.5);border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;animation:pulse-btn 2.5s ease infinite;" title="Liste des joueurs">👥</button>
       <div style="text-align:center;">
         <h1>Belote Contrée</h1>
-        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1615</span></div>
+        <div class="sub">Configuration de la partie &nbsp;<span style="font-size:10px;opacity:0.5;font-weight:400;">v20250424_1810</span></div>
       </div>
     </div>
     <div class="body">
